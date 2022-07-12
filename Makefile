@@ -1,13 +1,13 @@
-SRC			= main.cpp 
+SRC			= test.cpp 
 OBJ			= $(SRC:.cpp=.o)
-NAME		= ex02
+NAME		= containers
 FLAGS		= -Wall -Wextra -Werror -std=c++98 
 CC			= c++
 RM			= rm -rf
 SHADOW		= -Wshadow=local
 
 
-all: $(NAME)
+all: $(NAME) 
 
 $(NAME): $(OBJ)
 		$(CC) -o $@ $(OBJ) $(FLAGS) $(SHADOW)
