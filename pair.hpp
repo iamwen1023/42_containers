@@ -9,8 +9,7 @@ namespace ft {
         
         T1 first;
         T2 second;
-
-        
+  
         //constructor
         pair(void): first(), second(){}
         pair (const first_type& a, const second_type& b): first(a), second(b){}

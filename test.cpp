@@ -2,13 +2,13 @@
 //#include <utility>      // std::pair, std::make_pair
 #include <iostream>     // std::cout
 #include <string>       // std::string
-#include "utils_new.hpp"
+#include "utils.hpp"
 #include "pair.hpp"
 
 #include <algorithm>
 #include <iostream>
 #include <vector>
-#include <bits/stdc++.h> 
+//#include <bits/stdc++.h> 
 
 int main(){
 
@@ -43,7 +43,7 @@ int main(){
         if ( ft::equal (vector_1.begin(), vector_1.end(), v1) )
             std::cout << "The contents of both sequences are equal.\n";
         else
-            printf("The contents of both sequences differ.");
+            printf("The contents of both sequences differ.\n");
 
     }
     //lexicographical_compare
@@ -55,10 +55,10 @@ int main(){
         // using lexicographical_compare for checking 
         // is "one" is less than "two"
         if( ft::lexicographical_compare(one, one+13, two, two+3)){
-            std::cout << "geeksforgeeks is lexicographically less than gfg";
+            std::cout << "geeksforgeeks is lexicographically less than gfg\n";
         }
         else{
-            std::cout << "geeksforgeeks is not lexicographically less than gfg";
+            std::cout << "geeksforgeeks is not lexicographically less than gfg\n";
         }
     }
     
