@@ -17,9 +17,14 @@ namespace ft {
             explicit stack( const Container& cont = Container() ): _container(cont);
             ~stack();
             stack& operator=( const stack& other ){this->Container = other.Container; return (*this);};
-            
             bool empty() const { return (this->Container.empty());};
             size_type size() const{return (this->Container.size());};
+            value_type& top() {return this->Container.back();};
+            const value_type& top() const{return this->Container.back();};
+            //所有container都有這些func?
+            void push (const value_type& val);
+
+
 
 
 
