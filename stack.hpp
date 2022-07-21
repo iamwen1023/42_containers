@@ -22,13 +22,37 @@ namespace ft {
             value_type& top() {return this->Container.back();};
             const value_type& top() const{return this->Container.back();};
             //所有container都有這些func?
-            void push (const value_type& val);
-
-
-
-
-
+            void push (const value_type& value){ this->Container.push_back(value);};
+            void pop(){ this->Container.pop_back();};
     };
+    template< class T, class Container >
+    bool operator==( const std::stack<T,Container>& lhs, const std::stack<T,Container>& rhs ){
+       return (lhs.Container  == rhs.Container);
+    };
+    template< class T, class Container >
+    bool operator!=( const std::stack<T,Container>& lhs, const std::stack<T,Container>& rhs ){
+        return (lhs.Container  != rhs.Container);
+    };
+    template< class T, class Container >
+    bool operator<( const std::stack<T,Container>& lhs, const std::stack<T,Container>& rhs ){
+        return (lhs.Container  < rhs.Container);
+    };
+    template< class T, class Container >
+    bool operator<=( const std::stack<T,Container>& lhs, const std::stack<T,Container>& rhs ){
+        return (lhs.Container  <= rhs.Container);
+    };
+    template< class T, class Container >
+    bool operator>( const std::stack<T,Container>& lhs, const std::stack<T,Container>& rhs ){
+        return (lhs.Container  > rhs.Container);
+    };
+    template< class T, class Container >
+    bool operator>=( const std::stack<T,Container>& lhs, const std::stack<T,Container>& rhs ){
+    }
+
+
+
+
+
 
 }
 
