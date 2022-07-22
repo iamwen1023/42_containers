@@ -368,6 +368,10 @@ cxxabi.h
 acxx_demangle.h
 -
 
+/mnt/nfs/homes/wlo/ft_containers/containers/utils/pair.hpp
+
+/mnt/nfs/homes/wlo/ft_containers/containers/utils/utils.hpp
+
 /mnt/nfs/homes/wlo/ft_containers/tests/Vector/vector.cpp
 gtest/gtest.h
 /mnt/nfs/homes/wlo/ft_containers/tests/Vector/gtest/gtest.h
@@ -375,4 +379,22 @@ gtest/gtest.h
 /mnt/nfs/homes/wlo/ft_containers/tests/main.cpp
 gtest/gtest.h
 /mnt/nfs/homes/wlo/ft_containers/tests/gtest/gtest.h
+
+/mnt/nfs/homes/wlo/ft_containers/tests/pair.cpp
+../containers/utils/pair.hpp
+/mnt/nfs/homes/wlo/ft_containers/containers/utils/pair.hpp
+gtest/gtest.h
+-
+iostream
+-
+string
+-
+
+/mnt/nfs/homes/wlo/ft_containers/tests/utils.cpp
+../containers/utils/utils.hpp
+/mnt/nfs/homes/wlo/ft_containers/containers/utils/utils.hpp
+gtest/gtest.h
+-
+iostream
+-
 

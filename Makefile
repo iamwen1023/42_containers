@@ -16,7 +16,7 @@ $(NAME): $(OBJ)
 		$(CC) -o $@ $(OBJ) $(FLAGS) $(SHADOW)
 
 %.o: %.cpp
-		$(CC) $(FLAGS) -c $< -o $(<:.cpp=.o)
+		$(CC) $(FLAGS) -c $< -o $(<:.cpp=.o) 
 
 clean:
 		$(RM) $(OBJ)

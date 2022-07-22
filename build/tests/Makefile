@@ -225,6 +225,60 @@ main.cpp.s:
 	cd /mnt/nfs/homes/wlo/ft_containers/build && $(MAKE) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+pair.o: pair.cpp.o
+
+.PHONY : pair.o
+
+# target to build an object file
+pair.cpp.o:
+	cd /mnt/nfs/homes/wlo/ft_containers/build && $(MAKE) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/pair.cpp.o
+.PHONY : pair.cpp.o
+
+pair.i: pair.cpp.i
+
+.PHONY : pair.i
+
+# target to preprocess a source file
+pair.cpp.i:
+	cd /mnt/nfs/homes/wlo/ft_containers/build && $(MAKE) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/pair.cpp.i
+.PHONY : pair.cpp.i
+
+pair.s: pair.cpp.s
+
+.PHONY : pair.s
+
+# target to generate assembly for a file
+pair.cpp.s:
+	cd /mnt/nfs/homes/wlo/ft_containers/build && $(MAKE) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/pair.cpp.s
+.PHONY : pair.cpp.s
+
+utils.o: utils.cpp.o
+
+.PHONY : utils.o
+
+# target to build an object file
+utils.cpp.o:
+	cd /mnt/nfs/homes/wlo/ft_containers/build && $(MAKE) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/utils.cpp.o
+.PHONY : utils.cpp.o
+
+utils.i: utils.cpp.i
+
+.PHONY : utils.i
+
+# target to preprocess a source file
+utils.cpp.i:
+	cd /mnt/nfs/homes/wlo/ft_containers/build && $(MAKE) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/utils.cpp.i
+.PHONY : utils.cpp.i
+
+utils.s: utils.cpp.s
+
+.PHONY : utils.s
+
+# target to generate assembly for a file
+utils.cpp.s:
+	cd /mnt/nfs/homes/wlo/ft_containers/build && $(MAKE) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/utils.cpp.s
+.PHONY : utils.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -244,6 +298,12 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... pair.o"
+	@echo "... pair.i"
+	@echo "... pair.s"
+	@echo "... utils.o"
+	@echo "... utils.i"
+	@echo "... utils.s"
 .PHONY : help
 
 

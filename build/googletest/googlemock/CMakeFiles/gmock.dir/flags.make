@@ -6,5 +6,5 @@ CXX_FLAGS = -g   -Wall -Wshadow -Wconversion -DGTEST_HAS_PTHREAD=1 -fexceptions 
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/mnt/nfs/homes/wlo/ft_containers/. -I/mnt/nfs/homes/wlo/ft_containers/googletest/googlemock/include -I/mnt/nfs/homes/wlo/ft_containers/googletest/googlemock -isystem /mnt/nfs/homes/wlo/ft_containers/googletest/googletest/include -isystem /mnt/nfs/homes/wlo/ft_containers/googletest/googletest 
+CXX_INCLUDES = -I/mnt/nfs/homes/wlo/ft_containers/./ft_containers/utils -I/mnt/nfs/homes/wlo/ft_containers/googletest/googlemock/include -I/mnt/nfs/homes/wlo/ft_containers/googletest/googlemock -isystem /mnt/nfs/homes/wlo/ft_containers/googletest/googletest/include -isystem /mnt/nfs/homes/wlo/ft_containers/googletest/googletest 
 

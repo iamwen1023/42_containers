@@ -6,5 +6,5 @@ CXX_FLAGS = -g   -std=gnu++14
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/mnt/nfs/homes/wlo/ft_containers/. -isystem /mnt/nfs/homes/wlo/ft_containers/googletest/googletest/include -isystem /mnt/nfs/homes/wlo/ft_containers/googletest/googletest 
+CXX_INCLUDES = -I/mnt/nfs/homes/wlo/ft_containers/./ft_containers/utils -isystem /mnt/nfs/homes/wlo/ft_containers/googletest/googletest/include -isystem /mnt/nfs/homes/wlo/ft_containers/googletest/googletest 
 
