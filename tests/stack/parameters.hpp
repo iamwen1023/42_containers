@@ -7,14 +7,15 @@
 # include <stack> 
 
 // Macros
-# define STACK typename TestFixture::Types
+//# define STACK typename TestFixture::Types
+# define STACKSTD typename TestFixture::Types::first_type
+# define STACKFT typename TestFixture::Types::second_type
 
 // Types to test
 // Generic test set
 using GenericTypes = testing::Types
 <
-    std::stack<int>,
-    ft::stack<int>
+    std::pair<std::stack<int>, ft::stack<int>>
     // std::pair<std::stack<int, std::deque<int>>, ft::stack<int, std::deque<int>>>,
     // std::pair<std::stack<int, std::vector<int>>, ft::stack<int, std::vector<int>>>,
     // std::pair<std::stack<int, std::list<int>>, ft::stack<int, std::list<int>>>

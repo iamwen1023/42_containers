@@ -402,16 +402,6 @@ gtest/gtest.h
 iostream
 -
 
-/mnt/nfs/homes/wlo/ft_containers/tests/stack/constructor.cpp
-../../containers/stack.hpp
-/mnt/nfs/homes/wlo/ft_containers/containers/stack.hpp
-gtest/gtest.h
--
-iostream
--
-parameters.hpp
-/mnt/nfs/homes/wlo/ft_containers/tests/stack/parameters.hpp
-
 /mnt/nfs/homes/wlo/ft_containers/tests/stack/parameters.hpp
 vector
 -
@@ -423,6 +413,16 @@ utility
 -
 stack
 -
+
+/mnt/nfs/homes/wlo/ft_containers/tests/stack/stack.cpp
+../../containers/stack.hpp
+/mnt/nfs/homes/wlo/ft_containers/containers/stack.hpp
+gtest/gtest.h
+-
+iostream
+-
+parameters.hpp
+/mnt/nfs/homes/wlo/ft_containers/tests/stack/parameters.hpp
 
 /mnt/nfs/homes/wlo/ft_containers/tests/utils.cpp
 ../containers/utils/utils.hpp
