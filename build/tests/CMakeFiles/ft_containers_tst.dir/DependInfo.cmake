@@ -7,6 +7,8 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/mnt/nfs/homes/wlo/ft_containers/tests/Vector/vector.cpp" "/mnt/nfs/homes/wlo/ft_containers/build/tests/CMakeFiles/ft_containers_tst.dir/Vector/vector.cpp.o"
   "/mnt/nfs/homes/wlo/ft_containers/tests/main.cpp" "/mnt/nfs/homes/wlo/ft_containers/build/tests/CMakeFiles/ft_containers_tst.dir/main.cpp.o"
   "/mnt/nfs/homes/wlo/ft_containers/tests/pair.cpp" "/mnt/nfs/homes/wlo/ft_containers/build/tests/CMakeFiles/ft_containers_tst.dir/pair.cpp.o"
+  "/mnt/nfs/homes/wlo/ft_containers/tests/stack.cpp" "/mnt/nfs/homes/wlo/ft_containers/build/tests/CMakeFiles/ft_containers_tst.dir/stack.cpp.o"
+  "/mnt/nfs/homes/wlo/ft_containers/tests/stack/constructor.cpp" "/mnt/nfs/homes/wlo/ft_containers/build/tests/CMakeFiles/ft_containers_tst.dir/stack/constructor.cpp.o"
   "/mnt/nfs/homes/wlo/ft_containers/tests/utils.cpp" "/mnt/nfs/homes/wlo/ft_containers/build/tests/CMakeFiles/ft_containers_tst.dir/utils.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "Clang")

@@ -96,9 +96,35 @@ tests/CMakeFiles/ft_containers_tst.dir/pair.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ft_containers_tst.dir/pair.cpp.s"
 	cd /mnt/nfs/homes/wlo/ft_containers/build/tests && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/nfs/homes/wlo/ft_containers/tests/pair.cpp -o CMakeFiles/ft_containers_tst.dir/pair.cpp.s
 
+tests/CMakeFiles/ft_containers_tst.dir/stack.cpp.o: tests/CMakeFiles/ft_containers_tst.dir/flags.make
+tests/CMakeFiles/ft_containers_tst.dir/stack.cpp.o: ../tests/stack.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/nfs/homes/wlo/ft_containers/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object tests/CMakeFiles/ft_containers_tst.dir/stack.cpp.o"
+	cd /mnt/nfs/homes/wlo/ft_containers/build/tests && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ft_containers_tst.dir/stack.cpp.o -c /mnt/nfs/homes/wlo/ft_containers/tests/stack.cpp
+
+tests/CMakeFiles/ft_containers_tst.dir/stack.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ft_containers_tst.dir/stack.cpp.i"
+	cd /mnt/nfs/homes/wlo/ft_containers/build/tests && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/nfs/homes/wlo/ft_containers/tests/stack.cpp > CMakeFiles/ft_containers_tst.dir/stack.cpp.i
+
+tests/CMakeFiles/ft_containers_tst.dir/stack.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ft_containers_tst.dir/stack.cpp.s"
+	cd /mnt/nfs/homes/wlo/ft_containers/build/tests && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/nfs/homes/wlo/ft_containers/tests/stack.cpp -o CMakeFiles/ft_containers_tst.dir/stack.cpp.s
+
+tests/CMakeFiles/ft_containers_tst.dir/stack/constructor.cpp.o: tests/CMakeFiles/ft_containers_tst.dir/flags.make
+tests/CMakeFiles/ft_containers_tst.dir/stack/constructor.cpp.o: ../tests/stack/constructor.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/nfs/homes/wlo/ft_containers/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object tests/CMakeFiles/ft_containers_tst.dir/stack/constructor.cpp.o"
+	cd /mnt/nfs/homes/wlo/ft_containers/build/tests && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ft_containers_tst.dir/stack/constructor.cpp.o -c /mnt/nfs/homes/wlo/ft_containers/tests/stack/constructor.cpp
+
+tests/CMakeFiles/ft_containers_tst.dir/stack/constructor.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ft_containers_tst.dir/stack/constructor.cpp.i"
+	cd /mnt/nfs/homes/wlo/ft_containers/build/tests && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/nfs/homes/wlo/ft_containers/tests/stack/constructor.cpp > CMakeFiles/ft_containers_tst.dir/stack/constructor.cpp.i
+
+tests/CMakeFiles/ft_containers_tst.dir/stack/constructor.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ft_containers_tst.dir/stack/constructor.cpp.s"
+	cd /mnt/nfs/homes/wlo/ft_containers/build/tests && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/nfs/homes/wlo/ft_containers/tests/stack/constructor.cpp -o CMakeFiles/ft_containers_tst.dir/stack/constructor.cpp.s
+
 tests/CMakeFiles/ft_containers_tst.dir/utils.cpp.o: tests/CMakeFiles/ft_containers_tst.dir/flags.make
 tests/CMakeFiles/ft_containers_tst.dir/utils.cpp.o: ../tests/utils.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/nfs/homes/wlo/ft_containers/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object tests/CMakeFiles/ft_containers_tst.dir/utils.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/nfs/homes/wlo/ft_containers/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object tests/CMakeFiles/ft_containers_tst.dir/utils.cpp.o"
 	cd /mnt/nfs/homes/wlo/ft_containers/build/tests && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ft_containers_tst.dir/utils.cpp.o -c /mnt/nfs/homes/wlo/ft_containers/tests/utils.cpp
 
 tests/CMakeFiles/ft_containers_tst.dir/utils.cpp.i: cmake_force
@@ -114,6 +140,8 @@ ft_containers_tst_OBJECTS = \
 "CMakeFiles/ft_containers_tst.dir/Vector/vector.cpp.o" \
 "CMakeFiles/ft_containers_tst.dir/main.cpp.o" \
 "CMakeFiles/ft_containers_tst.dir/pair.cpp.o" \
+"CMakeFiles/ft_containers_tst.dir/stack.cpp.o" \
+"CMakeFiles/ft_containers_tst.dir/stack/constructor.cpp.o" \
 "CMakeFiles/ft_containers_tst.dir/utils.cpp.o"
 
 # External object files for target ft_containers_tst
@@ -122,11 +150,13 @@ ft_containers_tst_EXTERNAL_OBJECTS =
 tests/ft_containers_tst: tests/CMakeFiles/ft_containers_tst.dir/Vector/vector.cpp.o
 tests/ft_containers_tst: tests/CMakeFiles/ft_containers_tst.dir/main.cpp.o
 tests/ft_containers_tst: tests/CMakeFiles/ft_containers_tst.dir/pair.cpp.o
+tests/ft_containers_tst: tests/CMakeFiles/ft_containers_tst.dir/stack.cpp.o
+tests/ft_containers_tst: tests/CMakeFiles/ft_containers_tst.dir/stack/constructor.cpp.o
 tests/ft_containers_tst: tests/CMakeFiles/ft_containers_tst.dir/utils.cpp.o
 tests/ft_containers_tst: tests/CMakeFiles/ft_containers_tst.dir/build.make
 tests/ft_containers_tst: lib/libgtest.a
 tests/ft_containers_tst: tests/CMakeFiles/ft_containers_tst.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/mnt/nfs/homes/wlo/ft_containers/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable ft_containers_tst"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/mnt/nfs/homes/wlo/ft_containers/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable ft_containers_tst"
 	cd /mnt/nfs/homes/wlo/ft_containers/build/tests && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ft_containers_tst.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

@@ -252,6 +252,60 @@ pair.cpp.s:
 	cd /mnt/nfs/homes/wlo/ft_containers/build && $(MAKE) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/pair.cpp.s
 .PHONY : pair.cpp.s
 
+stack.o: stack.cpp.o
+
+.PHONY : stack.o
+
+# target to build an object file
+stack.cpp.o:
+	cd /mnt/nfs/homes/wlo/ft_containers/build && $(MAKE) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/stack.cpp.o
+.PHONY : stack.cpp.o
+
+stack.i: stack.cpp.i
+
+.PHONY : stack.i
+
+# target to preprocess a source file
+stack.cpp.i:
+	cd /mnt/nfs/homes/wlo/ft_containers/build && $(MAKE) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/stack.cpp.i
+.PHONY : stack.cpp.i
+
+stack.s: stack.cpp.s
+
+.PHONY : stack.s
+
+# target to generate assembly for a file
+stack.cpp.s:
+	cd /mnt/nfs/homes/wlo/ft_containers/build && $(MAKE) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/stack.cpp.s
+.PHONY : stack.cpp.s
+
+stack/constructor.o: stack/constructor.cpp.o
+
+.PHONY : stack/constructor.o
+
+# target to build an object file
+stack/constructor.cpp.o:
+	cd /mnt/nfs/homes/wlo/ft_containers/build && $(MAKE) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/stack/constructor.cpp.o
+.PHONY : stack/constructor.cpp.o
+
+stack/constructor.i: stack/constructor.cpp.i
+
+.PHONY : stack/constructor.i
+
+# target to preprocess a source file
+stack/constructor.cpp.i:
+	cd /mnt/nfs/homes/wlo/ft_containers/build && $(MAKE) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/stack/constructor.cpp.i
+.PHONY : stack/constructor.cpp.i
+
+stack/constructor.s: stack/constructor.cpp.s
+
+.PHONY : stack/constructor.s
+
+# target to generate assembly for a file
+stack/constructor.cpp.s:
+	cd /mnt/nfs/homes/wlo/ft_containers/build && $(MAKE) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/stack/constructor.cpp.s
+.PHONY : stack/constructor.cpp.s
+
 utils.o: utils.cpp.o
 
 .PHONY : utils.o
@@ -301,6 +355,12 @@ help:
 	@echo "... pair.o"
 	@echo "... pair.i"
 	@echo "... pair.s"
+	@echo "... stack.o"
+	@echo "... stack.i"
+	@echo "... stack.s"
+	@echo "... stack/constructor.o"
+	@echo "... stack/constructor.i"
+	@echo "... stack/constructor.s"
 	@echo "... utils.o"
 	@echo "... utils.i"
 	@echo "... utils.s"
