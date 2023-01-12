@@ -1,6 +1,6 @@
+NAME		= containers
 SRC			= test.cpp 
 OBJ			= $(SRC:.cpp=.o)
-NAME		= containers
 BUILD		= build
 FLAGS		= -Wall -Wextra -Werror -std=c++98 
 CC			= c++
@@ -33,4 +33,4 @@ test:	clean
 re:    fclean 
 	   make all
 
-.PHONY:     all clean fclean re
+.PHONY:     all clean fclean re test

@@ -2,6 +2,7 @@
 #define UTILS_HPP
 namespace ft {
     
+    //is_integral
     template <class T, T v> 
     struct integral_constant{
         static const T value = v;
@@ -32,7 +33,8 @@ namespace ft {
     template<bool Cond, class T = void> 
     struct enable_if {};
     template<class T> 
-    struct enable_if<true, T> { typedef T type; };
+    struct enable_if<true, T> {
+        typedef T type;};
 
     //equal
     template< class InputIt1, class InputIt2 >
