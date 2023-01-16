@@ -1,4 +1,4 @@
-NAME		= containers
+NAME		= test
 SRC			= test.cpp 
 OBJ			= $(SRC:.cpp=.o)
 BUILD		= build
@@ -29,6 +29,8 @@ test:	clean
 		$(MKDIR) $(BUILD) && $(CD) $(BUILD) && \
 		cmake .. -DCMAKE_BUILD_TYPE=Debug -G "Unix Makefiles"
 		make all -C build
+		cd $(BUILD)/tests
+		./ft_containers_tst
 
 re:    fclean 
 	   make all
