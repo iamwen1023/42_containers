@@ -2,12 +2,14 @@
 //#include <utility>      // std::pair, std::make_pair
 #include <iostream>     // std::cout
 #include <string>       // std::string
-#include "utils.hpp"
-#include "pair.hpp"
+#include "containers/utils/utils.hpp"
+#include "containers/utils/pair.hpp"
 
 #include <algorithm>
 #include <iostream>
 #include <vector>
+#include <uchar.h>
+#include <stdio.h>
 //#include <bits/stdc++.h> 
 
 int main(){
@@ -43,7 +45,7 @@ int main(){
         if ( ft::equal (vector_1.begin(), vector_1.end(), v1) )
             std::cout << "The contents of both sequences are equal.\n";
         else
-            printf("The contents of both sequences differ.\n");
+            std::cout << "The contents of both sequences differ.\n";
 
     }
     //lexicographical_compare
