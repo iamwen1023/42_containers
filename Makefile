@@ -1,5 +1,5 @@
-NAME		= test
-SRC			= test.cpp 
+NAME		= testhaha
+SRC			= test.cpp
 OBJ			= $(SRC:.cpp=.o)
 BUILD		= build
 FLAGS		= -Wall -Wextra -Werror -std=c++98 
