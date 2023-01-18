@@ -29,8 +29,8 @@ test:	clean
 		$(MKDIR) $(BUILD) && $(CD) $(BUILD) && \
 		cmake .. -DCMAKE_BUILD_TYPE=Debug -G "Unix Makefiles"
 		make all -C build
-		cd $(BUILD)/tests
-		./ft_containers_tst
+		cd ./$(BUILD)/tests/
+		bash ./ft_containers_tst
 
 re:    fclean 
 	   make all

@@ -8,7 +8,7 @@ namespace ft {
         public:
             typedef T value_type;
             typedef Container container_type;
-            typedef size_t size_type;
+            typedef std::size_t size_type;
 
             //memeber functions
             explicit stack( const Container& cont = Container() ): _container(cont){};
