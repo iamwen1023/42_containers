@@ -20,7 +20,9 @@ namespace ft {
             //所有container都有這些func?
             void push (const value_type& value){ this->_container.push_back(value);};
             void pop(){ this->_container.pop_back();};
-
+            //Note: We can declare friend class or function anywhere 
+            //in the base class body whether its private,
+            // protected or public block. It works all the same.
             friend bool operator==( const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs ){
                 return (lhs._container  == rhs._container);
             };
