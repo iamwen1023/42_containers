@@ -53,24 +53,19 @@ namespace ft {
                 //without calling their copy constructors
             }
             ~vector(){
-                for (size_t i = 0; i < m_size; i++) {
-                        m_alloc.destroy(m_data + i);
-                }
-                m_alloc.deallocate(m_data, m_capacity);
+                clear();
             }
             vector& operator= (const vector& x){
                 if (this != &x){
-                    if(x.m_size > m_capacity){
-                        T *new_data = m_alloc.allocate(x.m_size);
-                        for(size_t i = 0; i < m_size; i++){
-                            m_alloc.destroy(m_data + 1);
-                        }
-                        m_alloc.deallocate(m_data, m_capacity);
-                        m_data = new_data;
-                        m_capacity = x.m_size;
-                    }
-                    m_size = x.m_size;
-                    std::uninitialized_copy(x.m_data, x.m_data + x.m_size, m_data);)
+                    this->assign(x.begin(),x.end());
+                    // if(x.m_size > m_capacity){
+                    //     T *new_data = m_alloc.allocate(x.m_size);
+                    //     clear();
+                    //     m_data = new_data;
+                    //     m_capacity = x.m_size;
+                    // }
+                    // m_size = x.m_size;
+                    // std::uninitialized_copy(x.m_data, x.m_data + x.m_size, m_data);
                 }
                 return *this;
             }
@@ -86,20 +81,44 @@ namespace ft {
             //Capacity:
             size_type size() const{return m_size;}
             size_type max_size() const{return m_alloc.max_size();}
-
             void resize (size_type n, value_type val = value_type()){
-                if (n < m)
+                if (n < m_size){
+                    for (size_t i = n, i < m_size; i++)
+                        m_alloc.destroy(m_data + i);
+                    m_size = n;
+                }else if (n > m_size){
+                    if (n > m_capacity)
+                        reserve(n);
+                    for (size_t i = m_size; i < n ; ++i){
+                        m_alloc.construct(m_data + i, val);
+                    }
+                    m_size = n;
+                }
             }
             size_type capacity() const{ return m_capacity;}
             bool empty() const{ return (m_size == 0);}
-
             void reserve (size_type n){
                 if (n <= m_capacity)
                     return ;
-                
+                T* new_data = m_alloc.allocate(n);
+                for(size_t i = 0; i < m_size; ++i){
+                    m_alloc.construct(new_data +i, m_data[i]);
+                }
+                clear();
+                m_data = new_data;
+                m_capacity = n;
             }
-            void shrink_to_fit(){}
-
+            void shrink_to_fit(){
+                if (m_size < m_capacity){
+                    T* new_data = m_alloc.allocate(n);
+                    for(size_t i = 0; i < m_size; ++i){
+                        m_alloc.construct(new_data +i, m_data[i]);
+                    }
+                    clear();
+                    m_data = new_data;
+                    m_capacity = m_size;
+                }
+            }
             //Element access:
             reference operator[] (size_type n){return m_data[n];}
             const_reference operator[] (size_type n) const{return m_data[n];}
@@ -113,9 +132,76 @@ namespace ft {
                     throw std::out_of_range("vector::at");
                 return m_data[n];
             }
-            eference front();
-            const_reference front() const;
+            reference front(){ return m_data[0];}
+            const_reference front() const{return m_data[0];}
+            reference back(){return m_data[m_size -1];}
+            const_reference back() const{return m_data[m_size -1];}
+            T* data(){ return m_data;}
+            const T* data() const{return m_data;}
 
+            //Modifiers:
+            template <class InputIterator>  
+            void assign (InputIterator first, InputIterator last){
+                size_type new_size = last - frist;
+                if (new_data > m_capacity){
+                    T* new_data = m_alloc.allocate(new_data);
+                    clear();
+                    m_data = new_data;
+                    m_capacity = new_size;
+                }
+                m_size = new_size;
+                std::uninitialized_copy(first, last, m_data);
+            }
+            void assign (size_type n, const value_type& val){
+                if (n > m_capacity){
+                    T* new_data = m_alloc.allocate(n);
+                    clear();
+                    m_data = new_data;
+                    m_capacity = new_size;
+                }
+                m_size = n;
+                std::uninitialized_copy(m_data, m_data + m_size, val);
+            }
+            void push_back (const value_type& val){
+
+            }
+            void pop_back();
+            iterator insert (iterator position, const value_type& val);	
+            void insert (iterator position, size_type n, const value_type& val);
+            template <class InputIterator>    
+            void insert (iterator position, InputIterator first, InputIterator last);
+            iterator erase (iterator position){
+                if(position >= m_data + m_size)
+                    throw std::out_of_range("vector::erase");
+                for(iterator it = position; it != m_data + m_size -1; ++it){
+                    *(it) = *(it + 1);
+                }
+                m_alloc.destroy(m_data + m_size -1);
+                --m_size;
+                return position;
+            }
+            iterator erase (iterator first, iterator last){
+                if(first >= m_data + m_size || last > m_data + m_size)
+                    throw std::out_of_range("vector::erase");
+                size_t diff = last - first;
+                iterator it = first;
+                for(; it != m_data + m_size - diff; ++it){
+                    *(it) = *(it + diff);
+                }
+                for(size_t i = 0; i < diff; ++i){
+                    m_alloc.destroy(it);
+                    ++it;
+                }
+                m_size -= diff;
+                return first;
+            }
+            void swap (vector& x){}
+            void clear(){
+                for (size_t i = 0; i < m_size; i++) {
+                    m_alloc.destroy(m_data + i);
+                }
+                m_alloc.deallocate(m_data, m_capacity);
+            }
 
             private:
                 value_type* m_data;
