@@ -83,7 +83,7 @@ namespace ft {
             size_type max_size() const{return m_alloc.max_size();}
             void resize (size_type n, value_type val = value_type()){
                 if (n < m_size){
-                    for (size_t i = n, i < m_size; i++)
+                    for (size_t i = n; i < m_size; i++)
                         m_alloc.destroy(m_data + i);
                     m_size = n;
                 }else if (n > m_size){
@@ -143,7 +143,7 @@ namespace ft {
             template <class InputIterator>  
             void assign (InputIterator first, InputIterator last){
                 size_type new_size = last - frist;
-                if (new_data > m_capacity){
+                if (new_size > m_capacity){
                     T* new_data = m_alloc.allocate(new_data);
                     clear();
                     m_data = new_data;
@@ -163,10 +163,33 @@ namespace ft {
                 std::uninitialized_copy(m_data, m_data + m_size, val);
             }
             void push_back (const value_type& val){
+                // if (m_size == m_capacity){
+                //     T* new_data = m_alloc.allocate(m_data + 1);
+                //     for(size_t i = 0; i < m_size; ++i){
+                //         m_alloc.construct(new_data +i, m_data[i]);
+                //     }
+                //     clear();
+                //     m_data = new_data;
+                //     m_capacity = new_size + 1;
+                // }
+                // m_alloc.construct(m_data + m_size, val);
+                // m_size = new_size + 1;
+                if (m_size == m_capacity) {
+                    reserve(m_capacity == 0 ? 1 : 2 * m_capacity); //geometric growth
+                }
+                m_alloc.construct(m_data + m_size, val);
+                ++m_size;
+            }
+            void pop_back(){
+                if (m_size > 0){
+                    m_alloc.destroy(m_data + m_size -1);
+                    --m_size;
+                }
+            }
+            iterator insert (iterator position, const value_type& val){
+
 
             }
-            void pop_back();
-            iterator insert (iterator position, const value_type& val);	
             void insert (iterator position, size_type n, const value_type& val);
             template <class InputIterator>    
             void insert (iterator position, InputIterator first, InputIterator last);
@@ -212,6 +235,7 @@ namespace ft {
                 //the amount of memory allocated for the vector.
                 allocator_type m_alloc;
                 //an instance of an allocator class that is used to manage the memory of the vector
+                void reallocate(){}
 
 
     };
