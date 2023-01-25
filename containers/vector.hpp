@@ -4,6 +4,11 @@
 #include <cstddef>
 #include <cassert> //assert
 #include <stdexcept> //out of range
+#include <algorithm> //swap
+//check operator= /assign /push_back /
+//insert (when the iterator passed as the first argument is not the end() iterator)
+//resize (when the new size is greater than the current size)
+//for trivially copy
 namespace ft {
     template < class T, class Alloc = std::allocator<T>> 
     class vector{
@@ -39,10 +44,14 @@ namespace ft {
                 m_size = std::distance(first, last);
                 m_capacity = m_size;
                 m_data = m_alloc.allocate(m_capacity);
-                for (auto it = first; it != last; ++it, ++m_data) {
+                for (InputIterator it = first; it != last; ++it, ++m_data) {
                         m_alloc.construct(m_data, *it);
                 }
             }
+            //The newly-created %vector uses a copy of the allocation
+            //object used by @a x.  All the elements of @a x are copied,
+            //but any extra memory in
+            //@a x (for fast expansion) will not be copied.
             vector (const vector& other){
                 m_size = other.m_size;
                 m_capacity = other.m_capacity;
@@ -136,8 +145,8 @@ namespace ft {
             const_reference front() const{return m_data[0];}
             reference back(){return m_data[m_size -1];}
             const_reference back() const{return m_data[m_size -1];}
-            T* data(){ return m_data;}
-            const T* data() const{return m_data;}
+            T* data(){ std::addressof(front());}
+            const T* data() const{std::addressof(front());}
 
             //Modifiers:
             template <class InputIterator>  
@@ -187,10 +196,27 @@ namespace ft {
                 }
             }
             iterator insert (iterator position, const value_type& val){
-
-
+                if (m_size == m_capacity){
+                    size_t new_cap = m_capacity == 0 ? 1: 2*m_capacity;
+                    T* new_data = m_alloc.allocate(new_cap);
+                    std::uninitialized_copy(m_data, m_data + m_size , new_data);
+                    clear();
+                    m_data = new_data;
+                    m_capacity = new_cap;
+                }
+                for (iterator it= end() -1; it > position, --it){
+                    *(it + 1) = *(it);
+                }
+                *position = val;
+                m_size++;
+                return position;
             }
-            void insert (iterator position, size_type n, const value_type& val);
+            void insert (iterator position, size_type n, const value_type& val){
+                if (n == 0)
+                    return;
+                
+                return position;
+            }
             template <class InputIterator>    
             void insert (iterator position, InputIterator first, InputIterator last);
             iterator erase (iterator position){
@@ -218,13 +244,19 @@ namespace ft {
                 m_size -= diff;
                 return first;
             }
-            void swap (vector& x){}
+            void swap (vector& x){
+                std::swap(m_data, x.m_data);
+                std::swap(m_size, x.m_size);
+                std::swap(m_capacity, x.m_capacity);
+                std::swap(m_alloc, x.m_alloc);
+            }
             void clear(){
                 for (size_t i = 0; i < m_size; i++) {
                     m_alloc.destroy(m_data + i);
                 }
                 m_alloc.deallocate(m_data, m_capacity);
             }
+            allocator_type get_allocator() const{}
 
             private:
                 value_type* m_data;
@@ -235,6 +267,11 @@ namespace ft {
                 //the amount of memory allocated for the vector.
                 allocator_type m_alloc;
                 //an instance of an allocator class that is used to manage the memory of the vector
+                void fill_assign(size_t n, const value_type& val){
+                    if(n > m_capacity){
+
+                    }
+                }
                 void reallocate(){}
 
 
