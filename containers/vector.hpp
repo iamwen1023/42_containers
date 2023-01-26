@@ -30,10 +30,9 @@ namespace ft {
             typedef size_t size_type;
 
             //	Construct , deConstruct , operator=
-            explicit vector (const allocator_type& alloc = allocator_type()):
-                m_alloc(alloc), m_data(m_alloc.allocate(0)), m_size(0), m_capacity(0){
-            }
-            explicit vector (size_type n, const value_type& val = value_type(), 
+            explicit vector(const allocator_type& alloc = allocator_type()):
+                m_alloc(alloc), m_data(0), m_size(0), m_capacity(0){}
+            explicit vector(size_type n, const value_type& val = value_type(), 
                     const allocator_type& alloc = allocator_type()): m_size(n), m_capacity(m_size), m_alloc(alloc){
                 m_data = m_alloc.allocate(m_capacity);
                 for(size_t i =0; i < m_size; ++i){
@@ -41,7 +40,7 @@ namespace ft {
                 }
             }	
             template <class InputIterator>
-            vector (InputIterator first, InputIterator last,
+            vector(InputIterator first, InputIterator last,
                     const allocator_type& alloc = allocator_type()):m_size(std::distance(first, last)), m_capacity(m_size), m_alloc(alloc){
                 m_data = m_alloc.allocate(m_capacity);
                 for (InputIterator it = first; it != last; ++it, ++m_data) {
@@ -52,7 +51,7 @@ namespace ft {
             //object used by @a x.  All the elements of @a x are copied,
             //but any extra memory in
             //@a x (for fast expansion) will not be copied.
-            vector (const vector& other){
+            vector(const vector& other){
                 m_alloc = other.m_alloc;
                 m_size = other.m_size;
                 m_capacity = other.m_capacity;
@@ -65,7 +64,7 @@ namespace ft {
             ~vector(){
                 clear();
             }
-            vector& operator= (const vector& x){
+            vector& operator=(const vector& x){
                 if (this != &x){
                     this->assign(x.begin(),x.end());
                     // if(x.m_size > m_capacity){
@@ -152,9 +151,9 @@ namespace ft {
             //Modifiers:
             template <class InputIterator>  
             void assign (InputIterator first, InputIterator last){
-                size_type new_size = last - first;
+                size_type new_size = std::distance(first, last);
                 if (new_size > m_capacity){
-                    T* new_data = m_alloc.allocate(new_data);
+                    T* new_data = m_alloc.allocate(new_size);
                     clear();
                     m_data = new_data;
                     m_capacity = new_size;
