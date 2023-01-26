@@ -4,7 +4,8 @@
 # include <deque>
 # include <list>
 # include <utility>
-# include <stack> 
+# include <stack>
+#include "../../containers/stack.hpp"
 
 // Macros
 //# define STACK typename TestFixture::Types

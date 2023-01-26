@@ -1,5 +1,8 @@
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
+#include "./reverse_iterator.hpp"
+#include "./iterator_traits.hpp"
+#include "./utils/utils.hpp"
 #include <memory>
 #include <cstddef>
 #include <cassert> //assert
@@ -28,21 +31,18 @@ namespace ft {
 
             //	Construct , deConstruct , operator=
             explicit vector (const allocator_type& alloc = allocator_type()):
-                m_data(m_alloc.allocate(0)), m_size(0), m_capacity(0){
+                m_alloc(alloc), m_data(m_alloc.allocate(0)), m_size(0), m_capacity(0){
             }
             explicit vector (size_type n, const value_type& val = value_type(), 
-                    const allocator_type& alloc = allocator_type()): m_size(n){
-                m_capacity = m_size;
+                    const allocator_type& alloc = allocator_type()): m_size(n), m_capacity(m_size), m_alloc(alloc){
                 m_data = m_alloc.allocate(m_capacity);
                 for(size_t i =0; i < m_size; ++i){
-                        m_alloc.construct(m_data + i, value);
+                        m_alloc.construct(m_data + i, val);
                 }
             }	
             template <class InputIterator>
             vector (InputIterator first, InputIterator last,
-                    const allocator_type& alloc = allocator_type()){
-                m_size = std::distance(first, last);
-                m_capacity = m_size;
+                    const allocator_type& alloc = allocator_type()):m_size(std::distance(first, last)), m_capacity(m_size), m_alloc(alloc){
                 m_data = m_alloc.allocate(m_capacity);
                 for (InputIterator it = first; it != last; ++it, ++m_data) {
                         m_alloc.construct(m_data, *it);
@@ -53,6 +53,7 @@ namespace ft {
             //but any extra memory in
             //@a x (for fast expansion) will not be copied.
             vector (const vector& other){
+                m_alloc = other.m_alloc;
                 m_size = other.m_size;
                 m_capacity = other.m_capacity;
                 m_data = m_alloc.allocate(m_capacity);
@@ -83,10 +84,10 @@ namespace ft {
             const_iterator begin() const{ return const_iterator(m_data);}
             iterator end(){return iterator(m_data +  m_size);}
             const_iterator end() const{return const_iterator(m_data +  m_size);}
-            reverse_iterator rbegin(){return reverse_iterator(this.end());}
-            const_reverse_iterator rbegin() const{ return const_reverse_iterator(this.end());}
-            reverse_iterator rend(){return reverse_iterator(this.begin());}
-            const_reverse_iterator rend() const{return const_reverse_iterator(this.begin());}
+            reverse_iterator rbegin(){return reverse_iterator(end());}
+            const_reverse_iterator rbegin() const{ return const_reverse_iterator(end());}
+            reverse_iterator rend(){return reverse_iterator(begin());}
+            const_reverse_iterator rend() const{return const_reverse_iterator(begin());}
             //Capacity:
             size_type size() const{return m_size;}
             size_type max_size() const{return m_alloc.max_size();}
@@ -119,7 +120,7 @@ namespace ft {
             }
             void shrink_to_fit(){
                 if (m_size < m_capacity){
-                    T* new_data = m_alloc.allocate(n);
+                    T* new_data = m_alloc.allocate(m_size);
                     for(size_t i = 0; i < m_size; ++i){
                         m_alloc.construct(new_data +i, m_data[i]);
                     }
@@ -151,7 +152,7 @@ namespace ft {
             //Modifiers:
             template <class InputIterator>  
             void assign (InputIterator first, InputIterator last){
-                size_type new_size = last - frist;
+                size_type new_size = last - first;
                 if (new_size > m_capacity){
                     T* new_data = m_alloc.allocate(new_data);
                     clear();
@@ -166,7 +167,7 @@ namespace ft {
                     T* new_data = m_alloc.allocate(n);
                     clear();
                     m_data = new_data;
-                    m_capacity = new_size;
+                    m_capacity = n;
                 }
                 m_size = n;
                 std::uninitialized_copy(m_data, m_data + m_size, val);
@@ -204,7 +205,7 @@ namespace ft {
                     m_data = new_data;
                     m_capacity = new_cap;
                 }
-                for (iterator it= end() -1; it > position, --it){
+                for (iterator it= end() -1; it > position; --it){
                     *(it + 1) = *(it);
                 }
                 *position = val;
@@ -273,8 +274,24 @@ namespace ft {
                     }
                 }
                 void reallocate(){}
-
-
+            friend bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+                return (lhs.size() == rhs.size() && std::equal(lhs.begin(), lhs.end(), rhs.begin()));
+            }
+            friend bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+                return (!(lhs == rhs));
+            }
+            friend bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+                return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+            }
+            friend bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+                return (rhs < lhs);
+            }
+            friend bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+                return (!(lhs > rhs));
+            }
+            friend bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+                return (!(rhs > lhs));
+            }
     };
 }
 

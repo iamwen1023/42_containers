@@ -1,5 +1,6 @@
 #ifndef REVERSE_ITERATOR_HPP
 #define REVERSE_ITERATOR_HPP
+#include "./iterator_traits.hpp"
 #include <memory>
 #include <iostream>
 namespace ft {
@@ -97,7 +98,6 @@ namespace ft {
         template< class Iterator1, class Iterator2 >
         friend bool operator>=( const reverse_iterator<Iterator1>& lhs,
                  const reverse_iterator<Iterator2>& rhs ){lhs.base() <= rhs.base();}
-        template< class Iter >
         friend reverse_iterator<Iter> operator+( typename reverse_iterator<Iter>::difference_type n,
                const reverse_iterator<Iter>& it ){
             return reverse_iterator<Iter>(it.base() - n);
