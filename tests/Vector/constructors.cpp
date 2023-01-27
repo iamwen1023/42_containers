@@ -42,28 +42,28 @@ TYPED_TEST(VectorSimpleConstruct, CopyConstruct){
 	EXPECT_EQ(v2[3], 2);
 }
 
-// TYPED_TEST(VectorSimpleConstruct, RangeConstruct){
-// 	VECTOR	v1(5);
+TYPED_TEST(VectorSimpleConstruct, RangeConstruct){
+	VECTOR	v1(5);
 
-// 	v1.push_back(2);
-// 	v1.push_back(34);
-// 	v1.push_back(28);
-// 	v1.push_back(75);
+	v1.push_back(2);
+	v1.push_back(34);
+	v1.push_back(28);
+	v1.push_back(75);
 	
-// 	VECTOR	v2(v1.begin() + 4, v1.end());
+	VECTOR	v2(v1.begin() + 4, v1.end());
 
-// 	EXPECT_EQ(v2.size(), 5);
-// 	EXPECT_EQ(v2.capacity(), 5);
-// 	EXPECT_EQ(v2[0], 0);
-// 	EXPECT_EQ(v2[4], 75);
+	EXPECT_EQ(v2.size(), 5);
+	EXPECT_EQ(v2.capacity(), 5);
+	EXPECT_EQ(v2[0], 0);
+	EXPECT_EQ(v2[4], 75);
 
-// 	VECTOR	v3(v2.begin(), v2.begin() + 3);
+	VECTOR	v3(v2.begin(), v2.begin() + 3);
 
-// 	EXPECT_EQ(v3.size(), 3);
-// 	EXPECT_EQ(v3.capacity(), 3);
-// 	EXPECT_EQ(v3[0], 0);
-// 	EXPECT_EQ(v3[2], 34);
-// }
+	EXPECT_EQ(v3.size(), 3);
+	EXPECT_EQ(v3.capacity(), 3);
+	EXPECT_EQ(v3[0], 0);
+	EXPECT_EQ(v3[2], 34);
+}
 
 // TYPED_TEST(VectorSimpleConstruct, Assign){
 // 	VECTOR	v1;

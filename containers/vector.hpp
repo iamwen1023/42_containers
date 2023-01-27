@@ -107,6 +107,8 @@ namespace ft {
             size_type capacity() const{ return m_capacity;}
             bool empty() const{ return (m_size == 0);}
             void reserve (size_type n){
+                if (n > max_size())
+                    throw std::out_of_range("vector::reserve");
                 if (n <= m_capacity)
                     return ;
                 T* new_data = m_alloc.allocate(n);
@@ -214,6 +216,15 @@ namespace ft {
             void insert (iterator position, size_type n, const value_type& val){
                 if (n == 0)
                     return;
+                size_t new_size = m_size + n;
+                if (new_size > m_capacity){
+                    size_t new_cap = m_capacity;
+                    while(new_cap < new_size)
+                        new_cap *= 2;
+                    reserve(new_cap);
+                }
+
+
                 
                 return position;
             }
@@ -267,11 +278,14 @@ namespace ft {
                 //the amount of memory allocated for the vector.
                 allocator_type m_alloc;
                 //an instance of an allocator class that is used to manage the memory of the vector
-                void fill_assign(size_t n, const value_type& val){
-                    if(n > m_capacity){
-
-                    }
-                }
+                // template<typename InputIterator>
+                // void assign_aux(InputIterator first, InputIterator last, std::input_iterator_tag){
+                //     pointer cur(this->begin());
+                //     for (; first != last && cur != this.end(); ++cur, ++first){
+                //         *cur = *first;
+                //     if(first == last){
+                //     }
+                // }
                 void reallocate(){}
             friend bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
                 return (lhs.size() == rhs.size() && std::equal(lhs.begin(), lhs.end(), rhs.begin()));
