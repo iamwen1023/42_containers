@@ -44,7 +44,7 @@ namespace ft {
             vector(InputIterator first, InputIterator last,
                     const allocator_type& alloc = allocator_type()):m_size(std::distance(first, last)), m_capacity(m_size), m_alloc(alloc){
                 m_data = m_alloc.allocate(m_capacity);
-                for (InputIterator it = first; it != last; ++it, ++m_data) {
+                for (InputIterator it = first; it != last; ++it, ++m_data){
                         m_alloc.construct(m_data, *it);
                 }
             }
@@ -288,74 +288,7 @@ namespace ft {
                 void M_range_insert(iterator position, ForwardIterator first, ForwardIterator last, std::forward_iterator_tag){
                     if (first != last){
                         const size_type n = std::distance(first, last);
-                        if (m_capacity - m_size >= n){
-                            const size_type elems_after = end() - position;
-                            pointer old_finish = end();
-                            if (elems_after > n){
-  622                           std::__uninitialized_move_a(this->_M_impl._M_finish - __n,
-  623                         this->_M_impl._M_finish,
-  624                         this->_M_impl._M_finish,
-  625                         _M_get_Tp_allocator());
-  626             this->_M_impl._M_finish += __n;
-  627             _GLIBCXX_MOVE_BACKWARD3(__position.base(),
-  628                         __old_finish - __n, __old_finish);
-  629             std::copy(__first, __last, __position);
-  630           }
-  631         else
-  632           {
-  633             _ForwardIterator __mid = __first;
-  634             std::advance(__mid, __elems_after);
-  635             std::__uninitialized_copy_a(__mid, __last,
-  636                         this->_M_impl._M_finish,
-  637                         _M_get_Tp_allocator());
-  638             this->_M_impl._M_finish += __n - __elems_after;
-  639             std::__uninitialized_move_a(__position.base(),
-  640                         __old_finish,
-  641                         this->_M_impl._M_finish,
-  642                         _M_get_Tp_allocator());
-  643             this->_M_impl._M_finish += __elems_after;
-  644             std::copy(__first, __mid, __position);
-  645           }
-  646           }
-  647         else
-  648           {
-  649         const size_type __len =
-  650           _M_check_len(__n, "vector::_M_range_insert");
-  651         pointer __new_start(this->_M_allocate(__len));
-  652         pointer __new_finish(__new_start);
-  653         __try
-  654           {
-  655             __new_finish
-  656               = std::__uninitialized_move_if_noexcept_a
-  657               (this->_M_impl._M_start, __position.base(),
-  658                __new_start, _M_get_Tp_allocator());
-  659             __new_finish
-  660               = std::__uninitialized_copy_a(__first, __last,
-  661                             __new_finish,
-  662                             _M_get_Tp_allocator());
-  663             __new_finish
-  664               = std::__uninitialized_move_if_noexcept_a
-  665               (__position.base(), this->_M_impl._M_finish,
-  666                __new_finish, _M_get_Tp_allocator());
-  667           }
-  668         __catch(...)
-  669           {
-  670             std::_Destroy(__new_start, __new_finish,
-  671                   _M_get_Tp_allocator());
-  672             _M_deallocate(__new_start, __len);
-  673             __throw_exception_again;
-  674           }
-  675         std::_Destroy(this->_M_impl._M_start, this->_M_impl._M_finish,
-  676                   _M_get_Tp_allocator());
-  677         _M_deallocate(this->_M_impl._M_start,
-  678                   this->_M_impl._M_end_of_storage
-  679                   - this->_M_impl._M_start);
-  680         this->_M_impl._M_start = __new_start;
-  681         this->_M_impl._M_finish = __new_finish;
-  682         this->_M_impl._M_end_of_storage = __new_start + __len;
-  683           }
-  684       }
-  685       }
+      
 
             friend bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
                 return (lhs.size() == rhs.size() && std::equal(lhs.begin(), lhs.end(), rhs.begin()));

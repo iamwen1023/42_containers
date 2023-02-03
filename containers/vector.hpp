@@ -53,14 +53,37 @@ namespace ft {
                 clear();
             }
             vector<T,Allocator>& operator=(const vector<T,Allocator>& x){
-                clear();
-                this(x);
-
+                if(&x == this)
+                    return;
+                if (x.size() > m_capacity){
+                    clear();
+                    //m_alloc = x.get_allocator();
+                    m_size = x.size();
+                    m_capacity = m_size;
+                    m_data = m_alloc.allocate(m_size);
+                    std::uninitialized_copy(x.begin(), x.end(), m_data);
+                }else if (x.size()) <= m_size{
+                    vector<T>::iterator i=std::copy(x.begin(), x.end(), m_data);
+                    for(; i != end(), ++i)
+                        m_alloc.destroy(i);
+                        m_size = x.size();
+                }else{
+                    std::copy(x.begin(), x.begin() + m_size, m_data);
+                    std::uninitialized_copy(x.begin() + m_size, x.end(), m_data + m_size);
+                    m_size = x.size();
+                }
+                return *this;
             }
             template <class InputIterator>
-            void assign(InputIterator first, InputIterator last);
-            void assign(size_type n, const T& u);
-            allocator_type get_allocator() const;
+            void assign(InputIterator first, InputIterator last){
+                erase(begin(), end());
+                insert(begin(), first, last);
+            }
+            void assign(size_type n, const T& u){
+                erase(begin(), end());
+                insert(begin(), n, t);
+            }
+            allocator_type get_allocator() const{ return m_alloc;}
             // iterators:
             iterator begin(){return iterator(m_data);}
             const_iterator begin() const{ return const_iterator(m_data);}
@@ -120,17 +143,53 @@ namespace ft {
             T* data(){ std::addressof(front());}
             const T* data() const{std::addressof(front());}
             // 23.2.4.3 modifiers:
-            void push_back(const T& x);
-            void pop_back();
-            iterator insert(iterator position, const T& x){
-                if (m_size < m_capacity){
-                    size_type diff = end() - position;
-                    std::copy_backward(position, diff , end()+1);
-
+            void push_back(const T& x){
+                if (m_size == m_capacity) {
+                    reserve(m_capacity == 0 ? 1 : 2 * m_capacity); //geometric growth
                 }
-
+                m_alloc.construct(m_data + m_size, val);
+                ++m_size;
             }
-            void insert(iterator position, size_type n, const T& x);
+            void pop_back(){
+                if (m_size > 0){
+                    m_alloc.destroy(m_data + m_size -1);
+                    --m_size;
+                }
+            }
+            iterator insert(iterator position, const T& x){
+                size_type i = position - begin();
+                if (m_size < m_capacity && position == end()){
+                    std::construct(end(), x);
+                    ++m_size;
+                } else {
+                    insert_middle(position,x);
+                }
+                return begin() + i;
+            }
+            void insert(iterator position, size_type n, const T& x){
+                if(n == 0)
+                    return;
+                if(m_size + n < m_capacity){
+                    size_t new_cap = m_capacity;
+                    while(new_cap < new_size)
+                        new_cap *= 2;
+                    T* new_data = alloc.allocate(new_cap);
+                    std::uninitialized_copy(begin(), position, new_data);
+                    std::uninitialized_fill_n(new_data + (position - begin()), n ,x);
+                    std::uninitialized_copy(position, end(), position - begin() + n);
+                    clear();
+                    m_capacity = new_cap;
+                    m_size = m_size + n;
+                    m_size = new_data;
+                } else {
+                    if(position != end()){
+
+                    }else{
+                        
+                    }
+                }
+                
+            }
             template <class InputIterator>
             void insert(iterator position,
             InputIterator first, InputIterator last);
@@ -149,29 +208,44 @@ namespace ft {
             size_type m_capacity;
             allocator_type m_alloc;
             template <class T>
-            void vector<T>::insert_aux(iterator position, const T& x){
-
+            void vector<T>::insert_middle(iterator position, const T& x){
+                if (m_size < m_capacity){
+                    alloc.construct(end(), *(end() - 1));
+                    std::copy_backward(position , end() -1, end());
+                    *position = x;
+                    ++m_size;
+                } else{
+                    m_capacity =  m_size *2 ;
+                    T* new_data = m_alloc.allocate(m_capacity);
+                    std::uninitialized_copy(begin(), position, new_data);
+                    m_alloc.construct(new_data + (position - begin()), x);
+                    std::uninitialized_copy(position, end(), new_data + (position - begin()));
+                    clear();
+                    m_data = new_data;
+                    ++m_size;
+                }
             } 
 
+            friend bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+                return (lhs.size() == rhs.size() && std::equal(lhs.begin(), lhs.end(), rhs.begin()));
+            }
+            friend bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+                return (!(lhs == rhs));
+            }
+            friend bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+                return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+            }
+            friend bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+                return (rhs < lhs);
+            }
+            friend bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+                return (!(lhs > rhs));
+            }
+            friend bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+                return (!(rhs > lhs));
+            }
+
     };
-            template <class T, class Allocator>
-            bool operator==(const vector<T,Allocator>& x,
-            const vector<T,Allocator>& y);
-            template <class T, class Allocator>
-            bool operator< (const vector<T,Allocator>& x,
-            const vector<T,Allocator>& y);
-            template <class T, class Allocator>
-            bool operator!=(const vector<T,Allocator>& x,
-            const vector<T,Allocator>& y);
-            template <class T, class Allocator>
-            bool operator> (const vector<T,Allocator>& x,
-            const vector<T,Allocator>& y);
-            template <class T, class Allocator>
-            bool operator>=(const vector<T,Allocator>& x,
-            const vector<T,Allocator>& y);
-            template <class T, class Allocator>
-            bool operator<=(const vector<T,Allocator>& x,
-            const vector<T,Allocator>& y);
             // specialized algorithms:
             template <class T, class Allocator>
             void swap(vector<T,Allocator>& x, vector<T,Allocator>& y);
