@@ -179,20 +179,51 @@ namespace ft {
                     std::uninitialized_copy(position, end(), position - begin() + n);
                     clear();
                     m_capacity = new_cap;
-                    m_size = m_size + n;
-                    m_size = new_data;
+                    //m_size = m_size + n;
+                    m_data = new_data;
                 } else {
-                    if(position != end()){
-
+                    if(position + n < end()){
+                        std::uninitialized_copy(end() - n, end(), end());
+	                    std::copy_backward(position, end() - n, end());
+	                    std::fill(position, position + n, x);
                     }else{
-                        
+                        std::uninitialized_copy(position, end(), position + n);
+	                    std::fill(position, end(), x);
+	                    std::uninitialized_fill_n(end(), n - (end() - position), x); 
                     }
                 }
-                
+                m_size = m_size + n;
             }
             template <class InputIterator>
-            void insert(iterator position,
-            InputIterator first, InputIterator last);
+            void insert(iterator position, InputIterator first, InputIterator last){
+                if (first == last)
+                    return ;
+                difference_type len =  std::distance(first, last);
+                if(m_size + len < m_capacity){
+                    size_t new_cap = m_capacity;
+                    while(new_cap < new_size)
+                        new_cap *= 2;
+                    T* new_data = alloc.allocate(new_cap);
+                    std::uninitialized_copy(begin(), position, new_data);
+                    for(size_type i = 0 ;i < len; ++i){
+                        allocate.construct(new_data+(position-begin())+i, *first+i);
+                    }
+                    std::uninitialized_copy(position,end(), new_data+position+len);
+                    clear();
+                    m_capacity = new_cap;
+                    m_data = new_data;
+                }else{
+                    if(position + len < end()){
+                        std::uninitialized_copy(end() - n, end(), end());
+	                    std::copy_backward(position, end() - n, end());
+	                    std::copy(first, last, position);
+                    }else{
+                        std::uninitialized_copy(position, end(), position + n);
+	                    std::copy(first, last,)
+                    }
+                    m_size = m_size + n;
+                }
+            }
             iterator erase(iterator position);
             iterator erase(iterator first, iterator last);
             void swap(vector<T,Allocator>&);
