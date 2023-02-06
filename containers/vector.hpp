@@ -8,27 +8,27 @@
 #include <cstddef>
 #include <cassert> //assert
 #include <stdexcept> //out of range
-#include <algorithm> //swap
+#include <algorithm> //swap distance
 namespace ft {
-    template <class T, class Allocator = allocator<T> >
+    template <class T, class Allocator = std::allocator<T> >
     class vector {
         public:
         // types:
             typedef typename Allocator::reference reference;
             typedef typename Allocator::const_reference const_reference;
+            typedef typename Allocator::pointer pointer;
+            typedef typename Allocator::const_pointer const_pointer;
+            typedef T value_type;
+            typedef Allocator allocator_type;
             typedef pointer iterator;
             typedef const_pointer const_iterator;
             typedef ptrdiff_t difference_type;
             typedef size_t size_type;
-            typedef T value_type;
-            typedef Allocator allocator_type;
-            typedef typename Allocator::pointer pointer;
-            typedef typename Allocator::const_pointer const_pointer
             typedef ft::reverse_iterator<iterator> reverse_iterator;
             typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
             explicit vector(const allocator_type& alloc = Allocator()): m_size(0), m_capacity(0), m_data(0), m_alloc(alloc){}
-            explicit vector(size_type n, const T& value = T(), const Allocator& alloc= Allocator()):m_size(n),m_capacity(n) m_alloc(alloc){
+            explicit vector(size_type n, const T& val = T(), const Allocator& alloc= Allocator()):m_size(n),m_capacity(n), m_alloc(alloc){
                 m_data = m_alloc.allocate(m_capacity);
                 for(size_t i =0; i < m_size; ++i){
                         m_alloc.construct(m_data + i, val);
@@ -62,9 +62,9 @@ namespace ft {
                     m_capacity = m_size;
                     m_data = m_alloc.allocate(m_size);
                     std::uninitialized_copy(x.begin(), x.end(), m_data);
-                }else if (x.size()) <= m_size{
-                    vector<T>::iterator i=std::copy(x.begin(), x.end(), m_data);
-                    for(; i != end(), ++i)
+                }else if (x.size() <= m_size){
+                    iterator i= std::copy(x.begin(), x.end(), m_data);
+                    for(; i != end(); ++i)
                         m_alloc.destroy(i);
                         m_size = x.size();
                 }else{
@@ -74,14 +74,49 @@ namespace ft {
                 }
                 return *this;
             }
-            template <class InputIterator>
-            void assign(InputIterator first, InputIterator last){
-                erase(begin(), end());
-                insert(begin(), first, last);
-            }
             void assign(size_type n, const T& u){
-                erase(begin(), end());
-                insert(begin(), n, t);
+                if (n > m_capacity){
+                    vector tmp(n, u);
+                    swap(tmp);
+                } else {
+                    if (n <= m_size){
+                        std::fill_n(begin(), n , u);
+                        for(iterator i=begin()+n; i!=end(); ++i){
+                            m_alloc.destroy(i);
+                        }
+                    } else{
+                        std::fill(begin(), end(), u);
+                        std::uninitialized_fill_n(end(), n-m_size, u);
+                    }
+                    m_size = n;
+                }
+            }
+            template <class InputIterator>
+            typename ft::enable_if<!ft::is_integral<InputIterator>::value, void>::type
+            assign(InputIterator first, InputIterator last){
+                if (first == last)
+                    return;
+                size_type n = std::distance(first, last);
+                if (n > m_capacity){
+                        clear();
+                        T* new_data = m_alloc.allocate(n);
+                        for(size_type i = 0; i < n; ++i){
+                            m_alloc.construct(new_data[i], *(first + i));
+                        }
+                        m_size = n;
+                        m_capacity = n;
+                } else {
+                    if (n <= m_size){
+                        std::copy(first, first+n, m_data);
+                        for(iterator i=begin()+n; i!=end(); ++i){
+                            m_alloc.destroy(i);
+                        }
+                    } else{
+                        std::copy(first, first + m_size, m_data);
+                        std::uninitialized_copy(first + m_size, last, m_data+m_size);
+                    }
+                    m_size = n;
+                }
             }
             allocator_type get_allocator() const{ return m_alloc;}
             // iterators:
@@ -147,7 +182,7 @@ namespace ft {
                 if (m_size == m_capacity) {
                     reserve(m_capacity == 0 ? 1 : 2 * m_capacity); //geometric growth
                 }
-                m_alloc.construct(m_data + m_size, val);
+                m_alloc.construct(m_data + m_size, x);
                 ++m_size;
             }
             void pop_back(){
@@ -159,7 +194,7 @@ namespace ft {
             iterator insert(iterator position, const T& x){
                 size_type i = position - begin();
                 if (m_size < m_capacity && position == end()){
-                    std::construct(end(), x);
+                    m_alloc.construct(end(), x);
                     ++m_size;
                 } else {
                     insert_middle(position,x);
@@ -171,9 +206,9 @@ namespace ft {
                     return;
                 if(m_size + n < m_capacity){
                     size_t new_cap = m_capacity;
-                    while(new_cap < new_size)
+                    while(new_cap < m_size + n)
                         new_cap *= 2;
-                    T* new_data = alloc.allocate(new_cap);
+                    T* new_data = m_alloc.allocate(new_cap);
                     std::uninitialized_copy(begin(), position, new_data);
                     std::uninitialized_fill_n(new_data + (position - begin()), n ,x);
                     std::uninitialized_copy(position, end(), position - begin() + n);
@@ -195,38 +230,72 @@ namespace ft {
                 m_size = m_size + n;
             }
             template <class InputIterator>
-            void insert(iterator position, InputIterator first, InputIterator last){
+            typename ft::enable_if<!ft::is_integral<InputIterator>::value, void>::type
+            insert(iterator position, InputIterator first, InputIterator last){
                 if (first == last)
                     return ;
-                difference_type len =  std::distance(first, last);
+                //size_type len =  std::distance(first, last);
+                size_type len =  last - first;
                 if(m_size + len < m_capacity){
                     size_t new_cap = m_capacity;
-                    while(new_cap < new_size)
+                    while(new_cap < m_size + len)
                         new_cap *= 2;
-                    T* new_data = alloc.allocate(new_cap);
+                    T* new_data = m_alloc.allocate(new_cap);
                     std::uninitialized_copy(begin(), position, new_data);
                     for(size_type i = 0 ;i < len; ++i){
-                        allocate.construct(new_data+(position-begin())+i, *first+i);
+                        m_alloc.construct(new_data+(position-begin())+i, (first +i));
                     }
-                    std::uninitialized_copy(position,end(), new_data+position+len);
+                    std::uninitialized_copy(position, end(), new_data + (position - begin()) + len);
                     clear();
                     m_capacity = new_cap;
                     m_data = new_data;
                 }else{
                     if(position + len < end()){
-                        std::uninitialized_copy(end() - n, end(), end());
-	                    std::copy_backward(position, end() - n, end());
+                        std::uninitialized_copy(end() - len, end(), end());
+	                    std::copy_backward(position, end() - len, end());
 	                    std::copy(first, last, position);
                     }else{
-                        std::uninitialized_copy(position, end(), position + n);
-	                    std::copy(first, last,)
+                        size_t index = end() - position;
+                        std::uninitialized_copy(position, end(), position + len);
+	                    std::copy(first, first + index, position);
+                        std::uninitialized_copy(first + index, last, end());
                     }
-                    m_size = m_size + n;
+                    m_size = m_size + len;
                 }
             }
-            iterator erase(iterator position);
-            iterator erase(iterator first, iterator last);
-            void swap(vector<T,Allocator>&);
+            iterator erase(iterator position){
+                if(position >= m_data + m_size)
+                    throw std::out_of_range("vector::erase");
+                for(iterator it = position; it != m_data + m_size -1; ++it){
+                    *(it) = *(it + 1);
+                }
+                m_alloc.destroy(m_data + m_size -1);
+                --m_size;
+                return position;
+            }
+            iterator erase(iterator first, iterator last){  
+                if(first >= m_data + m_size || last > m_data + m_size)
+                    throw std::out_of_range("vector::erase");
+                if (first == last)
+                    return begin();
+                size_type diff = std::distance(first, last);
+                iterator it = first;
+                for(; it != m_data + m_size - diff; ++it){
+                    *(it) = *(it + diff);
+                }
+                for(size_t i = 0; i < diff; ++i){
+                    m_alloc.destroy(it);
+                    ++it;
+                }
+                m_size -= diff;
+                return first;
+            }
+            void swap(vector<T,Allocator>& x){
+                std::swap(m_data, x.m_data);
+                std::swap(m_size, x.m_size);
+                std::swap(m_capacity, x.m_capacity);
+                std::swap(m_alloc, x.m_alloc);
+            }
             void clear(){
                 for (size_t i = 0; i < m_size; i++) {
                     m_alloc.destroy(m_data + i);
@@ -238,10 +307,9 @@ namespace ft {
             size_type m_size;
             size_type m_capacity;
             allocator_type m_alloc;
-            template <class T>
-            void vector<T>::insert_middle(iterator position, const T& x){
+            void insert_middle(iterator position, const T& x){
                 if (m_size < m_capacity){
-                    alloc.construct(end(), *(end() - 1));
+                    m_alloc.construct(end(), *(end() - 1));
                     std::copy_backward(position , end() -1, end());
                     *position = x;
                     ++m_size;
@@ -255,30 +323,36 @@ namespace ft {
                     m_data = new_data;
                     ++m_size;
                 }
-            } 
+            }
+            template <class InputIterator> 
+            void insert_copy(InputIterator first, InputIterator last, size_type offset){
+                
+            }
 
-            friend bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+            friend bool operator== (const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs){
                 return (lhs.size() == rhs.size() && std::equal(lhs.begin(), lhs.end(), rhs.begin()));
             }
-            friend bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+            friend bool operator!= (const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs){
                 return (!(lhs == rhs));
             }
-            friend bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+            friend bool operator<  (const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs){
                 return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
             }
-            friend bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+            friend bool operator>  (const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs){
                 return (rhs < lhs);
             }
-            friend bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+            friend bool operator<= (const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs){
                 return (!(lhs > rhs));
             }
-            friend bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+            friend bool operator>= (const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs){
                 return (!(rhs > lhs));
             }
 
     };
             // specialized algorithms:
             template <class T, class Allocator>
-            void swap(vector<T,Allocator>& x, vector<T,Allocator>& y);
+            void swap(vector<T,Allocator>& x, vector<T,Allocator>& y){
+                x.swap(y);
             }
+}
 #endif
