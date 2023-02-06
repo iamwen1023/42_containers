@@ -22,8 +22,8 @@ namespace ft {
             typedef Allocator allocator_type;
             typedef pointer iterator;
             typedef const_pointer const_iterator;
-            typedef ptrdiff_t difference_type;
-            typedef size_t size_type;
+            typedef std::ptrdiff_t difference_type;
+            typedef std::size_t size_type;
             typedef ft::reverse_iterator<iterator> reverse_iterator;
             typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
@@ -100,14 +100,17 @@ namespace ft {
                 if (n > m_capacity){
                         clear();
                         T* new_data = m_alloc.allocate(n);
-                        for(size_type i = 0; i < n; ++i){
-                            m_alloc.construct(new_data[i], *(first + i));
-                        }
+                        std::uninitialized_copy(first, last, new_data);
                         m_size = n;
                         m_capacity = n;
+                        m_data = new_data;
                 } else {
                     if (n <= m_size){
-                        std::copy(first, first+n, m_data);
+                        //std::copy(first, first+n, m_data);
+                        for (size_type i = 0; i < n; ++i) {
+                            m_data[i] = *first;
+                            ++first;
+                        }
                         for(iterator i=begin()+n; i!=end(); ++i){
                             m_alloc.destroy(i);
                         }
