@@ -22,12 +22,10 @@ TYPED_TEST_SUITE_P(VectorSimpleConstruct);
 
 TYPED_TEST(VectorSimpleConstruct, CopyConstruct){
 	VECTOR	v1(5);
-
 	v1.push_back(2);
 	v1.push_back(34);
 
 	VECTOR	v2(v1);
-
 	EXPECT_EQ(v2.size(), 7);
 	EXPECT_EQ(v2.capacity(), 7);
 	EXPECT_EQ(v2[0], 0);
@@ -93,12 +91,13 @@ TYPED_TEST(VectorSimpleConstruct, Assign){
 
 	VECTOR	v3;
 
-	//v3.assign(list.begin(), list.end());
+	v3.assign(list.begin(), list.end());
 
-	// EXPECT_EQ(v3.size(), 4);
-	// EXPECT_EQ(v3.capacity(), 4);
-	// EXPECT_EQ(v3[0], 56);
-	// EXPECT_EQ(v3[3], -1);
+	EXPECT_EQ(v3.size(), 4);
+	EXPECT_EQ(v3.capacity(), 4);
+	EXPECT_EQ(v3[0], 56);
+	EXPECT_EQ(v3[3], -1);
+
 }
 
 TYPED_TEST_SUITE_P(VectorStringConstruct);
@@ -124,7 +123,6 @@ TYPED_TEST(VectorStringConstruct, StringConstruct){
 	
 	v1[0] = "Later bro.";
 	v3[0] = "We are independant now.";
-
 	EXPECT_EQ(v1.size(), 3);
 	EXPECT_EQ(v1.capacity(), 4);
 	EXPECT_EQ(v1[0], "Later bro.");

@@ -29,6 +29,7 @@ namespace ft {
 
             explicit vector(const allocator_type& alloc = Allocator()): m_size(0), m_capacity(0), m_data(0), m_alloc(alloc){}
             explicit vector(size_type n, const T& val = T(), const Allocator& alloc= Allocator()):m_size(n),m_capacity(n), m_alloc(alloc){
+                std::cout << "n :" << n << std::endl; 
                 m_data = m_alloc.allocate(m_capacity);
                 for(size_t i =0; i < m_size; ++i){
                         m_alloc.construct(m_data + i, val);
@@ -38,14 +39,12 @@ namespace ft {
             vector(InputIterator first, InputIterator last,
                     const allocator_type& alloc = allocator_type()):m_size(std::distance(first, last)), m_capacity(m_size), m_alloc(alloc){
                 m_data = m_alloc.allocate(m_capacity);
-                for (InputIterator it = first; it != last; ++it, ++m_data) {
-                        m_alloc.construct(m_data, *it);
-                }
+                std::uninitialized_copy(first, last, m_data);
             }
             vector(const vector<T,Allocator>& other){
                 m_alloc = other.m_alloc;
                 m_size = other.m_size;
-                m_capacity = other.m_capacity;
+                m_capacity = other.m_size;
                 m_data = m_alloc.allocate(m_capacity);
                 std::uninitialized_copy(other.m_data, other.m_data + m_size, m_data);
             }
@@ -115,8 +114,17 @@ namespace ft {
                             m_alloc.destroy(i);
                         }
                     } else{
-                        std::copy(first, first + m_size, m_data);
-                        std::uninitialized_copy(first + m_size, last, m_data+m_size);
+                        //std::copy(first, first + m_size, m_data);
+                        size_type i = 0;
+                        for (; i < m_size; ++i) {
+                            m_data[i] = *first;
+                            ++first;
+                        }
+                        for(; first != last ; ++i){
+                            m_data[i] = *first;
+                            ++first;
+                        }
+                        //std::uninitialized_copy(first + m_size, last, m_data+m_size);
                     }
                     m_size = n;
                 }
@@ -142,6 +150,8 @@ namespace ft {
                 }else if (n > m_size){
                     if (n > max_size())
                         throw std::length_error("vector::resize");
+                    if (n > m_capacity)
+                        m_capacity = m_size *2;
                     insert(end(), n - m_size, val);
                     //m_size = n;
                 }
@@ -182,11 +192,11 @@ namespace ft {
             const T* data() const{std::addressof(front());}
             // 23.2.4.3 modifiers:
             void push_back(const T& x){
-                if (m_size == m_capacity) {
-                    reserve(m_capacity == 0 ? 1 : 2 * m_capacity); //geometric growth
-                }
-                m_alloc.construct(m_data + m_size, x);
-                ++m_size;
+                if (m_size != m_capacity){
+                    m_alloc.construct(m_data + m_size, x);
+                    ++m_size;
+                }else
+                    insert_middle(end(), x);
             }
             void pop_back(){
                 if (m_size > 0){
@@ -207,14 +217,16 @@ namespace ft {
             void insert(iterator position, size_type n, const T& x){
                 if(n == 0)
                     return;
-                if(m_size + n < m_capacity){
-                    size_t new_cap = m_capacity;
-                    while(new_cap < m_size + n)
+                //if(m_size + n < m_capacity){
+                if(m_capacity - m_size < n){
+                    size_t new_cap = m_capacity == 0 ? 1: 2*m_capacity;
+                    while(new_cap < m_size + n){
                         new_cap *= 2;
+                    }
                     T* new_data = m_alloc.allocate(new_cap);
                     std::uninitialized_copy(begin(), position, new_data);
                     std::uninitialized_fill_n(new_data + (position - begin()), n ,x);
-                    std::uninitialized_copy(position, end(), position - begin() + n);
+                    std::uninitialized_copy(position, end(), new_data + (position - begin()) + n);
                     clear();
                     m_capacity = new_cap;
                     //m_size = m_size + n;
@@ -229,6 +241,7 @@ namespace ft {
 	                    std::fill(position, end(), x);
 	                    std::uninitialized_fill_n(end(), n - (end() - position), x); 
                     }
+                    
                 }
                 m_size = m_size + n;
             }
@@ -240,16 +253,18 @@ namespace ft {
                 //size_type len =  std::distance(first, last);
                 size_type len =  last - first;
                 if(m_size + len < m_capacity){
-                    size_t new_cap = m_capacity;
+                    size_t new_cap = m_capacity == 0 ? 1: 2*m_capacity;
                     while(new_cap < m_size + len)
                         new_cap *= 2;
                     T* new_data = m_alloc.allocate(new_cap);
                     std::uninitialized_copy(begin(), position, new_data);
-                    for(size_type i = 0 ;i < len; ++i){
-                        m_alloc.construct(new_data+(position-begin())+i, (first +i));
-                    }
-                    std::uninitialized_copy(position, end(), new_data + (position - begin()) + len);
+                    // for(size_type i = 0 ;i < len; ++i){
+                    //     m_alloc.construct(new_data+(position-begin())+i, (first +i));
+                    // }
+                    std::uninitialized_copy(first, last, new_data + (position - begin()));
+                    std::uninitialized_copy(position, end(), new_data + (position - begin() + len));
                     clear();
+                    m_size = m_size + len;
                     m_capacity = new_cap;
                     m_data = new_data;
                 }else{
@@ -258,10 +273,10 @@ namespace ft {
 	                    std::copy_backward(position, end() - len, end());
 	                    std::copy(first, last, position);
                     }else{
-                        size_t index = end() - position;
+                        //size_t index = end() - position;
                         std::uninitialized_copy(position, end(), position + len);
-	                    std::copy(first, first + index, position);
-                        std::uninitialized_copy(first + index, last, end());
+	                    std::copy(first, first + (end() - position), position);
+                        std::uninitialized_copy(first + (end() - position), last, end());
                     }
                     m_size = m_size + len;
                 }
@@ -317,7 +332,7 @@ namespace ft {
                     *position = x;
                     ++m_size;
                 } else{
-                    m_capacity =  m_size *2 ;
+                    m_capacity = m_capacity == 0 ? 1: 2*m_capacity;
                     T* new_data = m_alloc.allocate(m_capacity);
                     std::uninitialized_copy(begin(), position, new_data);
                     m_alloc.construct(new_data + (position - begin()), x);
@@ -327,10 +342,7 @@ namespace ft {
                     ++m_size;
                 }
             }
-            template <class InputIterator> 
-            void insert_copy(InputIterator first, InputIterator last, size_type offset){
-                
-            }
+
 
             friend bool operator== (const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs){
                 return (lhs.size() == rhs.size() && std::equal(lhs.begin(), lhs.end(), rhs.begin()));
