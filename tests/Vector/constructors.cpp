@@ -22,9 +22,9 @@ TYPED_TEST_SUITE_P(VectorSimpleConstruct);
 
 TYPED_TEST(VectorSimpleConstruct, CopyConstruct){
 	VECTOR	v1(5);
+
 	v1.push_back(2);
 	v1.push_back(34);
-
 	VECTOR	v2(v1);
 	EXPECT_EQ(v2.size(), 7);
 	EXPECT_EQ(v2.capacity(), 7);

@@ -295,6 +295,78 @@ Vector/modifiers.cpp.s:
 	cd /mnt/nfs/homes/wlo/ft_containers/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/Vector/modifiers.cpp.s
 .PHONY : Vector/modifiers.cpp.s
 
+Vector/operators.o: Vector/operators.cpp.o
+.PHONY : Vector/operators.o
+
+# target to build an object file
+Vector/operators.cpp.o:
+	cd /mnt/nfs/homes/wlo/ft_containers/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/Vector/operators.cpp.o
+.PHONY : Vector/operators.cpp.o
+
+Vector/operators.i: Vector/operators.cpp.i
+.PHONY : Vector/operators.i
+
+# target to preprocess a source file
+Vector/operators.cpp.i:
+	cd /mnt/nfs/homes/wlo/ft_containers/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/Vector/operators.cpp.i
+.PHONY : Vector/operators.cpp.i
+
+Vector/operators.s: Vector/operators.cpp.s
+.PHONY : Vector/operators.s
+
+# target to generate assembly for a file
+Vector/operators.cpp.s:
+	cd /mnt/nfs/homes/wlo/ft_containers/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/Vector/operators.cpp.s
+.PHONY : Vector/operators.cpp.s
+
+Vector/performance.o: Vector/performance.cpp.o
+.PHONY : Vector/performance.o
+
+# target to build an object file
+Vector/performance.cpp.o:
+	cd /mnt/nfs/homes/wlo/ft_containers/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/Vector/performance.cpp.o
+.PHONY : Vector/performance.cpp.o
+
+Vector/performance.i: Vector/performance.cpp.i
+.PHONY : Vector/performance.i
+
+# target to preprocess a source file
+Vector/performance.cpp.i:
+	cd /mnt/nfs/homes/wlo/ft_containers/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/Vector/performance.cpp.i
+.PHONY : Vector/performance.cpp.i
+
+Vector/performance.s: Vector/performance.cpp.s
+.PHONY : Vector/performance.s
+
+# target to generate assembly for a file
+Vector/performance.cpp.s:
+	cd /mnt/nfs/homes/wlo/ft_containers/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/Vector/performance.cpp.s
+.PHONY : Vector/performance.cpp.s
+
+Vector/reverse_iterators.o: Vector/reverse_iterators.cpp.o
+.PHONY : Vector/reverse_iterators.o
+
+# target to build an object file
+Vector/reverse_iterators.cpp.o:
+	cd /mnt/nfs/homes/wlo/ft_containers/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/Vector/reverse_iterators.cpp.o
+.PHONY : Vector/reverse_iterators.cpp.o
+
+Vector/reverse_iterators.i: Vector/reverse_iterators.cpp.i
+.PHONY : Vector/reverse_iterators.i
+
+# target to preprocess a source file
+Vector/reverse_iterators.cpp.i:
+	cd /mnt/nfs/homes/wlo/ft_containers/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/Vector/reverse_iterators.cpp.i
+.PHONY : Vector/reverse_iterators.cpp.i
+
+Vector/reverse_iterators.s: Vector/reverse_iterators.cpp.s
+.PHONY : Vector/reverse_iterators.s
+
+# target to generate assembly for a file
+Vector/reverse_iterators.cpp.s:
+	cd /mnt/nfs/homes/wlo/ft_containers/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/Vector/reverse_iterators.cpp.s
+.PHONY : Vector/reverse_iterators.cpp.s
+
 iterator.o: iterator.cpp.o
 .PHONY : iterator.o
 
@@ -443,6 +515,15 @@ help:
 	@echo "... Vector/modifiers.o"
 	@echo "... Vector/modifiers.i"
 	@echo "... Vector/modifiers.s"
+	@echo "... Vector/operators.o"
+	@echo "... Vector/operators.i"
+	@echo "... Vector/operators.s"
+	@echo "... Vector/performance.o"
+	@echo "... Vector/performance.i"
+	@echo "... Vector/performance.s"
+	@echo "... Vector/reverse_iterators.o"
+	@echo "... Vector/reverse_iterators.i"
+	@echo "... Vector/reverse_iterators.s"
 	@echo "... iterator.o"
 	@echo "... iterator.i"
 	@echo "... iterator.s"
