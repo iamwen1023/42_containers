@@ -14,7 +14,7 @@ set(CMAKE_CXX_STANDARD 14)
 # Directories for header files
 # include_directories(srcs/iterators)
 # include_directories(srcs/utils)
-include_directories(./ft_containers/containers)
+include_directories(./ft_containers/srcs)
 
 # Directories for source files
 add_subdirectory(tests)

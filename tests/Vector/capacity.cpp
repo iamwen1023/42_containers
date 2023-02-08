@@ -9,6 +9,16 @@ TYPED_TEST(VectorCapacity, Size){
 
 	EXPECT_EQ(v1.size(), 0);
 	EXPECT_EQ(v2.size(), 5);
+
+	VECTOR vct(7);
+	VECTOR vct_two(4);
+
+	for (unsigned long int i = 0; i < vct.size(); ++i)
+		vct[i] = (vct.size() - i) * 3;
+	for (unsigned long int i = 0; i < vct_two.size(); ++i)
+		vct_two[i] = (vct_two.size() - i) * 5;
+	std::cout << "vct_two " << vct.size() << "\n";
+	std::cout << "vct_two" << vct_two.size() << "\n";
 }
 
 TYPED_TEST(VectorCapacity, MaxSize){

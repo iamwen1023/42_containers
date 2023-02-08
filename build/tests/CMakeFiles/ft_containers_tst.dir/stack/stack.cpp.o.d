@@ -313,4 +313,4 @@ tests/CMakeFiles/ft_containers_tst.dir/stack/stack.cpp.o: \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/bits/list.tcc \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/stack \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/bits/stl_stack.h \
-  /mnt/nfs/homes/wlo/ft_containers/tests/stack/../../containers/stack.hpp
+  /mnt/nfs/homes/wlo/ft_containers/tests/stack/../../srcs/stack.hpp

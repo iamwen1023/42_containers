@@ -1,6 +1,6 @@
 tests/CMakeFiles/ft_containers_tst.dir/iterator.cpp.o: \
   /mnt/nfs/homes/wlo/ft_containers/tests/iterator.cpp \
-  /mnt/nfs/homes/wlo/ft_containers/tests/../containers/iterator_traits.hpp \
+  /mnt/nfs/homes/wlo/ft_containers/tests/../srcs/iterator_traits.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/cstddef \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/x86_64-linux-gnu/c++/12/bits/c++config.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/x86_64-linux-gnu/c++/12/bits/os_defines.h \
@@ -14,8 +14,8 @@ tests/CMakeFiles/ft_containers_tst.dir/iterator.cpp.o: \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/x86_64-linux-gnu/c++/12/bits/cpu_defines.h \
   /usr/lib/llvm-12/lib/clang/12.0.1/include/stddef.h \
   /usr/lib/llvm-12/lib/clang/12.0.1/include/__stddef_max_align_t.h \
-  /mnt/nfs/homes/wlo/ft_containers/tests/../containers/reverse_iterator.hpp \
-  /mnt/nfs/homes/wlo/ft_containers/tests/../containers/./iterator_traits.hpp \
+  /mnt/nfs/homes/wlo/ft_containers/tests/../srcs/reverse_iterator.hpp \
+  /mnt/nfs/homes/wlo/ft_containers/tests/../srcs/./iterator_traits.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/memory \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/bits/stl_algobase.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/bits/functexcept.h \

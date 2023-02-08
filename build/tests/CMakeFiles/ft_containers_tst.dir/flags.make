@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/mnt/nfs/homes/wlo/ft_containers/./ft_containers/containers -isystem /mnt/nfs/homes/wlo/ft_containers/googletest/googletest/include -isystem /mnt/nfs/homes/wlo/ft_containers/googletest/googletest
+CXX_INCLUDES = -I/mnt/nfs/homes/wlo/ft_containers/./ft_containers/srcs -isystem /mnt/nfs/homes/wlo/ft_containers/googletest/googletest/include -isystem /mnt/nfs/homes/wlo/ft_containers/googletest/googletest
 
 CXX_FLAGS = -g
 

@@ -2,7 +2,7 @@
 #define VECTOR_HPP
 #include "./reverse_iterator.hpp"
 #include "./iterator_traits.hpp"
-#include "./utils/utils.hpp"
+#include "./utils.hpp"
 #include <iterator>
 #include <memory>
 #include <cstddef>
