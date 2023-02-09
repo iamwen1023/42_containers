@@ -35,7 +35,7 @@ namespace ft {
                 }
             }
             template <class InputIterator>
-            vector(InputIterator first, InputIterator last,
+            vector(typename ft::enable_if<!ft::is_integral<InputIterator>::value, void>::type first, InputIterator last,
                     const allocator_type& alloc = allocator_type()):m_size(std::distance(first, last)), m_capacity(m_size), m_alloc(alloc){
                 m_data = m_alloc.allocate(m_capacity);
                 std::uninitialized_copy(first, last, m_data);
