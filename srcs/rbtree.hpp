@@ -124,11 +124,11 @@ class RBTree {
             NodePtr u;
             while(node->parent->color == 'R'){
                 if(node->parent == node->parent->parent->right){
-                    u = node->parent->left;
+                    u = node->parent->parent->left;
                     if(u->color == 'R'){
                         node->parent->color = 'B';
                         u->color = 'B';
-                        node->parent->parent = 'R';
+                        node->parent->parent->color = 'R';
                         node = node->parent->parent;
                     }else {
                         if (node == node->parent->right){
@@ -140,11 +140,11 @@ class RBTree {
                         rightRotate(node->parent->parent);
                     }
                 } else{
-                    u = node->parent->right;
+                    u = node->parent->parent->right;
                     if(u->color == 'R'){
                         node->parent->color = 'B';
                         u->color = 'B';
-                        node->parent->parent = 'R';
+                        node->parent->parent->color = 'R';
                         node = node->parent->parent;
                     }else {
                         if (node == node->parent->right){
@@ -210,6 +210,64 @@ class RBTree {
             }
             if (color_origin = 'B');
                 deleteFix(x);
+        }
+        void deleteFix(NodePtr node){
+            //double black
+            //check the color of sibling?
+            NodePtr s;
+            while (node != root && node->color == 'B'){
+                if (node == node->parent->left){
+                    s = node->parent->right;
+                    if (s->color == 'R'){
+                        s->color = 'B';
+                        node->parent->color = 'R';
+                        leftRotate(node->parent);
+                        s = node->parent->right;
+                    }
+                    if (s->left->color == 'B' && s->right->color == 'B'){
+                        s->color == 'R';
+                        node= node->parent;
+                    } else {
+                        if (s->right->color == 'B'){
+                            s->left->color = 'B';
+                            s->color = 'R';
+                            rightRotate(s);
+                            s = node->parent->right;
+                        }
+                        s->color = node->parent->color;
+                        node->parent->color = 'B';
+                        s->right->color = 'B';
+                        leftRotate(node->parent);
+                        x = root;
+                    }
+                }else {
+                    s = node->parent->left;
+                    if(s->color == 'R'){
+                        s->color = 'B';
+                        node->parent->color = 'R';
+                        rightRotate(node->parent);
+                        s= node->parent->left;
+                    }
+                    if(s->lefe->color == 'B' && s->right->color == 'B'){
+                        s->color = 'R';
+                        node = node->parent;
+                    } else{
+                        if (s->left->color == 'B'){
+                            s->right->color = 'B';
+                            s->color = 'R';
+                            leftRotate(s);
+                            s = node->parent->left;
+                        }
+                        s->color = node->parent->color;
+                        node->parent->color = 'B';
+                        s->lefe->color = 'B';
+                        rightRotate(node->parent);
+                        node = root;
+                    }
+                }
+                node->color = 'B'
+            }
+
         }
 
 }
