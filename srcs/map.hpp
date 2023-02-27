@@ -15,10 +15,11 @@ struct rb_tree_node{
     base_ptr right;
     Value value_field;
 
-    rb_tree_node(): parent(NULL), left(NULL), right(NULL),color(BLACK), value_field(NULL){
+    rb_tree_node(void): parent(NULL), left(NULL), right(NULL),color(BLACK){
+        std::cout << "defalut node\n";// why not here for tnull?
     }
     rb_tree_node(Value value): parent(NULL), left(NULL), right(NULL),color(RED), value_field(value){
-
+        std::cout << "Not defalut node\n";
     }
 
     static base_ptr minimum(base_ptr x){
@@ -59,12 +60,20 @@ class rb_tree{
 
         //construct
         rb_tree(const compare_type& comp= Compare()):node_count(0),comp(comp), node_alloc(node_allocator()){
-            tnull =  node_ptr();
+            // tnull =  node_ptr();
+            tnull = node_alloc.allocate(1);
+            tnull->color = BLACK;
+            tnull->left = NULL;
+            tnull->right = NULL;
+            tnull->parent = NULL;
+            tnull->value_field = Value();
             root = tnull;
-            std::cout << "default" << std::endl;
         }
         ~rb_tree(){
-            clear_tree(root);
+            //clear_tree(root);
+            // node_alloc.destroy(tnull);
+            // node_alloc.deallocate(tnull, 1);
+
         }
         node_type *creat_node(const value_type& x){
             node_type *new_node = node_alloc.allocate(1);
@@ -147,20 +156,14 @@ class rb_tree{
 
             while(node->parent->color == RED){
                 if (node->parent == node->parent->parent->right){
-                    std::cout << "hello1\n";
                     u = node->parent->parent->left;
-                    u->color == RED;
-                     std::cout << "hello1\n";
                     if(u->color == RED){
-                         std::cout << "hello0\n";
                         u->color = BLACK;
                         node->parent->color = RED;
                         node->parent->parent->color = BLACK;
-                        node =  node->parent->parent;
+                        node = node->parent->parent;
                     } else {
-                        std::cout << "hello1\n";
                         if (node == node->parent->left){
-                            std::cout << "hello1\n";
                             node = node->parent;
                             rightRotate(node);
                         }

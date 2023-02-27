@@ -12,7 +12,7 @@ struct SelectFirst {
     }
 };
 
-template <class Key, class T, class Compare = std::less<Key>>
+template <class Key, class T, class Compare = std::less<Key> >
 class pair_compare : std::less<Key>{
     protected:
     Compare _comp;
