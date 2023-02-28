@@ -16,9 +16,12 @@ namespace ft {
         pair(const pair<U,V>& pr):first(pr.first), second(pr.second){}
         pair(const first_type& a, const second_type& b): first(a), second(b){}
        
-        pair& operator=(const pair& pr){   
-            this->first = pr.first;
-            this->second = pr.second;
+        pair& operator=(const pair& pr){ 
+            if (this != &pr){
+                // const first_type& tmp = this->first;
+                // const_cast<first_type&>(tmp) = pr.first;
+                this->second = pr.second;
+            }
             return *this;
         }
     };

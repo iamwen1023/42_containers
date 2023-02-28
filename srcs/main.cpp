@@ -34,10 +34,11 @@ class pair_compare : std::less<Key>{
 };
 
 int main(){
-    rb_tree<std::pair<int,char>, pair_compare<int, char> >  bst;
-    bst.insert(std::make_pair(1,'a'));
-    bst.insert(std::make_pair(2,'a'));
-    bst.insert(std::make_pair(3,'a'));
-    bst.printTree();
+    // rb_tree<std::pair<int,char>, pair_compare<int, char> >  bst;
+    // bst.insert(std::make_pair(1,'a'));
+    // bst.insert(std::make_pair(2,'a'));
+    // bst.insert(std::make_pair(3,'a'));
+    // bst.printTree();
+    ft::map<int, int> b;
 
 }
