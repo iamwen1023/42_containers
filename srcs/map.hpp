@@ -86,10 +86,10 @@ namespace ft {
             void swap(map<Key,T,Compare,Allocator>&);
             void clear();
             // observers:
-            key_compare key_comp() const{tree->comp;}
-            value_compare value_comp() const{}
+            key_compare key_comp() const{return tree->comp;}
+            value_compare value_comp() const{return value_compare(tree->comp);}
             // 23.3.1.3 map operations:
-            iterator find(const key_type& x);
+            iterator find(const key_type& x){ return tree->find(x, mapped_type());}
             const_iterator find(const key_type& x) const;
             size_type count(const key_type& x) const;
             iterator    lower_bound(const key_type& x);
