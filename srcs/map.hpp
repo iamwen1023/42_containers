@@ -34,7 +34,7 @@ namespace ft {
                     value_compare(Compare c) : comp(c) {}
                 public:
                     // This so the RBTree can construct the class
-                    value_compare(void) : comp(Compare()) {}
+                    //value_compare(void) : comp(Compare()) {}
                     bool operator()(const value_type& x, const value_type& y) const {
                         return comp(x.first, y.first);
                     }
@@ -42,31 +42,39 @@ namespace ft {
             typedef value_compare compare_type;
             typedef rb_tree<value_type, compare_type, Allocator> tree_type;
              // 23.3.1.1 construct/copy/destroy:
-            explicit map(const Compare& comp = Compare(), const Allocator& = Allocator()): tree(compare_type()){
+            explicit map(const Compare& comp = Compare(), const Allocator& = Allocator()): tree(comp){
                 
             }
             template <class InputIterator>
             map(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Allocator& = Allocator()){
                 
             }
-            map(const map<Key,T,Compare,Allocator>& x);
-            ~map(){};
-            map<Key,T,Compare,Allocator>& operator=(const map<Key,T,Compare,Allocator>& x);
+            map(const map<Key,T,Compare,Allocator>& x){
+
+            }
+            ~map(){
+
+            }
+            map<Key,T,Compare,Allocator>& operator=(const map<Key,T,Compare,Allocator>& x){
+
+            }
             // iterators:
-            iterator begin();
-            const_iterator begin() const;
-            iterator    end();
-            const_iterator end() const;
-            reverse_iterator rbegin();
-            const_reverse_iterator rbegin() const;
-            reverse_iterator rend();
-            const_reverse_iterator rend() const;
+            iterator begin(){tree->begin();}
+            const_iterator begin() const {tree->begin();}
+            iterator    end(){tree->end();}
+            const_iterator end() const{tree->end();}
+            reverse_iterator rbegin(){tree->rbegin();}
+            const_reverse_iterator rbegin() const{tree->rbegin();}
+            reverse_iterator rend(){tree->rend();}
+            const_reverse_iterator rend() const{tree->rend();}
             // capacity:
-            bool empty() const;
-            size_type size() const;
-            size_type max_size() const;
+            bool empty() const{return (tree->node_count == 0);}
+            size_type size() const{return tree->node_count;}
+            size_type max_size() const {return tree->node_alloc.max_size();}
             // 23.3.1.2 element access:
-            T& operator[](const key_type& x);
+            T& operator[](const key_type& x){
+
+            }
             // modifiers:
             pair<iterator, bool> insert(const value_type& x);
             iterator insert(iterator position, const value_type& x);
@@ -78,8 +86,8 @@ namespace ft {
             void swap(map<Key,T,Compare,Allocator>&);
             void clear();
             // observers:
-            key_compare key_comp() const;
-            value_compare value_comp() const;
+            key_compare key_comp() const{tree->comp;}
+            value_compare value_comp() const{}
             // 23.3.1.3 map operations:
             iterator find(const key_type& x);
             const_iterator find(const key_type& x) const;

@@ -1,5 +1,5 @@
-#ifndef BIDIRECT_ITERATOR_HPP
-#define BIDIRECT_ITERATOR_HPP
+#ifndef RBTREE_ITERATOR_HPP
+#define RBTREE_ITERATOR_HPP
 #include "./rb_tree.hpp"
 #include <iterator>
 #include "./iterator_traits.hpp"
@@ -29,10 +29,14 @@ struct rb_tree_iterator {
             node = y;
             y = y->parent;
         }
-        node = y;
+        if (node->right != y) //header
+            node = y;
     }
     void predecessor(){
-        if(node->left != 0){
+        if (node->color == RED && node->parent->parent == node)
+            node = node->right;
+        // when node = header , when node = end()
+        else if(node->left != 0){
             node = maximum(node->left);
             return ;
         }

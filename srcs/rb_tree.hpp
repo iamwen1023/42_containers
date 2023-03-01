@@ -3,59 +3,35 @@
 #include <functional>
 #include <memory>
 #include <iostream>
-
-enum color_type {RED, BLACK};
-
-template <class Value>
-struct rb_tree_node{
-    typedef rb_tree_node* base_ptr;
-    color_type color;
-    base_ptr parent;
-    base_ptr left;
-    base_ptr right;
-    Value value_field;
-
-    rb_tree_node(void): parent(NULL), left(NULL), right(NULL),color(BLACK){
-        std::cout << "defalut node\n";// why not here for tnull?
-    }
-    rb_tree_node(Value value): parent(NULL), left(NULL), right(NULL),color(RED), value_field(value){
-        std::cout << "Not defalut node\n";
-    }
-
-    static base_ptr minimum(base_ptr x){
-        while(x->left != 0)
-            x = x->left;
-        return x;
-    }
-    static base_ptr maximum(base_ptr x){
-        while(x->right != 0)
-            x =  x->right;
-        return x;
-    } 
-};
+#include "./rb_node.hpp"
+#include "./rbtree_iterator.hpp"
 
 template <class Value, class Compare, class allocator>
 class rb_tree{
     //protected:
     public:
 
+        //allocator
         typedef typename allocator::template rebind<rb_tree_node<Value> >::other node_allocator;
     
         typedef Value value_type;
-        typedef Compare compare_type;
+        typedef Compare key_compare;
         typedef value_type& reference;
         // typedef const value_type& const_reference;
         typedef rb_tree_node<Value> node_type;
         typedef node_type           *node_ptr;
         typedef size_t size_type;
         // typedef ptrdiff_t difference_type;
+        //Iterators
+        typedef rb_tree_iterator<node_type>                       iterator;
+        typedef const_rb_tree_iterator<node_type>                 const_iterator;
     //protected:
         node_ptr       root;
+        node_ptr       header;
         node_ptr       tnull;
         size_type       node_count;
-        compare_type    comp;
+        key_compare     comp;
         node_allocator  node_alloc;
-
         
         void init(){
             tnull = node_alloc.allocate(1);
@@ -64,16 +40,23 @@ class rb_tree{
             tnull->right = NULL;
             tnull->parent = NULL;
             tnull->value_field = Value();
-            root = tnull;
-
+            root = NULL;
+            header = node_alloc.allocate(1);
+            header->color = RED;
+            header->left = header;
+            header->right = header;
+            header->parent = root;
         }
+        node_type& leftmost() { return left(header); }
+        node_type& leftmost() const { return left(header); }
+        node_type& rightmost() { return right(header); }
+        node_type& rightmost() const { return right(header); }
         //construct
-        rb_tree(const compare_type& comp= Compare()):node_count(0),comp(comp), node_alloc(node_allocator()){
-            // tnull =  node_ptr();
+        rb_tree(const key_compare & comp= Compare()):node_count(0),comp(comp), node_alloc(node_allocator()){
             init();
         }
         rb_tree(const value_type* first, const value_type* last, const Compare& comp = Compare())
-          : node_count(0), compare(comp), node_alloc(node_allocator()){ 
+          : node_count(0), comp(comp), node_alloc(node_allocator()){ 
             init();
             insert(first, last);
         }
@@ -94,7 +77,14 @@ class rb_tree{
             node_alloc.destroy(node);
             node_alloc.deallocate(node, 1);
         }
-
+        iterator begin() { return iterator(leftmost()); }
+        const_iterator begin() const { return const_iterator(leftmost()); }
+        iterator end() { return iterator(header); }
+        const_iterator end() const { return const_iterator(header); }
+        iterator rbegin() { return reverse_iterator(end()); }
+        const_iterator rbegin() const { return const_reverse_iterator(end()); }
+        iterator rend() { return reverse_iterator(begin()); }
+        const_iterator rend() const { return const_reverse_iterator(begin()); }
         void leftRotate(node_ptr x){
             node_ptr y = x->right;
             x->right = y->left;
@@ -157,6 +147,10 @@ class rb_tree{
                 return;
             ++node_count;
             insertFIX(new_node);
+        }
+
+        void insert_range(const value_type* first, const value_type* last){
+
         }
 
         void    insertFIX(node_ptr node){
