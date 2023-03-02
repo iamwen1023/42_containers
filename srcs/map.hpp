@@ -89,15 +89,15 @@ namespace ft {
             key_compare key_comp() const{return tree->comp;}
             value_compare value_comp() const{return value_compare(tree->comp);}
             // 23.3.1.3 map operations:
-            iterator find(const key_type& x){ return tree->find(x, mapped_type());}
-            const_iterator find(const key_type& x) const;
-            size_type count(const key_type& x) const;
-            iterator    lower_bound(const key_type& x);
-            const_iterator lower_bound(const key_type& x) const;
-            iterator upper_bound(const key_type& x);
-            const_iterator upper_bound(const key_type& x) const;
-            pair<iterator,iterator> equal_range(const key_type& x);
-            pair<const_iterator,const_iterator> equal_range(const key_type& x) const;
+            // iterator find(const key_type& x){ return tree->find(ft::make_pair(x, mapped_type()));}
+            // const_iterator find(const key_type& x) const{return tree->find(ft::make_pair(x, mapped_type()));}
+            // size_type count(const key_type& x) const{ return (find(x) == end()? 0 :1 ); }
+            // iterator    lower_bound(const key_type& x){return tree->lower_bound();}
+            // const_iterator lower_bound(const key_type& x) const{return tree->lower_bound();}
+            // iterator upper_bound(const key_type& x){return tree->upper_bound();}
+            // const_iterator upper_bound(const key_type& x) const{return tree->upper_bound();}
+            // ft::pair<iterator,iterator> equal_range(const key_type& x){return (ft::pair<iterator, iterator>(this->lower_bound(k), this->upper_bound(k)));}
+            // ft::pair<const_iterator,const_iterator> equal_range(const key_type& x) const{return (ft::pair<iterator, iterator>(this->lower_bound(k), this->upper_bound(k)));}
         private:
             tree_type tree;
 

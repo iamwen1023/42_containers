@@ -16,7 +16,7 @@ struct rb_tree_iterator {
     base_ptr node;
 
     rb_tree_iterator(){}
-    rb_tree_iterator(base_ptr x){node = x;}
+    rb_tree_iterator(base_ptr x): node(x){}
     rb_tree_iterator(const iterator& it){node = it.node;}
     bool operator==(const iterator& y) const { return node == y.node; }
     void successor(){
@@ -62,6 +62,17 @@ struct rb_tree_iterator {
         node.predecessor();
         return tmp;
     }
+
+    // iterator minimum(){
+    //     while(node->left != 0)
+    //         node = node->left;
+    //     return node;
+    // }
+    // iterator maximum(){
+    //     while(node->right != 0)
+    //         node =  x->right;
+    //     return node;
+    // } 
 };
 
 template<class Value>
@@ -89,9 +100,13 @@ struct const_rb_tree_iterator {
             node = y;
             y = y->parent;
         }
-        node = y;
+        if (node->right != y) //header
+            node = y;
     }
     void predecessor(){
+        if (node->color == RED && node->parent->parent == node)
+            node = node->right;
+        // when node = header , when node = end()
         if(node->left != 0){
             node = maximum(node->left);
             return ;

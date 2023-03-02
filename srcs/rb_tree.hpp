@@ -23,8 +23,8 @@ class rb_tree{
         typedef size_t size_type;
         // typedef ptrdiff_t difference_type;
         //Iterators
-        typedef rb_tree_iterator<node_type>                       iterator;
-        typedef const_rb_tree_iterator<node_type>                 const_iterator;
+        typedef rb_tree_iterator<value_type>                       iterator;
+        typedef const_rb_tree_iterator<value_type>                 const_iterator;
     //protected:
         node_ptr       root;
         node_ptr       header;
@@ -39,18 +39,27 @@ class rb_tree{
             tnull->left = NULL;
             tnull->right = NULL;
             tnull->parent = NULL;
-            tnull->value_field = Value();
-            root = NULL;
+            //tnull->value_field = Value();
+            root = tnull;
             header = node_alloc.allocate(1);
             header->color = RED;
             header->left = header;
             header->right = header;
             header->parent = root;
         }
-        node_type& leftmost() { return left(header); }
-        node_type& leftmost() const { return left(header); }
-        node_type& rightmost() { return right(header); }
-        node_type& rightmost() const { return right(header); }
+        node_type *creat_node(const value_type& x){
+            node_type *new_node = node_alloc.allocate(1);
+            node_alloc.construct(new_node, x);
+            new_node->left = tnull;
+            new_node->right = tnull;
+            new_node->parent =  NULL;
+            return new_node;
+        }
+        void put_node(node_ptr node){
+            node_alloc.destroy(node);
+            node_alloc.deallocate(node, 1);
+        }
+
         //construct
         rb_tree(const key_compare & comp= Compare()):node_count(0),comp(comp), node_alloc(node_allocator()){
             init();
@@ -66,17 +75,10 @@ class rb_tree{
             node_alloc.deallocate(tnull, 1);
 
         }
-        node_type *creat_node(const value_type& x){
-            node_type *new_node = node_alloc.allocate(1);
-            node_alloc.construct(new_node, x);
-            new_node->left = tnull;
-            new_node->right = tnull;
-            return new_node;
-        }
-        void put_node(node_ptr node){
-            node_alloc.destroy(node);
-            node_alloc.deallocate(node, 1);
-        }
+        node_type& leftmost() { return header->left; }
+        node_type& leftmost() const { return header->left; }
+        node_type& rightmost() { return header->right; }
+        node_type& rightmost() const { return header->right; }
         iterator begin() { return iterator(leftmost()); }
         const_iterator begin() const { return const_iterator(leftmost()); }
         iterator end() { return iterator(header); }
@@ -85,6 +87,59 @@ class rb_tree{
         const_iterator rbegin() const { return const_reverse_iterator(end()); }
         iterator rend() { return reverse_iterator(begin()); }
         const_iterator rend() const { return const_reverse_iterator(begin()); }
+        iterator find(const value_type &k){
+            node_ptr x = root;
+
+            while(x != tnull && x != NULL){
+                if(comp(x->value_field, k) == false && comp(k, x->value_field) == false)
+                    return iterator(x);
+                else if (comp(x->value_field, k) == false)
+                    x = x->left;  
+                else
+                     x = x->right;
+            }
+            return iterator(header);
+        }
+        const_iterator find(const value_type& k) const{
+            node_ptr x = root;
+
+            while(x != tnull && x != NULL){
+                if(comp(x->value_field, k) == false && comp(k, x->value_field) == false)
+                    return const_iterator(x);
+                else if (comp(x->value_field, k) == false)
+                    x = x->left;
+                else
+                    x = x->right;
+            }
+            return const_iterator(header);
+        }
+        //std::cout << a.node->value_field.first << "|" << a.node->value_field.second <<"\n";
+        iterator    lower_bound(const value_type &k){
+            std::cout<< "root <<" << root->value_field.first << "\n";
+            
+            node_ptr x = root;
+            node_ptr y = header;
+            //iterator i = iterator(root).predecessor();
+
+            while(x != tnull && x != NULL){
+                if( !comp(x->value_field, k)){
+                    y = x;
+                    x = x->left;
+                } else
+                    x = x->right;
+            }
+            return iterator(x);
+  
+        }
+        const_iterator lower_bound(const value_type& k) const{
+            node_ptr x = root;
+
+            while(x != tnull && x != NULL && comp(x->value_field, k) == true)
+                x->right;
+            return x == tnull?  const_iterator(header) : const_iterator(x);
+        }
+        // iterator upper_bound(const key_type& x){return tree->upper_bound();}
+        // const_iterator upper_bound(const key_type& x) const{return tree->upper_bound();}
         void leftRotate(node_ptr x){
             node_ptr y = x->right;
             x->right = y->left;
@@ -161,8 +216,8 @@ class rb_tree{
                     u = node->parent->parent->left;
                     if(u->color == RED){
                         u->color = BLACK;
-                        node->parent->color = RED;
-                        node->parent->parent->color = BLACK;
+                        node->parent->color = BLACK;
+                        node->parent->parent->color = RED;
                         node = node->parent->parent;
                     } else {
                         if (node == node->parent->left){
@@ -177,8 +232,8 @@ class rb_tree{
                     u = node->parent->parent->right;
                     if(u->color == RED){
                         u->color = BLACK;
-                        node->parent->color = RED;
-                        node->parent->parent->color = BLACK;
+                        node->parent->color = BLACK;
+                        node->parent->parent->color = RED;
                         node =  node->parent->parent;
                     } else {
                         if (node == node->parent->right){
@@ -231,8 +286,8 @@ class rb_tree{
                     std::cout << "L----";
                     indent += "|  ";
                 }
-
-            std::string sColor = root->color ? "RED" : "BLACK";
+            //std::cout << "\njere??? : " << root->color<< "\n";
+            std::string sColor = root->color ? "BLACK" : "RED";
             std::cout << root->value_field.first << "|"  << root->value_field.second <<  "(" << sColor << ")" << std::endl;
             printHelper(root->left, indent, false);
             printHelper(root->right, indent, true);
