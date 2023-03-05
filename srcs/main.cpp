@@ -1,5 +1,6 @@
 #include "./map.hpp"
 #include <iostream>
+#include <map>
 //enum color_type {RED, BLACK};
 template <typename Pair>
 struct SelectFirst {
@@ -36,29 +37,29 @@ class pair_compare : std::less<Key>{
 int main(){
     rb_tree<std::pair<int,char>, pair_compare<int, char>, std::allocator<std::pair<const int, char> > >  bst;
     bst.insert(std::make_pair(1,'a'));
-    bst.printTree();
+    // bst.printTree();
     bst.insert(std::make_pair(2,'b'));
-    bst.printTree();
+    // bst.printTree();
     bst.insert(std::make_pair(3,'c'));
-    bst.printTree();
+    // bst.printTree();
       bst.insert(std::make_pair(8,'d'));
-      bst.printTree();
-        bst.insert(std::make_pair(9,'e'));
-        bst.printTree();
-          bst.insert(std::make_pair(10,'f'));
-          bst.printTree();
-            bst.insert(std::make_pair(13,'i'));
-            bst.printTree();
-              bst.insert(std::make_pair(14,'j'));
-              bst.printTree();
-                bst.insert(std::make_pair(15,'k'));
-                bst.printTree();
-                  bst.insert(std::make_pair(16,'l'));
-                  bst.printTree();
-    auto a = bst.find(std::make_pair(9, 'i'));
+       bst.printTree();
+        // bst.insert(std::make_pair(9,'e'));
+        // bst.printTree();
+        //   bst.insert(std::make_pair(10,'f'));
+        //   bst.printTree();
+        //     bst.insert(std::make_pair(13,'i'));
+        //     bst.printTree();
+        //       bst.insert(std::make_pair(14,'j'));
+        //       bst.printTree();
+        //         bst.insert(std::make_pair(15,'k'));
+        //         bst.printTree();
+        //           bst.insert(std::make_pair(16,'l'));
+        //           bst.printTree();
+    rb_tree<std::pair<int,char>, pair_compare<int, char>, std::allocator<std::pair<const int, char> > >::iterator a = bst.find(std::make_pair(9, 'i'));
     std::cout << a.node->value_field.first << "|" << a.node->value_field.second <<"\n";
-    auto b = bst.lower_bound(std::make_pair(10, 'i'));
-    std::cout << b.node->value_field.first << "|" << b.node->value_field.second <<"\n";
+    // rb_tree<std::pair<int,char>, pair_compare<int, char>, std::allocator<std::pair<const int, char> > >::iterator b = bst.lower_bound(std::make_pair(10, 'i'));
+    // std::cout << b.node->value_field.first << "|" << b.node->value_field.second <<"\n";
    // bst.printTree();
     //ft::map<int, int> b;
 

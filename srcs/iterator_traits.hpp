@@ -19,7 +19,7 @@ namespace ft {
         typedef typename Iter::reference reference;
         typedef typename Iter::iterator_category iterator_category;
     };
-    template< class T >
+    template< class T > // 原生指針
     struct iterator_traits<T*>{
         typedef std::ptrdiff_t difference_type;
         typedef T  value_type;
