@@ -76,10 +76,10 @@ namespace ft {
 
             }
             // modifiers:
-            pair<iterator, bool> insert(const value_type& x);
-            iterator insert(iterator position, const value_type& x);
+            pair<iterator, bool> insert(const value_type& x){return tree.insert(x);}
+            iterator insert(iterator position, const value_type& x){return tree.insert(position, x);}
             template <class InputIterator>
-            void insert(InputIterator first, InputIterator last);
+            void insert(InputIterator first, InputIterator last){}
             void erase(iterator position);
             size_type erase(const key_type& x);
             void erase(iterator first, iterator last);
@@ -89,15 +89,15 @@ namespace ft {
             key_compare key_comp() const{return tree->comp;}
             value_compare value_comp() const{return value_compare(tree->comp);}
             // 23.3.1.3 map operations:
-            // iterator find(const key_type& x){ return tree->find(ft::make_pair(x, mapped_type()));}
-            // const_iterator find(const key_type& x) const{return tree->find(ft::make_pair(x, mapped_type()));}
-            // size_type count(const key_type& x) const{ return (find(x) == end()? 0 :1 ); }
-            // iterator    lower_bound(const key_type& x){return tree->lower_bound();}
-            // const_iterator lower_bound(const key_type& x) const{return tree->lower_bound();}
-            // iterator upper_bound(const key_type& x){return tree->upper_bound();}
-            // const_iterator upper_bound(const key_type& x) const{return tree->upper_bound();}
-            // ft::pair<iterator,iterator> equal_range(const key_type& x){return (ft::pair<iterator, iterator>(this->lower_bound(k), this->upper_bound(k)));}
-            // ft::pair<const_iterator,const_iterator> equal_range(const key_type& x) const{return (ft::pair<iterator, iterator>(this->lower_bound(k), this->upper_bound(k)));}
+            iterator find(const key_type& x){ return tree->find(ft::make_pair(x, mapped_type()));}
+            const_iterator find(const key_type& x) const{return tree->find(ft::make_pair(x, mapped_type()));}
+            size_type count(const key_type& x) const{ return (find(x) == end()? 0 :1 ); }
+            iterator    lower_bound(const key_type& x){return tree->lower_bound();}
+            const_iterator lower_bound(const key_type& x) const{return tree->lower_bound();}
+            iterator upper_bound(const key_type& x){return tree->upper_bound();}
+            const_iterator upper_bound(const key_type& x) const{return tree->upper_bound();}
+            ft::pair<iterator,iterator> equal_range(const key_type& x){return (ft::pair<iterator, iterator>(this->lower_bound(x), this->upper_bound(x)));}
+            ft::pair<const_iterator,const_iterator> equal_range(const key_type& x) const{return (ft::pair<iterator, iterator>(this->lower_bound(x), this->upper_bound(x)));}
         private:
             tree_type tree;
 

@@ -75,14 +75,13 @@ class rb_tree{
             clear_tree(root);
             node_alloc.destroy(tnull);
             node_alloc.deallocate(tnull, 1);
-
         }
-        node_type& leftmost() { return header->left; }
-        node_type& leftmost() const { return header->left; }
-        node_type& rightmost() { return header->right; }
-        node_type& rightmost() const { return header->right; }
-        iterator begin() { return iterator(leftmost()); }
-        const_iterator begin() const { return const_iterator(leftmost()); }
+        node_ptr& leftmost() { return header->left; }
+        node_ptr& leftmost() const { return header->left; }
+        node_ptr& rightmost() { return header->right; }
+        node_ptr& rightmost() const { return header->right; }
+        iterator begin() { return iterator(header->left); }
+        const_iterator begin() const { return const_iterator(header->left); }
         iterator end() { return iterator(header); }
         const_iterator end() const { return const_iterator(header); }
         iterator rbegin() { return reverse_iterator(end()); }
@@ -118,59 +117,67 @@ class rb_tree{
         //std::cout << a.node->value_field.first << "|" << a.node->value_field.second <<"\n";
         iterator    lower_bound(const value_type &k){
 
-            iterator x = begin();
-	        iterator y = end();
+            node_ptr x = root;
+	        node_ptr y = header; //end()??
 	        while ( x != NULL && x != tnull){
-	            if (comp(x->value_type, k) ==  true){
-                    std::cout<< "left <<" << x->value_field.first << "\n";
-		            y = x;
-		            --x;
-	            }
-	            else{
-                    std::cout<< "right <<" << x->value_field.first << "\n";
-                    ++x;
-                }
+	            if (comp(x->value_field, k) ==  false){
+                    y = x;
+		            x =  x->left;
+	            }else{
+                    x = x->right;
+                }   
             }
-            return y;
-            // std::cout<< "root <<" << root->value_field.first << "\n";
-            
-            // node_ptr x = root;
-            // node_ptr y = header;
-            // //iterator i = iterator(root).predecessor();
-
-            // while(x != tnull && x != NULL){
-            //     if( !comp(x->value_field, k)){
-            //         std::cout<< "left <<" << x->value_field.first << "\n";
-            //         y = x;
-            //         x = x->left;
-            //     } else{
-            //         std::cout<< "righ <<" << x->value_field.first << "\n";
-            //         x = x->right;
-            //     }
-            // }
-            // return iterator(x);
-  
+            return iterator(y);
         }
         const_iterator lower_bound(const value_type& k) const{
             node_ptr x = root;
-
-            while(x != tnull && x != NULL && comp(x->value_field, k) == true)
-                x->right;
-            return x == tnull?  const_iterator(header) : const_iterator(x);
+	        node_ptr y = header;
+	        while ( x != NULL && x != tnull){
+	            if (comp(x->value_field, k) ==  false){
+                    y = x;
+		            x =  x->left;
+	            }else{
+                    x = x->right;
+                }   
+            }
+            return const_iterator(y);
+        }
+        iterator upper_bound(const value_type& k) {
+            node_ptr x = root;
+	        node_ptr y = header;
+	        while ( x != NULL && x != tnull){
+	            if (comp(x->value_field, k) ==  true){
+                    y = x;
+		            x =  x->left;
+	            }else{
+                    x = x->right;
+                }   
+            }
+            return iterator(y);
+        }
+        const_iterator upper_bound(const value_type& k)const {
+            node_ptr x = root;
+	        node_ptr y = header;
+	        while ( x != NULL && x != tnull){
+	            if (comp(x->value_field, k) ==  true){
+                    y = x;
+		            x =  x->left;
+	            }else{
+                    x = x->right;
+                }   
+            }
+            return const_iterator(y);
         }
         // iterator upper_bound(const key_type& x){return tree->upper_bound();}
         // const_iterator upper_bound(const key_type& x) const{return tree->upper_bound();}
         void leftRotate(node_ptr x){
-            node_ptr y = x->right;//3
+            node_ptr y = x->right;
             x->right = y->left;
-            std::cout << "leftrotate\n";
-            printTree();
-            std::cout << "leftrotate\n";
             if( y->left != tnull)
                 y->left->parent = x;
             y->parent = x->parent;
-            std::cout << x->parent->value_field.first << "red :" << x->parent->color << "\n";
-            if(x->parent == NULL)
+            //if(x->parent == header)
+            if (x == root)
                 this->root = y;
             else if(x == x->parent->left)
                 x->parent->left = y;
@@ -185,7 +192,8 @@ class rb_tree{
             if(y->right != tnull)
                 y->right->parent = x;
             y->parent = x->parent;
-            if(x->parent == NULL)
+            //if(x->parent == header)
+            if (x == root)
                 this->root = x;
             else if (x == x->parent->left)
                 x->parent->left = y;
@@ -198,28 +206,31 @@ class rb_tree{
             node_ptr y = header;
             node_ptr x = root;
             bool compare = true;
-
-            // while(x != tnull){
+            // while (x != tnull){
             //     y = x;
-            //     if(comp(new_value, x->value_field) == false && (comp(x->value_field , new_value) == false)){
+            //     if (comp(new_value, x->value_field) == false && (comp(x->value_field , new_value) == false)){
             //         std::cout << "insert duplicate key!" << std::endl;
             //         return (ft::make_pair(iterator(x), false));
+            //     } else if(comp(new_value, x->value_field) == true){
+            //         x = x->left;
+            //     } else{
+            //         x = x->right;
             //     }
-            //     compare = comp(new_value, x->value_field);
-            //     x = compare? x->left: x->right;
-            // }
-            while (x != tnull){
+            while(x != tnull){
                 y = x;
-                if (comp(new_value, x->value_field) == false && (comp(x->value_field , new_value) == false)){
-                    std::cout << "insert duplicate key!" << std::endl;
-                    return (ft::make_pair(iterator(x), false));
-                } else if(comp(new_value, x->value_field) == true){
-                    x = x->left;
-                } else{
-                    x = x->right;
-                }
+                compare = comp(new_value, x->value_field);
+                x = compare? x->left: x->right; 
             }
-            return (ft::make_pair(insert_1(x, y ,new_value), true));
+            iterator j = iterator(y);
+            if(compare == true){ // x->left
+                if(j.operator== (begin()))
+                    return ft::make_pair(insert_1(x, y ,new_value), true);
+                else
+                    --j;
+            }
+            if((comp(j.node->value_field, new_value)))
+                return ft::make_pair(insert_1(x, y ,new_value), true);
+            return (ft::make_pair(j, false));
         }
         //y = parent node, x insert position?
         iterator insert_1(node_ptr x, node_ptr y, const value_type& new_value){
@@ -244,7 +255,6 @@ class rb_tree{
             }
             new_node->parent = y;
             x = new_node;
-            std::cout << "IN:" << new_value.first << "\n";
             if (new_node->parent == header){
                 new_node->color = BLACK;
                 return iterator(new_node);
@@ -252,9 +262,7 @@ class rb_tree{
             if (new_node->parent->parent == header){
                 return iterator(new_node);
             }
-            printTree();
             insertFIX(x);
-            std::cout << "here??" << x->value_field.first << "\n";
             return iterator(new_node);
         }
         void insert_old(const value_type& new_value){
@@ -289,6 +297,13 @@ class rb_tree{
                 return;
             ++node_count;
             insertFIX(new_node);
+        }
+        iterator insert(iterator position, const value_type& x){
+            comp(x, position.node->value_field);
+            return position;
+            if(position == iterator(header->left))
+                if(node_count > 0 && comp(x, position.node->value_field))
+
         }
 
         void insert_range(const value_type* first, const value_type* last){

@@ -4,7 +4,7 @@
 enum color_type {RED, BLACK,TNULL};
 template <class Value>
 struct rb_tree_node{
-    typedef rb_tree_node* base_ptr;
+    typedef rb_tree_node<Value>* base_ptr;
     color_type color;
     base_ptr parent;
     base_ptr left;
@@ -25,6 +25,6 @@ struct rb_tree_node{
         while(x->right != 0 && x->color != TNULL)
             x =  x->right;
         return x;
-    } 
+    }
 };
 #endif

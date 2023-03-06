@@ -4,6 +4,7 @@
 #include <iterator>
 #include "./iterator_traits.hpp"
 
+///predecessor()??? 
 template<class Value>
 struct rb_tree_iterator {
     typedef ft::bidirectional_iterator_tag iterator_category;
@@ -19,6 +20,17 @@ struct rb_tree_iterator {
     rb_tree_iterator(base_ptr x): node(x){}
     rb_tree_iterator(const iterator& it){node = it.node;}
     bool operator==(const iterator& y) const { return node == y.node; }
+
+    static base_ptr minimum(base_ptr x){
+        while(x->left != 0 && x->color != TNULL)
+            x = x->left;
+        return x;
+    }
+    static base_ptr maximum(base_ptr x){
+        while(x->right != 0 && x->color != TNULL)
+            x =  x->right;
+        return x;
+    }
     void successor(){
         if(node->right != 0){
             node =  minimum(node->right);
@@ -50,29 +62,24 @@ struct rb_tree_iterator {
     reference operator*() const{return base_ptr(node)->value_field;}
     pointer operator->()const{return &(operator*());}
 
-    iterator& operator++(){ node.successor(); return *this;}
+    iterator& operator++(){ successor(); return *this;}
     iterator operator++(int){
         iterator tmp = *this;
-        node.successor();
+        successor();
         return tmp;
     }
-    iterator& operator--(){node.predecessor(); return *this;}
+    iterator& operator--(){predecessor(); return *this;}
     iterator operator--(int){
         iterator tmp = *this;
-        node.predecessor();
+        predecessor();
         return tmp;
     }
-
-    // iterator minimum(){
-    //     while(node->left != 0)
-    //         node = node->left;
-    //     return node;
-    // }
-    // iterator maximum(){
-    //     while(node->right != 0)
-    //         node =  x->right;
-    //     return node;
-    // } 
+    friend bool operator==(const iterator &x, const iterator &y){
+        return x.node == y.node;
+    }
+    friend bool operator!=(const iterator &x, const iterator &y){
+        return x.node != y.node;
+    }
 };
 
 template<class Value>
@@ -103,6 +110,16 @@ struct const_rb_tree_iterator {
         if (node->right != y) //header
             node = y;
     }
+    static base_ptr minimum(base_ptr x){
+        while(x->left != 0 && x->color != TNULL)
+            x = x->left;
+        return x;
+    }
+    static base_ptr maximum(base_ptr x){
+        while(x->right != 0 && x->color != TNULL)
+            x =  x->right;
+        return x;
+    }
     void predecessor(){
         if (node->color == RED && node->parent->parent == node)
             node = node->right;
@@ -121,17 +138,23 @@ struct const_rb_tree_iterator {
     reference operator*() const{return base_ptr(node)->value_field;}
     pointer operator->()const{return &(operator*());}
 
-    iterator& operator++(){ node.successor(); return *this;}
+    iterator& operator++(){ successor(); return *this;}
     iterator operator++(int){
         iterator tmp = *this;
-        node.successor();
+        successor();
         return tmp;
     }
-    iterator& operator--(){node.predecessor(); return *this;}
+    iterator& operator--(){predecessor(); return *this;}
     iterator operator--(int){
         iterator tmp = *this;
-        node.predecessor();
+        predecessor();
         return tmp;
+    }
+    friend bool operator==(const iterator &x, const iterator &y){
+        return x.node == y.node;
+    }
+    friend bool operator!=(const iterator &x, const iterator &y){
+        return x.node != y.node;
     }
 };
 
