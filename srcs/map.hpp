@@ -79,7 +79,7 @@ namespace ft {
             pair<iterator, bool> insert(const value_type& x){return tree.insert(x);}
             iterator insert(iterator position, const value_type& x){return tree.insert(position, x);}
             template <class InputIterator>
-            void insert(InputIterator first, InputIterator last){}
+            void insert(InputIterator first, InputIterator last){return tree.insert_range(first, last);}
             void erase(iterator position);
             size_type erase(const key_type& x);
             void erase(iterator first, iterator last);

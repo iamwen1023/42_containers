@@ -40,6 +40,7 @@ class rb_tree{
             tnull->left = NULL;
             tnull->right = NULL;
             tnull->parent = NULL;
+            tnull->if_tnull = true;
             tnull->value_field = Value();
             root = tnull;
             header = node_alloc.allocate(1);
@@ -47,6 +48,7 @@ class rb_tree{
             header->left = header;
             header->right = header;
             header->parent = NULL;  //?
+            header->if_tnull = false;
         }
         node_type *creat_node(const value_type& x){
             node_type *new_node = node_alloc.allocate(1);
@@ -55,6 +57,7 @@ class rb_tree{
             new_node->right = tnull;
             new_node->color = RED;
             new_node->parent =  NULL;
+            new_node->if_tnull = false;
             return new_node;
         }
         void put_node(node_ptr node){
@@ -168,8 +171,7 @@ class rb_tree{
             }
             return const_iterator(y);
         }
-        // iterator upper_bound(const key_type& x){return tree->upper_bound();}
-        // const_iterator upper_bound(const key_type& x) const{return tree->upper_bound();}
+        
         void leftRotate(node_ptr x){
             node_ptr y = x->right;
             x->right = y->left;
@@ -265,49 +267,32 @@ class rb_tree{
             insertFIX(x);
             return iterator(new_node);
         }
-        void insert_old(const value_type& new_value){
-            node_type *new_node = creat_node(new_value);
-            node_type *y = NULL;
-            node_type *x = root;
-            while (x != tnull){
-                y = x;
-                if(comp(new_node->value_field, x->value_field) == true){
-                    x = x->left;
-                } else if (comp(new_node->value_field, x->value_field) == false && (comp(x->value_field ,new_node->value_field) == false)){
-                    std::cout << "inside value is the same" << std::endl;
-                    put_node(new_node);
-                    return ;
-                } else {
-                    x = x->right;
-                }
-            }
-            new_node->parent = y;
-            if ( y == NULL){
-                root = new_node;
-            } else if (comp(new_node->value_field, y->value_field) == true){
-                y->left = new_node;
-            } else {
-                y->right = new_node;
-            }
-            if (new_node->parent == NULL){
-                new_node->color = BLACK;
-                return ;
-            }
-            if (new_node->parent->parent == NULL)
-                return;
-            ++node_count;
-            insertFIX(new_node);
-        }
+        
         iterator insert(iterator position, const value_type& x){
-            comp(x, position.node->value_field);
-            return position;
-            if(position == iterator(header->left))
-                if(node_count > 0 && comp(x, position.node->value_field))
-
+            if(position == iterator(header->left)){
+                if(node_count > 0 && comp(x, position.node->value_field) == true)
+                    return insert_1(position.node, position.node, x);
+                else
+                    return insert(x).first;
+            } else if (position == iterator(header)){ //end
+                if(comp(header->right->value_field, x) == true){
+                    return insert_1(tnull, header->right, x);
+                } else
+                    return insert(x).first;
+            } else{
+                iterator before = --position;
+                if(comp(before.node->value_field, x) == true && comp(x, position.node->value_field) == true){
+                    if(before.node->right == tnull){
+                        return insert_1(tnull, before.node, x);
+                    }else
+                        return insert_1(position.node, position.node, x);
+                }else
+                    return insert(x).first;
+            }
         }
-
         void insert_range(const value_type* first, const value_type* last){
-
+            while(first != last)
+                insert(*first++);
         }
 
         void    insertFIX(node_ptr node){
@@ -366,6 +351,46 @@ class rb_tree{
                 u->parent->right = v;
             }
             v->parent = u->parent;
+        }
+        void erase(iterator position){
+            node_ptr z = position.node;
+            node_ptr y = z;
+            node_ptr x;
+            if(y->left == tnull) //find the node to replace
+                x = y->right;
+            else{
+                if (y->right == tnull)
+                    y = y->left;
+                else {
+                    y = y->right;
+                    while(y->left != tnull)
+                        y = y->left;
+                    x = y->right;
+                }
+            } // x= node to replace, y= parent of x
+            if(y != z){  //relink y in place of z  y==z when both child of position are tnull
+                z->left->parent = y;
+                y->left = z->left;
+                if(y != z->right){
+                    x->parent = y->parent;
+                    y->parent->left = x;
+                    y->right = z->right;
+                    z->right->parent = y;
+                } else  
+                    x->parent = y;
+                if(root = z)
+                    root = y;
+                else if (z->parent->left == z)
+                    z->parent->left = y;
+                else
+                    z->parent->right = y;
+                y->parent = z->parent;
+                swap(y->color, z->color);
+                y = z;
+            }else{
+
+            }  
+
         }
         // void deleteNode(node_ptr node, value_type& to_delete){
         //     node_ptr z = tnull;

@@ -10,6 +10,7 @@ struct rb_tree_node{
     base_ptr left;
     base_ptr right;
     Value value_field;
+    bool if_tnull;
 
     rb_tree_node(void): parent(NULL), left(NULL), right(NULL),color(BLACK){
     }
@@ -17,12 +18,12 @@ struct rb_tree_node{
     }
 
     static base_ptr minimum(base_ptr x){
-        while(x->left != 0 && x->color != TNULL)
+        while(x->left->if_tnull != true)
             x = x->left;
         return x;
     }
     static base_ptr maximum(base_ptr x){
-        while(x->right != 0 && x->color != TNULL)
+        while(x->right->if_tnull != true)
             x =  x->right;
         return x;
     }
