@@ -80,9 +80,9 @@ namespace ft {
             iterator insert(iterator position, const value_type& x){return tree.insert(position, x);}
             template <class InputIterator>
             void insert(InputIterator first, InputIterator last){return tree.insert_range(first, last);}
-            void erase(iterator position);
-            size_type erase(const key_type& x);
-            void erase(iterator first, iterator last);
+            void erase(iterator position){tree.erase(position);}
+            size_type erase(const key_type& x){return tree->erase(ft::make_pair(x, mapped_type()));}
+            void erase(iterator first, iterator last){tree->erase(first, last);}
             void swap(map<Key,T,Compare,Allocator>&);
             void clear();
             // observers:

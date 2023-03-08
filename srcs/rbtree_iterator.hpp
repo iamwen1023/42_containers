@@ -19,7 +19,7 @@ struct rb_tree_iterator {
     rb_tree_iterator(){}
     rb_tree_iterator(base_ptr x): node(x){}
     rb_tree_iterator(const iterator& it){node = it.node;}
-    bool operator==(const iterator& y) const { return node == y.node; }
+    //bool operator==(const iterator& y) const { return node == y.node; }
 
     base_ptr minimum(base_ptr x){
         while(x->left->if_tnull != true){

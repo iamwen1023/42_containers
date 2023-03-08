@@ -83,6 +83,16 @@ class rb_tree{
         node_ptr& leftmost() const { return header->left; }
         node_ptr& rightmost() { return header->right; }
         node_ptr& rightmost() const { return header->right; }
+        node_ptr minimum(node_ptr x) {
+            while (x->left != tnull)
+                x = x->left;
+            return x;
+        }
+        node_ptr maximum(node_ptr x) {
+            while (x->right != tnull)
+                x = x->right;
+            return x;
+        }
         iterator begin() { return iterator(header->left); }
         const_iterator begin() const { return const_iterator(header->left); }
         iterator end() { return iterator(header); }
@@ -225,7 +235,7 @@ class rb_tree{
             }
             iterator j = iterator(y);
             if(compare == true){ // x->left
-                if(j.operator== (begin()))
+                if(j == (begin()))
                     return ft::make_pair(insert_1(x, y ,new_value), true);
                 else
                     --j;
@@ -341,34 +351,23 @@ class rb_tree{
             }
             root->color = BLACK;
         }
-
-        void rbTransplant(node_ptr u, node_ptr v){
-            if(u->parent == NULL){
-                root = v;
-            } else if(u == u->parent->left){
-                u->parent->left = v;
-            } else {
-                u->parent->right = v;
-            }
-            v->parent = u->parent;
-        }
         void erase(iterator position){
             node_ptr z = position.node;
             node_ptr y = z;
             node_ptr x;
-            if(y->left == tnull) //find the node to replace
-                x = y->right;
+            if(y->left == tnull) // __z has at most one non-null child. y == z.
+                x = y->right;   //__x might be null.
             else{
-                if (y->right == tnull)
-                    y = y->left;
-                else {
+                if (y->right == tnull) //__z has exactly one non-null child. y == z.
+                    x = y->left; //_x is not null.
+                else {  //z has two children,  set y to __z's successor.  __x might be null.
                     y = y->right;
                     while(y->left != tnull)
-                        y = y->left;
+                        y = y->left; //find a node with no left child.
                     x = y->right;
                 }
-            } // x= node to replace, y= parent of x
-            if(y != z){  //relink y in place of z  y==z when both child of position are tnull
+            } //  relink y in place of z , y is z's successor
+            if(y != z){  
                 z->left->parent = y;
                 y->left = z->left;
                 if(y != z->right){
@@ -385,21 +384,111 @@ class rb_tree{
                 else
                     z->parent->right = y;
                 y->parent = z->parent;
-                swap(y->color, z->color);
+                std::swap(y->color, z->color);
                 y = z;
-            }else{
-
-            }  
-
+            }else{ //y == z
+                x->parent = y->parent;
+                if(root == z)
+                    root = x;
+                else{
+                    if(z->parent->left == z) //if z left side
+                        z->parent->left = x;
+                    else 
+                        z->parent->right = x;
+                }
+                if(leftmost() == z){
+                    if(z->right == tnull) //z->left must be tnull also?
+                         leftmost() = z->parent;
+                     //makes leftmost == header if __z == __root
+                    else
+                        leftmost() = minimum(x);
+                }
+                if(rightmost() == z){
+                    if(z->left == tnull)
+                        rightmost() = z->parent;
+                else //
+                    rightmost() = maximum(x);
+                }
+            }
+            if(y->color != RED){
+                while(x != root && x->color == BLACK){
+                    if(x == x->parent->left){
+                        node_ptr s = x->parent->right;
+                        if(s->color == RED){
+                            s->color = BLACK;
+                            x->parent->color = RED;
+                            leftRotate(x->parent);
+                            s = x->parent->right;
+                        }
+                        if(s->left->color == BLACK && s->right->color == BLACK){
+                            s->color = RED;
+                            x = x->parent;
+                        } else{
+                            if (s->right->color == BLACK){
+                                s->left->color = BLACK;
+                                s->color = RED;
+                                rightRotate(s);
+                                s = x->parent->right;
+                            }
+                            s->color = x->parent->color;
+                            x->parent->color = BLACK;
+                            s->right->color = BLACK;
+                            leftRotate(x->parent);
+                            x = root;
+                        }
+                    }else{
+                        node_ptr s = x->parent->left;
+                        if (s->color == RED) {
+                            s->color = BLACK;
+                            x->parent->color = RED;
+                            rightRotate(x->parent);
+                            s = x->parent->left;
+                        }
+                        if (s->right->color == BLACK && s->right->color == BLACK) {
+                            s->color = RED;
+                            x = x->parent;
+                        } else {
+                            if (s->left->color == BLACK) {
+                                s->right->color = BLACK;
+                                s->color = RED;
+                                leftRotate(s);
+                                s = x->parent->left;
+                            }
+                            s->color = x->parent->color;
+                            x->parent->color = BLACK;
+                            s->left->color = BLACK;
+                            rightRotate(x->parent);
+                            x = root;
+                        }
+                    }
+                }
+                x->color = BLACK;
+            }
+            put_node(y);
+            --node_count;
         }
-        // void deleteNode(node_ptr node, value_type& to_delete){
-        //     node_ptr z = tnull;
-        //     node_ptr x, y;
-        //     while (node != tnull){
-        //         if(node->value_field)
-        //     }
-        // }
-
+        size_type erase(const value_type& x){
+            iterator found = find(x);
+            if (found == end())
+                return 0;
+            erase(found);
+            return 1;
+        }
+        void erase_without_balace(node_ptr node){
+            
+        }
+        void erase(iterator first, iterator last){
+            if(first == begin() && last == end() && node_count != 0){
+                erase_without_balace(root);
+                leftmost() = header;
+                root = tnull;
+                rightmost() = header;
+                node_count = 0;
+            }else{
+                while(first != last)
+                    erase(first++);
+            }
+        }
 
         void    printTree() {
             if (root) 
