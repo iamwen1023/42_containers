@@ -42,22 +42,15 @@ namespace ft {
             typedef value_compare compare_type;
             typedef rb_tree<value_type, compare_type, Allocator> tree_type;
              // 23.3.1.1 construct/copy/destroy:
-            explicit map(const Compare& comp = Compare(), const Allocator& = Allocator()): tree(comp){
-                
-            }
+            explicit map(const Compare& comp = Compare(), const Allocator& = Allocator()): tree(comp){}
             template <class InputIterator>
-            map(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Allocator& = Allocator()){
-                
-            }
+            map(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Allocator& = Allocator()): tree(first, last, comp){}
             map(const map<Key,T,Compare,Allocator>& x){
 
             }
-            ~map(){
-
-            }
-            map<Key,T,Compare,Allocator>& operator=(const map<Key,T,Compare,Allocator>& x){
-
-            }
+            ~map(){}
+            map<Key,T,Compare,Allocator>& operator=(const map<Key,T,Compare,Allocator>& x){}
+            
             // iterators:
             iterator begin(){tree->begin();}
             const_iterator begin() const {tree->begin();}
@@ -83,8 +76,8 @@ namespace ft {
             void erase(iterator position){tree.erase(position);}
             size_type erase(const key_type& x){return tree->erase(ft::make_pair(x, mapped_type()));}
             void erase(iterator first, iterator last){tree->erase(first, last);}
-            void swap(map<Key,T,Compare,Allocator>&);
-            void clear();
+            void swap(map<Key,T,Compare,Allocator>&x){tree->swap(x);}
+            void clear(tree->clear());
             // observers:
             key_compare key_comp() const{return tree->comp;}
             value_compare value_comp() const{return value_compare(tree->comp);}

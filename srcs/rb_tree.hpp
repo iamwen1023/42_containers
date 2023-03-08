@@ -377,7 +377,7 @@ class rb_tree{
                     z->right->parent = y;
                 } else  
                     x->parent = y;
-                if(root = z)
+                if(root == z)
                     root = y;
                 else if (z->parent->left == z)
                     z->parent->left = y;
@@ -474,22 +474,40 @@ class rb_tree{
             erase(found);
             return 1;
         }
-        void erase_without_balace(node_ptr node){
-            
+        void erase_without_balance(node_ptr node){
+            while(node != tnull){
+                //std::cout << "node->right :" << node->right->value_field.first << "\n";
+                erase_without_balance(node->right);
+                node_ptr y = node->left;
+                put_node(node);
+                node = y;
+                //std::cout << "node :" << node->value_field.first << "\n";
+            }      
         }
         void erase(iterator first, iterator last){
             if(first == begin() && last == end() && node_count != 0){
-                erase_without_balace(root);
+                erase_without_balance(root);
                 leftmost() = header;
                 root = tnull;
                 rightmost() = header;
                 node_count = 0;
             }else{
-                while(first != last)
-                    erase(first++);
+                while(first != last){
+                    erase(first);
+                    ++first;
+                }
             }
         }
-
+        void swap(rb_tree<Value,Compare,Allocator>&x){
+            std::swap(root, x.root);
+            std::swap(header, x.header);
+            std::swap(node_count, x.node_count);
+            std::swap(comp, x.comp);
+            std::swap(node_alloc, x.node_alloc);
+        }
+        void clear(){
+            erase(begin(), end());
+        }
         void    printTree() {
             if (root) 
                 printHelper(this->root, "", true);
@@ -512,8 +530,6 @@ class rb_tree{
                     sColor = "RED";
                 else if (root->color == BLACK)
                     sColor = "BLACK";
-                else
-                    sColor = "tnull";
             std::cout << root->value_field.first << "|"  << root->value_field.second <<  "(" << sColor << ")" << std::endl;
             printHelper(root->left, indent, false);
             printHelper(root->right, indent, true);

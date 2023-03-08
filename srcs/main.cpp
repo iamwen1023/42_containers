@@ -58,7 +58,7 @@ int main(){
     // std::cout << c.node->value_field.first << "|" << c.node->value_field.second <<"\n";
     // rb_tree<std::pair<int,char>, pair_compare<int, char>, std::allocator<std::pair<const int, char> > >::iterator i = bst.begin();
     //bst.insert(i, std::make_pair(100,'a'));
-    bst.erase(std::make_pair(17, '|'));
+    bst.erase(bst.begin(), bst.end());
     bst.printTree();
    // bst.printTree();
     //ft::map<int, int> b;
