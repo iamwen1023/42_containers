@@ -63,15 +63,15 @@ class rb_tree{
             node_alloc.deallocate(node, 1);
         }
         void copy_tree(node_ptr des , node_ptr src, node_ptr other_tnull){
-            // std::cout << "root :" << src->value_field.first << "\n";
+            std::cout << "root :" << src->value_field.first << "\n";
             if (src ==  NULL)
                 return ;
             else if(src == other_tnull){
-                //std::cout << "root1 :" << src->value_field.first << "\n";
-                des = tnull;
+                std::cout << "root1 :" << src->value_field.first << "\n";
+                des = this->tnull;
             }
             else{
-                // std::cout << "root2 :" << src->value_field.first << "\n";
+                std::cout << "root2 :" << src->value_field.first << "\n";
                 des = node_alloc.allocate(1);
                 node_alloc.construct(des, src->value_field);
                 des->parent = src->parent;
@@ -96,11 +96,16 @@ class rb_tree{
             // std::cout << "root??" << x.root->value_field.first <<"\n";
             //root = x.root;
             header = x.header;
+            header->left = x.header->left;
+            header->right = x.header->right;
             copy_tree(root, x.root, x.tnull);
-            if(root != tnull){
-                leftmost() = minimum(root);
-                rightmost() = maximum(root);
-            }
+            std::cout << "what is root ?" << x.root->value_field.first << "\n";
+            std::cout << "what is root ?" << root->value_field.first << "\n";
+            root = x.root;
+            // if(root != tnull){
+            //     leftmost() = minimum(root);
+            //     rightmost() = maximum(root);
+            // }
         }
         rb_tree<Value,Compare,allocator>& operator=(const rb_tree<Value,Compare,allocator>& x){
             // tree = x.tree;
@@ -108,12 +113,16 @@ class rb_tree{
         }
         ~rb_tree(){
             if (root){
-                clear_tree(root);
+                erase(begin(), end());
                 node_count = 0;
-                node_alloc.destroy(tnull);
-                node_alloc.deallocate(tnull, 1);
-                node_alloc.destroy(header);
-                node_alloc.deallocate(header, 1);
+                if (tnull != NULL){
+                    node_alloc.destroy(tnull);
+                    node_alloc.deallocate(tnull, 1);
+                }
+                if (header != NULL){
+                    node_alloc.destroy(header);
+                    //node_alloc.deallocate(header, 1); ???
+                }
             }
         }
         node_ptr& leftmost() { return header->left; }
@@ -255,16 +264,7 @@ class rb_tree{
             node_ptr y = header;
             node_ptr x = root;
             bool compare = true;
-            // while (x != tnull){
-            //     y = x;
-            //     if (comp(new_value, x->value_field) == false && (comp(x->value_field , new_value) == false)){
-            //         std::cout << "insert duplicate key!" << std::endl;
-            //         return (ft::make_pair(iterator(x), false));
-            //     } else if(comp(new_value, x->value_field) == true){
-            //         x = x->left;
-            //     } else{
-            //         x = x->right;
-            //     }
+
             while(x != tnull){
                 y = x;
                 compare = comp(new_value, x->value_field);
@@ -508,8 +508,9 @@ class rb_tree{
             return 1;
         }
         void erase_without_balance(node_ptr node){
-            while(node != tnull){
-                //std::cout << "node->right :" << node->right->value_field.first << "\n";
+            while(node != NULL && node != tnull){
+                //std::cout << "node->right :" << node->value_field.first << "\n";
+                //std::cout << "if tnull"<< node->if_tnull<<"\n";
                 erase_without_balance(node->right);
                 node_ptr y = node->left;
                 put_node(node);
@@ -548,28 +549,28 @@ class rb_tree{
                 std::cout << "not root!\n";
         }
         void printHelper(node_ptr root, std::string indent, bool last) {
-            // if (root != 0) {
-            //         std::cout << indent;
-            //     if (last) {
-            //         std::cout << "R----";
-            //         indent += "   ";
-            //     } else {
-            //         std::cout << "L----";
-            //         indent += "|  ";
-            //     }
-            // //std::cout << "\njere??? : " << root->color<< "\n";
-            // std::string sColor;
-            //     if (root->color == RED)
-            //         sColor = "RED";
-            //     else if (root->color == BLACK)
-            //         sColor = "BLACK";
-            // std::cout << root->value_field.first << "|"  << root->value_field.second <<  "(" << sColor << ")" << std::endl;
-            // printHelper(root->left, indent, false);
-            // printHelper(root->right, indent, true);
-            // }
+            if (root != 0) {
+                    std::cout << indent;
+                if (last) {
+                    std::cout << "R----";
+                    indent += "   ";
+                } else {
+                    std::cout << "L----";
+                    indent += "|  ";
+                }
+            //std::cout << "\njere??? : " << root->color<< "\n";
+            std::string sColor;
+                if (root->color == RED)
+                    sColor = "RED";
+                else if (root->color == BLACK)
+                    sColor = "BLACK";
+            std::cout << root->value_field.first << "|"  << root->value_field.second <<  "(" << sColor << ")" << std::endl;
+            printHelper(root->left, indent, false);
+            printHelper(root->right, indent, true);
+            }
         }
         void clear_tree(node_ptr subtree){
-            if (subtree && subtree != tnull){
+            if (subtree != NULL && subtree != tnull){
                 node_ptr next_left = subtree->left;
                 node_ptr next_right = subtree->right;
                 put_node(subtree);

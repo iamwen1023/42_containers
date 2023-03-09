@@ -1,6 +1,7 @@
 #include "./map.hpp"
 #include <iostream>
 #include <map>
+#include <utility>
 //enum color_type {RED, BLACK};
 template <typename Pair>
 struct SelectFirst {
@@ -64,14 +65,14 @@ int main(){
     //ft::map<int, int> b;
     ft::map<int, char> ex;
 
-    ex.insert({1, 'a'});
-    ex.insert({2, 'b'});
-    ex.insert({3, 'c'});
+    ex.insert(ft::make_pair(1, 'a'));
+    ex.insert(ft::make_pair(2, 'b'));
+    ex.insert(ft::make_pair(3, 'c'));
 
     ex.printTreemap();
-    // std::cout << "222222222222222222222222222222-------------\n";
+    std::cout << "222222222222222222222222222222-------------\n";
     ft::map<int, char> trytry(ex);
-
+    //trytry.printTreemap();
     // rb_tree<std::pair<int,char>, pair_compare<int, char>, std::allocator<std::pair<const int, char> > >  bst;
     // bst.insert({1, '3'});
     // bst.insert({3,'4'});
