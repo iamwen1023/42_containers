@@ -28,13 +28,11 @@ namespace ft {
             typedef ft::reverse_iterator<iterator> reverse_iterator;
             typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
             class value_compare : public std::binary_function<value_type,value_type,bool> {
-                friend class map;
+                friend class map<Key,T, Compare, Allocator>;
                 protected:
                     Compare comp;
                     value_compare(Compare c) : comp(c) {}
                 public:
-                    // This so the RBTree can construct the class
-                    //value_compare(void) : comp(Compare()) {}
                     bool operator()(const value_type& x, const value_type& y) const {
                         return comp(x.first, y.first);
                     }
@@ -45,11 +43,15 @@ namespace ft {
             explicit map(const Compare& comp = Compare(), const Allocator& = Allocator()): tree(comp){}
             template <class InputIterator>
             map(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Allocator& = Allocator()): tree(first, last, comp){}
-            map(const map<Key,T,Compare,Allocator>& x){
-
+            map(const map<Key,T,Compare,Allocator>& x): tree(x.tree){}
+            ~map(){
+                // std::cout << "BYE\n";
+                //tree.printTree();
             }
-            ~map(){}
-            map<Key,T,Compare,Allocator>& operator=(const map<Key,T,Compare,Allocator>& x){}
+            map<Key,T,Compare,Allocator>& operator=(const map<Key,T,Compare,Allocator>& x){
+                tree = x.tree;
+                return *this;
+            }
             
             // iterators:
             iterator begin(){tree->begin();}
@@ -66,7 +68,7 @@ namespace ft {
             size_type max_size() const {return tree->node_alloc.max_size();}
             // 23.3.1.2 element access:
             T& operator[](const key_type& x){
-
+                *(tree->insert(ft::make_pair(x, mapped_type())).first);
             }
             // modifiers:
             pair<iterator, bool> insert(const value_type& x){return tree.insert(x);}
@@ -77,7 +79,7 @@ namespace ft {
             size_type erase(const key_type& x){return tree->erase(ft::make_pair(x, mapped_type()));}
             void erase(iterator first, iterator last){tree->erase(first, last);}
             void swap(map<Key,T,Compare,Allocator>&x){tree->swap(x);}
-            void clear(tree->clear());
+            void clear(){tree->clear();}
             // observers:
             key_compare key_comp() const{return tree->comp;}
             value_compare value_comp() const{return value_compare(tree->comp);}
@@ -91,8 +93,10 @@ namespace ft {
             const_iterator upper_bound(const key_type& x) const{return tree->upper_bound();}
             ft::pair<iterator,iterator> equal_range(const key_type& x){return (ft::pair<iterator, iterator>(this->lower_bound(x), this->upper_bound(x)));}
             ft::pair<const_iterator,const_iterator> equal_range(const key_type& x) const{return (ft::pair<iterator, iterator>(this->lower_bound(x), this->upper_bound(x)));}
+            void printTreemap(){this->tree.printTree();}
         private:
             tree_type tree;
+            //void printTreemap(){this->tree.printTree();}
 
     };
     template <class Key, class T, class Compare, class Allocator>

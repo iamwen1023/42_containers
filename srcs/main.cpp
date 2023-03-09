@@ -35,33 +35,50 @@ class pair_compare : std::less<Key>{
 };
 
 int main(){
-    rb_tree<std::pair<int,char>, pair_compare<int, char>, std::allocator<std::pair<const int, char> > >  bst;
-    bst.insert(std::make_pair(1,'a'));
+    // rb_tree<std::pair<int,char>, pair_compare<int, char>, std::allocator<std::pair<const int, char> > >  bst;
+    // bst.insert(std::make_pair(1,'a'));
+    // // bst.printTree();
+    // bst.insert(std::make_pair(2,'b'));
+    // // bst.printTree();
+    // bst.insert(std::make_pair(3,'c'));
+    // // bst.printTree();
+    //   bst.insert(std::make_pair(8,'d'));
+    //     bst.insert(std::make_pair(9,'e'));
+    //       bst.insert(std::make_pair(10,'f'));
+    //         bst.insert(std::make_pair(13,'i'));
+    //           bst.insert(std::make_pair(14,'j'));
+    //             bst.insert(std::make_pair(15,'k'));
+    //               bst.insert(std::make_pair(16,'l'));
+    //               //bst.printTree();
+    // rb_tree<std::pair<int,char>, pair_compare<int, char>, std::allocator<std::pair<const int, char> > >::iterator a = bst.find(std::make_pair(16, 'i'));
+    // std::cout << a.node->value_field.first << "|" << a.node->value_field.second <<"\n";
+    // // rb_tree<std::pair<int,char>, pair_compare<int, char>, std::allocator<std::pair<const int, char> > >::iterator b = bst.lower_bound(std::make_pair(11, 'i'));
+    // // std::cout << b.node->value_field.first << "|" << b.node->value_field.second <<"\n";
+    // // rb_tree<std::pair<int,char>, pair_compare<int, char>, std::allocator<std::pair<const int, char> > >::iterator c = bst.upper_bound(std::make_pair(16, 'i'));
+    // // std::cout << c.node->value_field.first << "|" << c.node->value_field.second <<"\n";
+    // // rb_tree<std::pair<int,char>, pair_compare<int, char>, std::allocator<std::pair<const int, char> > >::iterator i = bst.begin();
+    // //bst.insert(i, std::make_pair(100,'a'));
+    // bst.erase(bst.begin(), bst.end());
     // bst.printTree();
-    bst.insert(std::make_pair(2,'b'));
-    // bst.printTree();
-    bst.insert(std::make_pair(3,'c'));
-    // bst.printTree();
-      bst.insert(std::make_pair(8,'d'));
-        bst.insert(std::make_pair(9,'e'));
-          bst.insert(std::make_pair(10,'f'));
-            bst.insert(std::make_pair(13,'i'));
-              bst.insert(std::make_pair(14,'j'));
-                bst.insert(std::make_pair(15,'k'));
-                  bst.insert(std::make_pair(16,'l'));
-                  bst.printTree();
-    rb_tree<std::pair<int,char>, pair_compare<int, char>, std::allocator<std::pair<const int, char> > >::iterator a = bst.find(std::make_pair(16, 'i'));
-    std::cout << a.node->value_field.first << "|" << a.node->value_field.second <<"\n";
-    // rb_tree<std::pair<int,char>, pair_compare<int, char>, std::allocator<std::pair<const int, char> > >::iterator b = bst.lower_bound(std::make_pair(11, 'i'));
-    // std::cout << b.node->value_field.first << "|" << b.node->value_field.second <<"\n";
-    // rb_tree<std::pair<int,char>, pair_compare<int, char>, std::allocator<std::pair<const int, char> > >::iterator c = bst.upper_bound(std::make_pair(16, 'i'));
-    // std::cout << c.node->value_field.first << "|" << c.node->value_field.second <<"\n";
-    // rb_tree<std::pair<int,char>, pair_compare<int, char>, std::allocator<std::pair<const int, char> > >::iterator i = bst.begin();
-    //bst.insert(i, std::make_pair(100,'a'));
-    bst.erase(bst.begin(), bst.end());
-    bst.printTree();
    // bst.printTree();
     //ft::map<int, int> b;
+    ft::map<int, char> ex;
+
+    ex.insert({1, 'a'});
+    ex.insert({2, 'b'});
+    ex.insert({3, 'c'});
+
+    ex.printTreemap();
+    // std::cout << "222222222222222222222222222222-------------\n";
+    ft::map<int, char> trytry(ex);
+
+    // rb_tree<std::pair<int,char>, pair_compare<int, char>, std::allocator<std::pair<const int, char> > >  bst;
+    // bst.insert({1, '3'});
+    // bst.insert({3,'4'});
+    // bst.insert({5,'7'});
+    // bst.printTree();
+
+    
 
 
 }

@@ -17,12 +17,9 @@ class rb_tree{
     
         typedef Value value_type;
         typedef Compare key_compare;
-        typedef value_type& reference;
-        // typedef const value_type& const_reference;
         typedef rb_tree_node<Value> node_type;
         typedef node_type           *node_ptr;
         typedef size_t size_type;
-        // typedef ptrdiff_t difference_type;
         //Iterators
         typedef rb_tree_iterator<value_type>                       iterator;
         typedef const_rb_tree_iterator<value_type>                 const_iterator;
@@ -41,7 +38,8 @@ class rb_tree{
             tnull->right = NULL;
             tnull->parent = NULL;
             tnull->if_tnull = true;
-            tnull->value_field = Value();
+            tnull->value_field = Value(); //printout 0
+            // std::cout << "initial tnull:" << tnull->value_field.first << "\n";
             root = tnull;
             header = node_alloc.allocate(1);
             header->color = RED;
@@ -64,9 +62,28 @@ class rb_tree{
             node_alloc.destroy(node);
             node_alloc.deallocate(node, 1);
         }
-
+        void copy_tree(node_ptr des , node_ptr src, node_ptr other_tnull){
+            // std::cout << "root :" << src->value_field.first << "\n";
+            if (src ==  NULL)
+                return ;
+            else if(src == other_tnull){
+                //std::cout << "root1 :" << src->value_field.first << "\n";
+                des = tnull;
+            }
+            else{
+                // std::cout << "root2 :" << src->value_field.first << "\n";
+                des = node_alloc.allocate(1);
+                node_alloc.construct(des, src->value_field);
+                des->parent = src->parent;
+                des->left = src->left;
+                des->right = src->right;
+                des->color = src->color;
+                copy_tree(des->left, src->left, other_tnull);
+                copy_tree(des->right, src->right, other_tnull);
+            }
+        }
         //construct
-        rb_tree(const key_compare & comp= Compare()):node_count(0),comp(comp), node_alloc(node_allocator()){
+        rb_tree(const Compare& comp= Compare()):node_count(0),comp(comp), node_alloc(node_allocator()){
             init();
         }
         rb_tree(const value_type* first, const value_type* last, const Compare& comp = Compare())
@@ -74,10 +91,30 @@ class rb_tree{
             init();
             insert(first, last);
         }
+        rb_tree(const rb_tree<Value,Compare,allocator>& x):node_count(x.node_count), comp(x.comp), node_alloc(x.node_alloc){
+            init();
+            // std::cout << "root??" << x.root->value_field.first <<"\n";
+            //root = x.root;
+            header = x.header;
+            copy_tree(root, x.root, x.tnull);
+            if(root != tnull){
+                leftmost() = minimum(root);
+                rightmost() = maximum(root);
+            }
+        }
+        rb_tree<Value,Compare,allocator>& operator=(const rb_tree<Value,Compare,allocator>& x){
+            // tree = x.tree;
+            return *this;
+        }
         ~rb_tree(){
-            clear_tree(root);
-            node_alloc.destroy(tnull);
-            node_alloc.deallocate(tnull, 1);
+            if (root){
+                clear_tree(root);
+                node_count = 0;
+                node_alloc.destroy(tnull);
+                node_alloc.deallocate(tnull, 1);
+                node_alloc.destroy(header);
+                node_alloc.deallocate(header, 1);
+            }
         }
         node_ptr& leftmost() { return header->left; }
         node_ptr& leftmost() const { return header->left; }
@@ -323,9 +360,7 @@ class rb_tree{
                         }
                         node->parent->color = BLACK;
                         node->parent->parent->color = RED;
-                        printTree();
                         leftRotate(node->parent->parent);
-                        printTree();
                     }
                 } else {
                     u = node->parent->parent->right;
@@ -346,8 +381,6 @@ class rb_tree{
                 }
                 if (node == root)
                     break ;
-                std::cout << "here\n";
-                printTree();
             }
             root->color = BLACK;
         }
@@ -498,7 +531,7 @@ class rb_tree{
                 }
             }
         }
-        void swap(rb_tree<Value,Compare,Allocator>&x){
+        void swap(rb_tree<Value,Compare,allocator>&x){
             std::swap(root, x.root);
             std::swap(header, x.header);
             std::swap(node_count, x.node_count);
@@ -515,33 +548,31 @@ class rb_tree{
                 std::cout << "not root!\n";
         }
         void printHelper(node_ptr root, std::string indent, bool last) {
-            if (root != 0) {
-                    std::cout << indent;
-                if (last) {
-                    std::cout << "R----";
-                    indent += "   ";
-                } else {
-                    std::cout << "L----";
-                    indent += "|  ";
-                }
-            //std::cout << "\njere??? : " << root->color<< "\n";
-            std::string sColor;
-                if (root->color == RED)
-                    sColor = "RED";
-                else if (root->color == BLACK)
-                    sColor = "BLACK";
-            std::cout << root->value_field.first << "|"  << root->value_field.second <<  "(" << sColor << ")" << std::endl;
-            printHelper(root->left, indent, false);
-            printHelper(root->right, indent, true);
-            }
+            // if (root != 0) {
+            //         std::cout << indent;
+            //     if (last) {
+            //         std::cout << "R----";
+            //         indent += "   ";
+            //     } else {
+            //         std::cout << "L----";
+            //         indent += "|  ";
+            //     }
+            // //std::cout << "\njere??? : " << root->color<< "\n";
+            // std::string sColor;
+            //     if (root->color == RED)
+            //         sColor = "RED";
+            //     else if (root->color == BLACK)
+            //         sColor = "BLACK";
+            // std::cout << root->value_field.first << "|"  << root->value_field.second <<  "(" << sColor << ")" << std::endl;
+            // printHelper(root->left, indent, false);
+            // printHelper(root->right, indent, true);
+            // }
         }
         void clear_tree(node_ptr subtree){
             if (subtree && subtree != tnull){
                 node_ptr next_left = subtree->left;
                 node_ptr next_right = subtree->right;
-                node_alloc.destroy(subtree);
-                node_alloc.deallocate(subtree, 1);
-                node_count--;
+                put_node(subtree);
                 clear_tree(next_left);
                 clear_tree(next_right);
             }
