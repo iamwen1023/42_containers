@@ -70,9 +70,9 @@ int main(){
     ex.insert(ft::make_pair(3, 'c'));
 
     ex.printTreemap();
-    std::cout << "222222222222222222222222222222-------------\n";
+   
     ft::map<int, char> trytry(ex);
-    //trytry.printTreemap();
+    trytry.printTreemap();
     // rb_tree<std::pair<int,char>, pair_compare<int, char>, std::allocator<std::pair<const int, char> > >  bst;
     // bst.insert({1, '3'});
     // bst.insert({3,'4'});

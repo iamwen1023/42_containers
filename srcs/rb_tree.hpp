@@ -33,15 +33,15 @@ class rb_tree{
         
         void init(){
             tnull = node_alloc.allocate(1);
-            tnull->color = BLACK; //black
+            node_alloc.construct(tnull, Value()); //printout 0
+            tnull->color = BLACK; 
             tnull->left = NULL;
             tnull->right = NULL;
             tnull->parent = NULL;
             tnull->if_tnull = true;
-            tnull->value_field = Value(); //printout 0
-            // std::cout << "initial tnull:" << tnull->value_field.first << "\n";
             root = tnull;
             header = node_alloc.allocate(1);
+            node_alloc.construct(header, Value()); //printout 0
             header->color = RED;
             header->left = header;
             header->right = header;
@@ -62,25 +62,30 @@ class rb_tree{
             node_alloc.destroy(node);
             node_alloc.deallocate(node, 1);
         }
-        void copy_tree(node_ptr des , node_ptr src, node_ptr other_tnull){
-            std::cout << "root :" << src->value_field.first << "\n";
-            if (src ==  NULL)
-                return ;
-            else if(src == other_tnull){
-                std::cout << "root1 :" << src->value_field.first << "\n";
-                des = this->tnull;
+
+        node_ptr copy_tree(node_ptr x, node_ptr p){
+            node_ptr r = x;
+            while (x->if_tnull == false) {
+                node_ptr y = node_alloc.allocate(1);
+                if (r == x)
+                    r = y;  // save for return value
+                node_alloc.construct(y, x->value_field);
+                y->if_tnull = x->if_tnull;
+                // if (y->if_tnull == true)
+                //     p->left = tnull;
+                // else
+                //     p->left = y;
+                y->parent = p;
+                y->color = x->color;
+                y->right = copy_tree(x->right, y);
+                // if (y->right->if_tnull == true)
+                //     y->right
+               // std::cout << "YYY:" << y->value_field.first << "|" << y->right->value_field.first <<"|" << y->right->if_tnull <<"\n";
+                p = y;
+                x = x->left;
             }
-            else{
-                std::cout << "root2 :" << src->value_field.first << "\n";
-                des = node_alloc.allocate(1);
-                node_alloc.construct(des, src->value_field);
-                des->parent = src->parent;
-                des->left = src->left;
-                des->right = src->right;
-                des->color = src->color;
-                copy_tree(des->left, src->left, other_tnull);
-                copy_tree(des->right, src->right, other_tnull);
-            }
+            p->left = tnull;
+            return r;
         }
         //construct
         rb_tree(const Compare& comp= Compare()):node_count(0),comp(comp), node_alloc(node_allocator()){
@@ -93,50 +98,55 @@ class rb_tree{
         }
         rb_tree(const rb_tree<Value,Compare,allocator>& x):node_count(x.node_count), comp(x.comp), node_alloc(x.node_alloc){
             init();
-            // std::cout << "root??" << x.root->value_field.first <<"\n";
-            //root = x.root;
-            header = x.header;
-            header->left = x.header->left;
-            header->right = x.header->right;
-            copy_tree(root, x.root, x.tnull);
-            std::cout << "what is root ?" << x.root->value_field.first << "\n";
-            std::cout << "what is root ?" << root->value_field.first << "\n";
-            root = x.root;
-            // if(root != tnull){
-            //     leftmost() = minimum(root);
-            //     rightmost() = maximum(root);
-            // }
+            root = copy_tree(x.root, header);
+            if (root->if_tnull == true) {
+                leftmost() = header;
+                rightmost() = header;
+            } else {
+	            leftmost() = minimum(root);
+                rightmost() = maximum(root);
+            }
         }
         rb_tree<Value,Compare,allocator>& operator=(const rb_tree<Value,Compare,allocator>& x){
-            // tree = x.tree;
+            if(this != &x){
+                erase(begin(), end());
+                root = copy_tree(x.root, header);
+                if (root->if_tnull == true) {
+                    leftmost() = header;
+                    rightmost() = header;
+                } else {
+	                leftmost() = minimum(root);
+                    rightmost() = maximum(root);
+                }
+                node_count = x.node_count;
+            }
             return *this;
         }
         ~rb_tree(){
-            if (root){
-                erase(begin(), end());
-                node_count = 0;
-                if (tnull != NULL){
-                    node_alloc.destroy(tnull);
-                    node_alloc.deallocate(tnull, 1);
-                }
-                if (header != NULL){
-                    node_alloc.destroy(header);
-                    //node_alloc.deallocate(header, 1); ???
-                }
-            }
+            if (node_count)
+				clear_tree(root);
+            root = NULL;
+			node_alloc.destroy(header);
+			node_alloc.deallocate(header, 1);
+            node_alloc.destroy(tnull);
+			node_alloc.deallocate(tnull, 1);
+			
         }
         node_ptr& leftmost() { return header->left; }
         node_ptr& leftmost() const { return header->left; }
         node_ptr& rightmost() { return header->right; }
         node_ptr& rightmost() const { return header->right; }
         node_ptr minimum(node_ptr x) {
-            while (x->left != tnull)
+            while (x->left->if_tnull == false)
                 x = x->left;
             return x;
         }
         node_ptr maximum(node_ptr x) {
-            while (x->right != tnull)
+            while (x->right->if_tnull == false){
+                //std::cout << "X:" << x->value_field.first << "\n";
                 x = x->right;
+                //std::cout << "X:" << x->value_field.first << "\n";
+            }
             return x;
         }
         iterator begin() { return iterator(header->left); }
@@ -264,7 +274,6 @@ class rb_tree{
             node_ptr y = header;
             node_ptr x = root;
             bool compare = true;
-
             while(x != tnull){
                 y = x;
                 compare = comp(new_value, x->value_field);
@@ -508,9 +517,8 @@ class rb_tree{
             return 1;
         }
         void erase_without_balance(node_ptr node){
-            while(node != NULL && node != tnull){
-                //std::cout << "node->right :" << node->value_field.first << "\n";
-                //std::cout << "if tnull"<< node->if_tnull<<"\n";
+            while(node != tnull){
+                //std::cout << "node->right :" << node->right->value_field.first << "\n";
                 erase_without_balance(node->right);
                 node_ptr y = node->left;
                 put_node(node);
@@ -556,7 +564,7 @@ class rb_tree{
                     indent += "   ";
                 } else {
                     std::cout << "L----";
-                    indent += "|  ";
+                    indent += "   ";
                 }
             //std::cout << "\njere??? : " << root->color<< "\n";
             std::string sColor;
@@ -569,13 +577,14 @@ class rb_tree{
             printHelper(root->right, indent, true);
             }
         }
-        void clear_tree(node_ptr subtree){
-            if (subtree != NULL && subtree != tnull){
-                node_ptr next_left = subtree->left;
-                node_ptr next_right = subtree->right;
-                put_node(subtree);
-                clear_tree(next_left);
-                clear_tree(next_right);
+        void clear_tree(node_ptr node){
+            if ( node->if_tnull == true || node == header || node == NULL )
+                return ;
+            else{
+                clear_tree(node->left);
+                clear_tree(node->right);
+                node_alloc.destroy(node);
+                node_alloc.deallocate(node, 1);
             }
         }
 };
