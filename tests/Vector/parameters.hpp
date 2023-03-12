@@ -1,14 +1,15 @@
 #ifndef PARAMETERS_HPP
-#define PARAMETERS_HPP
-#include <vector>
-#include "../../srcs/vector.hpp"
-#include "../compplex_types.hpp"
+# define PARAMETERS_HPP
 
-// Macros
+# include <iostream>
+# include <vector>
+# include "../../srcs/vector.hpp"
+# include "../complex_types.hpp"
+
+// Macro for VECTOR
 # define VECTOR typename TestFixture::Types
 
-// Types to test
-// Generic test set
+// Types to use for test
 using SimpleType = ::testing::Types
 <
 	ft::vector<int>,
@@ -26,7 +27,7 @@ using ComplexTypes = ::testing::Types
 	ft::vector<int>,
 	std::vector<int>,
 	ft::vector<char>,
-	std::vector<char>,
+	std::vector<char>,	
 	ft::vector<A<int> >,
 	std::vector<A<int> >,
 	ft::vector<A<float> >,
@@ -45,6 +46,7 @@ using stdPerfType = ::testing::Types
 	std::vector<int>
 >;
 
+// Test suites
 template<typename T>
 struct VectorComplexConstruct : public testing::Test { using Types = T; };
 TYPED_TEST_SUITE(VectorComplexConstruct, ComplexTypes);
@@ -96,4 +98,5 @@ TYPED_TEST_SUITE(VectorPerformance_ft, ftPerfType);
 template<typename T>
 struct VectorPerformance_std : public testing::Test { using Types = T; };
 TYPED_TEST_SUITE(VectorPerformance_std, stdPerfType);
+
 #endif

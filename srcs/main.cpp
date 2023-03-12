@@ -2,38 +2,6 @@
 #include <iostream>
 #include <map>
 #include <utility>
-//enum color_type {RED, BLACK};
-template <typename Pair>
-struct SelectFirst {
-    typedef typename Pair::first_type result_type;
-    const result_type& operator()(const Pair& p) const {
-        return p.first;
-    }
-    result_type& operator()(Pair& p) const {
-        return p.first;
-    }
-};
-
-template <class Key, class T, class Compare = std::less<Key> >
-class pair_compare : std::less<Key>{
-    protected:
-    Compare _comp;
-    pair_compare(Compare c) : _comp(c) {}
-
-        public:
-                    // This so the RBTree can construct the class
-        pair_compare(void) : _comp(Compare()) {}
-
-        typedef Key                                         key_type;
-        typedef T                                           mapped_type;
-        typedef std::pair<const key_type, mapped_type>           value_type;
-
-        typedef value_type  first_argument_type;
-        typedef value_type  second_argument_type;
-                    
-        bool operator()(const value_type &x, const value_type &y)const
-        { return _comp(x.first, y.first); }
-};
 
 int main(){
     // rb_tree<std::pair<int,char>, pair_compare<int, char>, std::allocator<std::pair<const int, char> > >  bst;
@@ -73,6 +41,22 @@ int main(){
    
     ft::map<int, char> trytry(ex);
     trytry.printTreemap();
+    trytry.insert(ft::make_pair(4, 'a'));
+    trytry.insert(ft::make_pair(5, 'a'));
+    trytry.insert(ft::make_pair(6, 'a'));
+    trytry.insert(ft::make_pair(7, 'a'));
+    trytry.insert(ft::make_pair(8, 'a'));
+    trytry.insert(ft::make_pair(9, 'a'));
+    //trytry.printTreemap();
+    ft::map<int, char> ex1;
+    ex1=trytry;
+    ex1.printTreemap();
+    bool ans= (ex1==trytry);
+    bool ans2= (ex1==ex);
+    std::cout << "result:" << ans  << ans2 << std::endl;
+    std::cout << ex1[3] << "\n";
+    ex1[3] = 'z';
+    std::cout << ex1[3] << "\n";
     // rb_tree<std::pair<int,char>, pair_compare<int, char>, std::allocator<std::pair<const int, char> > >  bst;
     // bst.insert({1, '3'});
     // bst.insert({3,'4'});

@@ -6,6 +6,7 @@
 #include "./rb_node.hpp"
 #include "./rbtree_iterator.hpp"
 #include "./pair.hpp"
+#include "./reverse_iterator.hpp"
 
 template <class Value, class Compare, class allocator>
 class rb_tree{
@@ -23,6 +24,9 @@ class rb_tree{
         //Iterators
         typedef rb_tree_iterator<value_type>                       iterator;
         typedef const_rb_tree_iterator<value_type>                 const_iterator;
+        typedef ft::reverse_iterator<iterator>                     reverse_iterator;
+        typedef ft::reverse_iterator<const_iterator>               const_reverse_iterator;
+
     //protected:
         node_ptr       root;
         node_ptr       header;
@@ -64,6 +68,7 @@ class rb_tree{
         }
 
         node_ptr copy_tree(node_ptr x, node_ptr p){
+            //use if_tnull to check!
             node_ptr r = x;
             while (x->if_tnull == false) {
                 node_ptr y = node_alloc.allocate(1);
@@ -74,7 +79,7 @@ class rb_tree{
                 // if (y->if_tnull == true)
                 //     p->left = tnull;
                 // else
-                //     p->left = y;
+                p->left = y;
                 y->parent = p;
                 y->color = x->color;
                 y->right = copy_tree(x->right, y);
@@ -137,6 +142,7 @@ class rb_tree{
         node_ptr& rightmost() { return header->right; }
         node_ptr& rightmost() const { return header->right; }
         node_ptr minimum(node_ptr x) {
+            //std::cout << x->value_field.first <<"\n";
             while (x->left->if_tnull == false)
                 x = x->left;
             return x;
@@ -153,14 +159,14 @@ class rb_tree{
         const_iterator begin() const { return const_iterator(header->left); }
         iterator end() { return iterator(header); }
         const_iterator end() const { return const_iterator(header); }
-        iterator rbegin() { return reverse_iterator(end()); }
-        const_iterator rbegin() const { return const_reverse_iterator(end()); }
-        iterator rend() { return reverse_iterator(begin()); }
-        const_iterator rend() const { return const_reverse_iterator(begin()); }
+        reverse_iterator rbegin() { return reverse_iterator(end()); }
+        const_reverse_iterator rbegin() const { return const_reverse_iterator(end()); }
+        reverse_iterator rend() { return reverse_iterator(begin()); }
+        const_reverse_iterator rend() const { return const_reverse_iterator(begin()); }
         iterator find(const value_type &k){
             node_ptr x = root;
 
-            while(x != tnull && x != NULL){
+            while(x->if_tnull== false && x != NULL){
                 if(comp(x->value_field, k) == false && comp(k, x->value_field) == false)
                     return iterator(x);
                 else if (comp(x->value_field, k) == false)
@@ -173,7 +179,7 @@ class rb_tree{
         const_iterator find(const value_type& k) const{
             node_ptr x = root;
 
-            while(x != tnull && x != NULL){
+            while(x->if_tnull== false && x != NULL){
                 if(comp(x->value_field, k) == false && comp(k, x->value_field) == false)
                     return const_iterator(x);
                 else if (comp(x->value_field, k) == false)
@@ -188,7 +194,7 @@ class rb_tree{
 
             node_ptr x = root;
 	        node_ptr y = header; //end()??
-	        while ( x != NULL && x != tnull){
+	        while ( x != NULL && x->if_tnull==false){
 	            if (comp(x->value_field, k) ==  false){
                     y = x;
 		            x =  x->left;
@@ -201,7 +207,7 @@ class rb_tree{
         const_iterator lower_bound(const value_type& k) const{
             node_ptr x = root;
 	        node_ptr y = header;
-	        while ( x != NULL && x != tnull){
+	        while ( x != NULL && x->if_tnull==false){
 	            if (comp(x->value_field, k) ==  false){
                     y = x;
 		            x =  x->left;
@@ -214,7 +220,7 @@ class rb_tree{
         iterator upper_bound(const value_type& k) {
             node_ptr x = root;
 	        node_ptr y = header;
-	        while ( x != NULL && x != tnull){
+	        while ( x != NULL && x->if_tnull==false){
 	            if (comp(x->value_field, k) ==  true){
                     y = x;
 		            x =  x->left;
@@ -227,7 +233,7 @@ class rb_tree{
         const_iterator upper_bound(const value_type& k)const {
             node_ptr x = root;
 	        node_ptr y = header;
-	        while ( x != NULL && x != tnull){
+	        while ( x != NULL && x->if_tnull==false){
 	            if (comp(x->value_field, k) ==  true){
                     y = x;
 		            x =  x->left;
@@ -241,7 +247,7 @@ class rb_tree{
         void leftRotate(node_ptr x){
             node_ptr y = x->right;
             x->right = y->left;
-            if( y->left != tnull)
+            if( y->left->if_tnull==false)
                 y->left->parent = x;
             y->parent = x->parent;
             //if(x->parent == header)
@@ -257,7 +263,7 @@ class rb_tree{
         void rightRotate(node_ptr x){
             node_ptr y = x->left;
             x->left = y->right;
-            if(y->right != tnull)
+            if(y->right->if_tnull==false)
                 y->right->parent = x;
             y->parent = x->parent;
             //if(x->parent == header)
@@ -273,8 +279,10 @@ class rb_tree{
         ft::pair<iterator, bool> insert(const value_type& new_value){
             node_ptr y = header;
             node_ptr x = root;
+            // std::cout << "root" << root->value_field.first <<"\n";
+            // std::cout << "root" << new_value.first <<"\n";
             bool compare = true;
-            while(x != tnull){
+            while(x->if_tnull ==  false){
                 y = x;
                 compare = comp(new_value, x->value_field);
                 x = compare? x->left: x->right; 
@@ -294,7 +302,7 @@ class rb_tree{
         iterator insert_1(node_ptr x, node_ptr y, const value_type& new_value){
             ++node_count;
             node_ptr new_node = creat_node(new_value);
-            if (y == header || x != tnull ||  comp(new_value, y->value_field) == true){
+            if (y == header || x->if_tnull==false ||  comp(new_value, y->value_field) == true){
                 y->left = new_node; // also makes leftmost = z when y == header?
                 if (y == header){
                     root = new_node;
@@ -338,7 +346,7 @@ class rb_tree{
             } else{
                 iterator before = --position;
                 if(comp(before.node->value_field, x) == true && comp(x, position.node->value_field) == true){
-                    if(before.node->right == tnull){
+                    if(before.node->right->if_tnull == true){
                         return insert_1(tnull, before.node, x);
                     }else
                         return insert_1(position.node, position.node, x);
@@ -397,14 +405,14 @@ class rb_tree{
             node_ptr z = position.node;
             node_ptr y = z;
             node_ptr x;
-            if(y->left == tnull) // __z has at most one non-null child. y == z.
+            if(y->left->if_tnull == true) // __z has at most one non-null child. y == z.
                 x = y->right;   //__x might be null.
             else{
-                if (y->right == tnull) //__z has exactly one non-null child. y == z.
+                if (y->right->if_tnull == true) //__z has exactly one non-null child. y == z.
                     x = y->left; //_x is not null.
                 else {  //z has two children,  set y to __z's successor.  __x might be null.
                     y = y->right;
-                    while(y->left != tnull)
+                    while(y->left->if_tnull == true)
                         y = y->left; //find a node with no left child.
                     x = y->right;
                 }
@@ -439,14 +447,14 @@ class rb_tree{
                         z->parent->right = x;
                 }
                 if(leftmost() == z){
-                    if(z->right == tnull) //z->left must be tnull also?
+                    if(z->right->if_tnull == true) //z->left must be tnull also?
                          leftmost() = z->parent;
                      //makes leftmost == header if __z == __root
                     else
                         leftmost() = minimum(x);
                 }
                 if(rightmost() == z){
-                    if(z->left == tnull)
+                    if(z->left->if_tnull == true)
                         rightmost() = z->parent;
                 else //
                     rightmost() = maximum(x);
@@ -517,7 +525,7 @@ class rb_tree{
             return 1;
         }
         void erase_without_balance(node_ptr node){
-            while(node != tnull){
+            while(node->if_tnull == false){
                 //std::cout << "node->right :" << node->right->value_field.first << "\n";
                 erase_without_balance(node->right);
                 node_ptr y = node->left;
@@ -572,7 +580,7 @@ class rb_tree{
                     sColor = "RED";
                 else if (root->color == BLACK)
                     sColor = "BLACK";
-            std::cout << root->value_field.first << "|"  << root->value_field.second <<  "(" << sColor << ")" << std::endl;
+            //std::cout << root->value_field.first << "|"  << root->value_field.second <<  "(" << sColor << ")" << std::endl;
             printHelper(root->left, indent, false);
             printHelper(root->right, indent, true);
             }
