@@ -463,6 +463,54 @@ map/constructors.cpp.s:
 	cd /Users/ifeelbored/ft_containers/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/map/constructors.cpp.s
 .PHONY : map/constructors.cpp.s
 
+map/element_access.o: map/element_access.cpp.o
+.PHONY : map/element_access.o
+
+# target to build an object file
+map/element_access.cpp.o:
+	cd /Users/ifeelbored/ft_containers/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/map/element_access.cpp.o
+.PHONY : map/element_access.cpp.o
+
+map/element_access.i: map/element_access.cpp.i
+.PHONY : map/element_access.i
+
+# target to preprocess a source file
+map/element_access.cpp.i:
+	cd /Users/ifeelbored/ft_containers/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/map/element_access.cpp.i
+.PHONY : map/element_access.cpp.i
+
+map/element_access.s: map/element_access.cpp.s
+.PHONY : map/element_access.s
+
+# target to generate assembly for a file
+map/element_access.cpp.s:
+	cd /Users/ifeelbored/ft_containers/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/map/element_access.cpp.s
+.PHONY : map/element_access.cpp.s
+
+map/iterators.o: map/iterators.cpp.o
+.PHONY : map/iterators.o
+
+# target to build an object file
+map/iterators.cpp.o:
+	cd /Users/ifeelbored/ft_containers/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/map/iterators.cpp.o
+.PHONY : map/iterators.cpp.o
+
+map/iterators.i: map/iterators.cpp.i
+.PHONY : map/iterators.i
+
+# target to preprocess a source file
+map/iterators.cpp.i:
+	cd /Users/ifeelbored/ft_containers/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/map/iterators.cpp.i
+.PHONY : map/iterators.cpp.i
+
+map/iterators.s: map/iterators.cpp.s
+.PHONY : map/iterators.s
+
+# target to generate assembly for a file
+map/iterators.cpp.s:
+	cd /Users/ifeelbored/ft_containers/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/ft_containers_tst.dir/build.make tests/CMakeFiles/ft_containers_tst.dir/map/iterators.cpp.s
+.PHONY : map/iterators.cpp.s
+
 pair.o: pair.cpp.o
 .PHONY : pair.o
 
@@ -584,6 +632,12 @@ help:
 	@echo "... map/constructors.o"
 	@echo "... map/constructors.i"
 	@echo "... map/constructors.s"
+	@echo "... map/element_access.o"
+	@echo "... map/element_access.i"
+	@echo "... map/element_access.s"
+	@echo "... map/iterators.o"
+	@echo "... map/iterators.i"
+	@echo "... map/iterators.s"
 	@echo "... pair.o"
 	@echo "... pair.i"
 	@echo "... pair.s"

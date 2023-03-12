@@ -237,10 +237,38 @@ tests/CMakeFiles/ft_containers_tst.dir/map/constructors.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ft_containers_tst.dir/map/constructors.cpp.s"
 	cd /Users/ifeelbored/ft_containers/build/tests && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ifeelbored/ft_containers/tests/map/constructors.cpp -o CMakeFiles/ft_containers_tst.dir/map/constructors.cpp.s
 
+tests/CMakeFiles/ft_containers_tst.dir/map/element_access.cpp.o: tests/CMakeFiles/ft_containers_tst.dir/flags.make
+tests/CMakeFiles/ft_containers_tst.dir/map/element_access.cpp.o: ../tests/map/element_access.cpp
+tests/CMakeFiles/ft_containers_tst.dir/map/element_access.cpp.o: tests/CMakeFiles/ft_containers_tst.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ifeelbored/ft_containers/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object tests/CMakeFiles/ft_containers_tst.dir/map/element_access.cpp.o"
+	cd /Users/ifeelbored/ft_containers/build/tests && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT tests/CMakeFiles/ft_containers_tst.dir/map/element_access.cpp.o -MF CMakeFiles/ft_containers_tst.dir/map/element_access.cpp.o.d -o CMakeFiles/ft_containers_tst.dir/map/element_access.cpp.o -c /Users/ifeelbored/ft_containers/tests/map/element_access.cpp
+
+tests/CMakeFiles/ft_containers_tst.dir/map/element_access.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ft_containers_tst.dir/map/element_access.cpp.i"
+	cd /Users/ifeelbored/ft_containers/build/tests && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ifeelbored/ft_containers/tests/map/element_access.cpp > CMakeFiles/ft_containers_tst.dir/map/element_access.cpp.i
+
+tests/CMakeFiles/ft_containers_tst.dir/map/element_access.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ft_containers_tst.dir/map/element_access.cpp.s"
+	cd /Users/ifeelbored/ft_containers/build/tests && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ifeelbored/ft_containers/tests/map/element_access.cpp -o CMakeFiles/ft_containers_tst.dir/map/element_access.cpp.s
+
+tests/CMakeFiles/ft_containers_tst.dir/map/iterators.cpp.o: tests/CMakeFiles/ft_containers_tst.dir/flags.make
+tests/CMakeFiles/ft_containers_tst.dir/map/iterators.cpp.o: ../tests/map/iterators.cpp
+tests/CMakeFiles/ft_containers_tst.dir/map/iterators.cpp.o: tests/CMakeFiles/ft_containers_tst.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ifeelbored/ft_containers/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object tests/CMakeFiles/ft_containers_tst.dir/map/iterators.cpp.o"
+	cd /Users/ifeelbored/ft_containers/build/tests && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT tests/CMakeFiles/ft_containers_tst.dir/map/iterators.cpp.o -MF CMakeFiles/ft_containers_tst.dir/map/iterators.cpp.o.d -o CMakeFiles/ft_containers_tst.dir/map/iterators.cpp.o -c /Users/ifeelbored/ft_containers/tests/map/iterators.cpp
+
+tests/CMakeFiles/ft_containers_tst.dir/map/iterators.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ft_containers_tst.dir/map/iterators.cpp.i"
+	cd /Users/ifeelbored/ft_containers/build/tests && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ifeelbored/ft_containers/tests/map/iterators.cpp > CMakeFiles/ft_containers_tst.dir/map/iterators.cpp.i
+
+tests/CMakeFiles/ft_containers_tst.dir/map/iterators.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ft_containers_tst.dir/map/iterators.cpp.s"
+	cd /Users/ifeelbored/ft_containers/build/tests && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ifeelbored/ft_containers/tests/map/iterators.cpp -o CMakeFiles/ft_containers_tst.dir/map/iterators.cpp.s
+
 tests/CMakeFiles/ft_containers_tst.dir/pair.cpp.o: tests/CMakeFiles/ft_containers_tst.dir/flags.make
 tests/CMakeFiles/ft_containers_tst.dir/pair.cpp.o: ../tests/pair.cpp
 tests/CMakeFiles/ft_containers_tst.dir/pair.cpp.o: tests/CMakeFiles/ft_containers_tst.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ifeelbored/ft_containers/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object tests/CMakeFiles/ft_containers_tst.dir/pair.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ifeelbored/ft_containers/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object tests/CMakeFiles/ft_containers_tst.dir/pair.cpp.o"
 	cd /Users/ifeelbored/ft_containers/build/tests && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT tests/CMakeFiles/ft_containers_tst.dir/pair.cpp.o -MF CMakeFiles/ft_containers_tst.dir/pair.cpp.o.d -o CMakeFiles/ft_containers_tst.dir/pair.cpp.o -c /Users/ifeelbored/ft_containers/tests/pair.cpp
 
 tests/CMakeFiles/ft_containers_tst.dir/pair.cpp.i: cmake_force
@@ -254,7 +282,7 @@ tests/CMakeFiles/ft_containers_tst.dir/pair.cpp.s: cmake_force
 tests/CMakeFiles/ft_containers_tst.dir/stack/stack.cpp.o: tests/CMakeFiles/ft_containers_tst.dir/flags.make
 tests/CMakeFiles/ft_containers_tst.dir/stack/stack.cpp.o: ../tests/stack/stack.cpp
 tests/CMakeFiles/ft_containers_tst.dir/stack/stack.cpp.o: tests/CMakeFiles/ft_containers_tst.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ifeelbored/ft_containers/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object tests/CMakeFiles/ft_containers_tst.dir/stack/stack.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ifeelbored/ft_containers/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object tests/CMakeFiles/ft_containers_tst.dir/stack/stack.cpp.o"
 	cd /Users/ifeelbored/ft_containers/build/tests && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT tests/CMakeFiles/ft_containers_tst.dir/stack/stack.cpp.o -MF CMakeFiles/ft_containers_tst.dir/stack/stack.cpp.o.d -o CMakeFiles/ft_containers_tst.dir/stack/stack.cpp.o -c /Users/ifeelbored/ft_containers/tests/stack/stack.cpp
 
 tests/CMakeFiles/ft_containers_tst.dir/stack/stack.cpp.i: cmake_force
@@ -268,7 +296,7 @@ tests/CMakeFiles/ft_containers_tst.dir/stack/stack.cpp.s: cmake_force
 tests/CMakeFiles/ft_containers_tst.dir/utils.cpp.o: tests/CMakeFiles/ft_containers_tst.dir/flags.make
 tests/CMakeFiles/ft_containers_tst.dir/utils.cpp.o: ../tests/utils.cpp
 tests/CMakeFiles/ft_containers_tst.dir/utils.cpp.o: tests/CMakeFiles/ft_containers_tst.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ifeelbored/ft_containers/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object tests/CMakeFiles/ft_containers_tst.dir/utils.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ifeelbored/ft_containers/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object tests/CMakeFiles/ft_containers_tst.dir/utils.cpp.o"
 	cd /Users/ifeelbored/ft_containers/build/tests && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT tests/CMakeFiles/ft_containers_tst.dir/utils.cpp.o -MF CMakeFiles/ft_containers_tst.dir/utils.cpp.o.d -o CMakeFiles/ft_containers_tst.dir/utils.cpp.o -c /Users/ifeelbored/ft_containers/tests/utils.cpp
 
 tests/CMakeFiles/ft_containers_tst.dir/utils.cpp.i: cmake_force
@@ -293,6 +321,8 @@ ft_containers_tst_OBJECTS = \
 "CMakeFiles/ft_containers_tst.dir/main.cpp.o" \
 "CMakeFiles/ft_containers_tst.dir/map/capacity.cpp.o" \
 "CMakeFiles/ft_containers_tst.dir/map/constructors.cpp.o" \
+"CMakeFiles/ft_containers_tst.dir/map/element_access.cpp.o" \
+"CMakeFiles/ft_containers_tst.dir/map/iterators.cpp.o" \
 "CMakeFiles/ft_containers_tst.dir/pair.cpp.o" \
 "CMakeFiles/ft_containers_tst.dir/stack/stack.cpp.o" \
 "CMakeFiles/ft_containers_tst.dir/utils.cpp.o"
@@ -312,13 +342,15 @@ tests/ft_containers_tst: tests/CMakeFiles/ft_containers_tst.dir/iterator.cpp.o
 tests/ft_containers_tst: tests/CMakeFiles/ft_containers_tst.dir/main.cpp.o
 tests/ft_containers_tst: tests/CMakeFiles/ft_containers_tst.dir/map/capacity.cpp.o
 tests/ft_containers_tst: tests/CMakeFiles/ft_containers_tst.dir/map/constructors.cpp.o
+tests/ft_containers_tst: tests/CMakeFiles/ft_containers_tst.dir/map/element_access.cpp.o
+tests/ft_containers_tst: tests/CMakeFiles/ft_containers_tst.dir/map/iterators.cpp.o
 tests/ft_containers_tst: tests/CMakeFiles/ft_containers_tst.dir/pair.cpp.o
 tests/ft_containers_tst: tests/CMakeFiles/ft_containers_tst.dir/stack/stack.cpp.o
 tests/ft_containers_tst: tests/CMakeFiles/ft_containers_tst.dir/utils.cpp.o
 tests/ft_containers_tst: tests/CMakeFiles/ft_containers_tst.dir/build.make
 tests/ft_containers_tst: lib/libgtest.a
 tests/ft_containers_tst: tests/CMakeFiles/ft_containers_tst.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/ifeelbored/ft_containers/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Linking CXX executable ft_containers_tst"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/ifeelbored/ft_containers/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Linking CXX executable ft_containers_tst"
 	cd /Users/ifeelbored/ft_containers/build/tests && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ft_containers_tst.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

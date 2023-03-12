@@ -28,7 +28,7 @@ class rb_tree{
         typedef ft::reverse_iterator<const_iterator>               const_reverse_iterator;
 
     //protected:
-        node_ptr       root;
+        //node_ptr       root;
         node_ptr       header;
         node_ptr       tnull;
         size_type       node_count;
@@ -37,19 +37,19 @@ class rb_tree{
         
         void init(){
             tnull = node_alloc.allocate(1);
-            node_alloc.construct(tnull, Value()); //printout 0
+            node_alloc.construct(tnull, value_type()); //printout 0
             tnull->color = BLACK; 
             tnull->left = NULL;
             tnull->right = NULL;
             tnull->parent = NULL;
             tnull->if_tnull = true;
-            root = tnull;
+            //root = tnull;
             header = node_alloc.allocate(1);
-            node_alloc.construct(header, Value()); //printout 0
+            node_alloc.construct(header, value_type()); //printout 0
             header->color = RED;
             header->left = header;
             header->right = header;
-            header->parent = NULL;  //?
+            header->parent = tnull; 
             header->if_tnull = false;
         }
         node_type *creat_node(const value_type& x){
@@ -68,7 +68,7 @@ class rb_tree{
         }
 
         node_ptr copy_tree(node_ptr x, node_ptr p){
-            //use if_tnull to check!
+            //use if_tnull to check! not use tnull
             node_ptr r = x;
             while (x->if_tnull == false) {
                 node_ptr y = node_alloc.allocate(1);
@@ -103,25 +103,25 @@ class rb_tree{
         }
         rb_tree(const rb_tree<Value,Compare,allocator>& x):node_count(x.node_count), comp(x.comp), node_alloc(x.node_alloc){
             init();
-            root = copy_tree(x.root, header);
-            if (root->if_tnull == true) {
+            root() = copy_tree(x.root(), header);
+            if (root()->if_tnull == true) {
                 leftmost() = header;
                 rightmost() = header;
             } else {
-	            leftmost() = minimum(root);
-                rightmost() = maximum(root);
+	            leftmost() = minimum(root());
+                rightmost() = maximum(root());
             }
         }
         rb_tree<Value,Compare,allocator>& operator=(const rb_tree<Value,Compare,allocator>& x){
             if(this != &x){
                 erase(begin(), end());
-                root = copy_tree(x.root, header);
-                if (root->if_tnull == true) {
+                root() = copy_tree(x.root(), header);
+                if (root()->if_tnull == true) {
                     leftmost() = header;
                     rightmost() = header;
                 } else {
-	                leftmost() = minimum(root);
-                    rightmost() = maximum(root);
+	                leftmost() = minimum(root());
+                    rightmost() = maximum(root());
                 }
                 node_count = x.node_count;
             }
@@ -129,14 +129,16 @@ class rb_tree{
         }
         ~rb_tree(){
             if (node_count)
-				clear_tree(root);
-            root = NULL;
+				clear_tree(root());
+            //root = NULL;
 			node_alloc.destroy(header);
 			node_alloc.deallocate(header, 1);
             node_alloc.destroy(tnull);
 			node_alloc.deallocate(tnull, 1);
 			
         }
+        node_ptr& root() { return header->parent; }
+        node_ptr& root() const { return header->parent; }
         node_ptr& leftmost() { return header->left; }
         node_ptr& leftmost() const { return header->left; }
         node_ptr& rightmost() { return header->right; }
@@ -164,7 +166,7 @@ class rb_tree{
         reverse_iterator rend() { return reverse_iterator(begin()); }
         const_reverse_iterator rend() const { return const_reverse_iterator(begin()); }
         iterator find(const value_type &k){
-            node_ptr x = root;
+            node_ptr x = root();
 
             while(x->if_tnull== false && x != NULL){
                 if(comp(x->value_field, k) == false && comp(k, x->value_field) == false)
@@ -177,7 +179,7 @@ class rb_tree{
             return iterator(header);
         }
         const_iterator find(const value_type& k) const{
-            node_ptr x = root;
+            node_ptr x = root();
 
             while(x->if_tnull== false && x != NULL){
                 if(comp(x->value_field, k) == false && comp(k, x->value_field) == false)
@@ -192,7 +194,7 @@ class rb_tree{
         //std::cout << a.node->value_field.first << "|" << a.node->value_field.second <<"\n";
         iterator    lower_bound(const value_type &k){
 
-            node_ptr x = root;
+            node_ptr x = root();
 	        node_ptr y = header; //end()??
 	        while ( x != NULL && x->if_tnull==false){
 	            if (comp(x->value_field, k) ==  false){
@@ -205,7 +207,7 @@ class rb_tree{
             return iterator(y);
         }
         const_iterator lower_bound(const value_type& k) const{
-            node_ptr x = root;
+            node_ptr x = root();
 	        node_ptr y = header;
 	        while ( x != NULL && x->if_tnull==false){
 	            if (comp(x->value_field, k) ==  false){
@@ -218,7 +220,7 @@ class rb_tree{
             return const_iterator(y);
         }
         iterator upper_bound(const value_type& k) {
-            node_ptr x = root;
+            node_ptr x = root();
 	        node_ptr y = header;
 	        while ( x != NULL && x->if_tnull==false){
 	            if (comp(x->value_field, k) ==  true){
@@ -231,7 +233,7 @@ class rb_tree{
             return iterator(y);
         }
         const_iterator upper_bound(const value_type& k)const {
-            node_ptr x = root;
+            node_ptr x = root();
 	        node_ptr y = header;
 	        while ( x != NULL && x->if_tnull==false){
 	            if (comp(x->value_field, k) ==  true){
@@ -251,8 +253,8 @@ class rb_tree{
                 y->left->parent = x;
             y->parent = x->parent;
             //if(x->parent == header)
-            if (x == root)
-                this->root = y;
+            if (x == root())
+                root() = y;
             else if(x == x->parent->left)
                 x->parent->left = y;
             else
@@ -267,8 +269,8 @@ class rb_tree{
                 y->right->parent = x;
             y->parent = x->parent;
             //if(x->parent == header)
-            if (x == root)
-                this->root = x;
+            if (x == root())
+                root() = x;
             else if (x == x->parent->left)
                 x->parent->left = y;
             else
@@ -278,7 +280,7 @@ class rb_tree{
         }
         ft::pair<iterator, bool> insert(const value_type& new_value){
             node_ptr y = header;
-            node_ptr x = root;
+            node_ptr x = root();
             // std::cout << "root" << root->value_field.first <<"\n";
             // std::cout << "root" << new_value.first <<"\n";
             bool compare = true;
@@ -305,7 +307,7 @@ class rb_tree{
             if (y == header || x->if_tnull==false ||  comp(new_value, y->value_field) == true){
                 y->left = new_node; // also makes leftmost = z when y == header?
                 if (y == header){
-                    root = new_node;
+                    root() = new_node;
                     //rightmost() = new_node;
                     header->right = new_node;
                 } else if (y == header->left){
@@ -355,8 +357,9 @@ class rb_tree{
             }
         }
         void insert_range(const value_type* first, const value_type* last){
-            while(first != last)
+            while(first != last){
                 insert(*first++);
+            }
         }
 
         void    insertFIX(node_ptr node){
@@ -396,10 +399,10 @@ class rb_tree{
                         rightRotate(node->parent->parent);
                     }
                 }
-                if (node == root)
+                if (node == root())
                     break ;
             }
-            root->color = BLACK;
+            root()->color = BLACK;
         }
         void erase(iterator position){
             node_ptr z = position.node;
@@ -412,11 +415,13 @@ class rb_tree{
                     x = y->left; //_x is not null.
                 else {  //z has two children,  set y to __z's successor.  __x might be null.
                     y = y->right;
-                    while(y->left->if_tnull == true)
+                    while(y->left->if_tnull == false){
                         y = y->left; //find a node with no left child.
+                    }
                     x = y->right;
                 }
             } //  relink y in place of z , y is z's successor
+            std::cout << "here??0\n";
             if(y != z){  
                 z->left->parent = y;
                 y->left = z->left;
@@ -427,8 +432,8 @@ class rb_tree{
                     z->right->parent = y;
                 } else  
                     x->parent = y;
-                if(root == z)
-                    root = y;
+                if(root() == z)
+                    root() = y;
                 else if (z->parent->left == z)
                     z->parent->left = y;
                 else
@@ -438,8 +443,8 @@ class rb_tree{
                 y = z;
             }else{ //y == z
                 x->parent = y->parent;
-                if(root == z)
-                    root = x;
+                if(root() == z)
+                    root() = x;
                 else{
                     if(z->parent->left == z) //if z left side
                         z->parent->left = x;
@@ -461,7 +466,7 @@ class rb_tree{
                 }
             }
             if(y->color != RED){
-                while(x != root && x->color == BLACK){
+                while(x != root() && x->color == BLACK){
                     if(x == x->parent->left){
                         node_ptr s = x->parent->right;
                         if(s->color == RED){
@@ -484,7 +489,7 @@ class rb_tree{
                             x->parent->color = BLACK;
                             s->right->color = BLACK;
                             leftRotate(x->parent);
-                            x = root;
+                            x = root();
                         }
                     }else{
                         node_ptr s = x->parent->left;
@@ -508,7 +513,7 @@ class rb_tree{
                             x->parent->color = BLACK;
                             s->left->color = BLACK;
                             rightRotate(x->parent);
-                            x = root;
+                            x = root();
                         }
                     }
                 }
@@ -521,11 +526,12 @@ class rb_tree{
             iterator found = find(x);
             if (found == end())
                 return 0;
+            std::cout <<"ok\n";
             erase(found);
             return 1;
         }
         void erase_without_balance(node_ptr node){
-            while(node->if_tnull == false){
+            while(node != tnull){
                 //std::cout << "node->right :" << node->right->value_field.first << "\n";
                 erase_without_balance(node->right);
                 node_ptr y = node->left;
@@ -536,9 +542,9 @@ class rb_tree{
         }
         void erase(iterator first, iterator last){
             if(first == begin() && last == end() && node_count != 0){
-                erase_without_balance(root);
+                erase_without_balance(root());
                 leftmost() = header;
-                root = tnull;
+                root() = tnull;
                 rightmost() = header;
                 node_count = 0;
             }else{
@@ -549,18 +555,23 @@ class rb_tree{
             }
         }
         void swap(rb_tree<Value,Compare,allocator>&x){
-            std::swap(root, x.root);
+            //std::swap(root, x.root);
             std::swap(header, x.header);
             std::swap(node_count, x.node_count);
             std::swap(comp, x.comp);
             std::swap(node_alloc, x.node_alloc);
         }
         void clear(){
-            erase(begin(), end());
+            if (node_count)
+				clear_tree(root());
+            leftmost() = header;
+            root() = tnull;
+            rightmost() = header;
+            node_count = 0;
         }
         void    printTree() {
-            if (root) 
-                printHelper(this->root, "", true);
+            if (root()) 
+                printHelper(root(), "", true);
             else 
                 std::cout << "not root!\n";
         }
@@ -580,13 +591,13 @@ class rb_tree{
                     sColor = "RED";
                 else if (root->color == BLACK)
                     sColor = "BLACK";
-            //std::cout << root->value_field.first << "|"  << root->value_field.second <<  "(" << sColor << ")" << std::endl;
+            std::cout << root->value_field.first << "|"  << root->value_field.second <<  "(" << sColor << ")" << std::endl;
             printHelper(root->left, indent, false);
             printHelper(root->right, indent, true);
             }
         }
         void clear_tree(node_ptr node){
-            if ( node->if_tnull == true || node == header || node == NULL )
+            if ( node != tnull || node == header || node == NULL )
                 return ;
             else{
                 clear_tree(node->left);

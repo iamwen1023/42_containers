@@ -17,7 +17,7 @@ namespace ft {
             typedef std::ptrdiff_t      difference_type;
             typedef Key                 key_type;
             typedef T                   mapped_type;
-            typedef ft::pair<const Key, T>  value_type;
+            typedef ft::pair<const key_type, mapped_type>  value_type;
             typedef Compare             key_compare;
             typedef Allocator           allocator_type;
             typedef typename Allocator::reference   reference;
@@ -80,7 +80,14 @@ namespace ft {
             pair<iterator, bool> insert(const value_type& x){return tree.insert(x);}
             iterator insert(iterator position, const value_type& x){return tree.insert(position, x);}
             template <class InputIterator>
-            void insert(InputIterator first, InputIterator last){return tree.insert_range(first, last);}
+            void insert(InputIterator first, InputIterator last){
+                // return tree.insert_range(first, last);
+                 while (first != last)
+                {
+                    this->insert(*first);
+                    ++first;
+                }
+            }
             void erase(iterator position){tree.erase(position);}
             size_type erase(const key_type& x){return tree.erase(ft::make_pair(x, mapped_type()));}
             void erase(iterator first, iterator last){tree.erase(first, last);}

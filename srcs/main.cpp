@@ -4,66 +4,76 @@
 #include <utility>
 
 int main(){
-    // rb_tree<std::pair<int,char>, pair_compare<int, char>, std::allocator<std::pair<const int, char> > >  bst;
-    // bst.insert(std::make_pair(1,'a'));
-    // // bst.printTree();
-    // bst.insert(std::make_pair(2,'b'));
-    // // bst.printTree();
-    // bst.insert(std::make_pair(3,'c'));
-    // // bst.printTree();
-    //   bst.insert(std::make_pair(8,'d'));
-    //     bst.insert(std::make_pair(9,'e'));
-    //       bst.insert(std::make_pair(10,'f'));
-    //         bst.insert(std::make_pair(13,'i'));
-    //           bst.insert(std::make_pair(14,'j'));
-    //             bst.insert(std::make_pair(15,'k'));
-    //               bst.insert(std::make_pair(16,'l'));
-    //               //bst.printTree();
-    // rb_tree<std::pair<int,char>, pair_compare<int, char>, std::allocator<std::pair<const int, char> > >::iterator a = bst.find(std::make_pair(16, 'i'));
-    // std::cout << a.node->value_field.first << "|" << a.node->value_field.second <<"\n";
-    // // rb_tree<std::pair<int,char>, pair_compare<int, char>, std::allocator<std::pair<const int, char> > >::iterator b = bst.lower_bound(std::make_pair(11, 'i'));
-    // // std::cout << b.node->value_field.first << "|" << b.node->value_field.second <<"\n";
-    // // rb_tree<std::pair<int,char>, pair_compare<int, char>, std::allocator<std::pair<const int, char> > >::iterator c = bst.upper_bound(std::make_pair(16, 'i'));
-    // // std::cout << c.node->value_field.first << "|" << c.node->value_field.second <<"\n";
-    // // rb_tree<std::pair<int,char>, pair_compare<int, char>, std::allocator<std::pair<const int, char> > >::iterator i = bst.begin();
-    // //bst.insert(i, std::make_pair(100,'a'));
-    // bst.erase(bst.begin(), bst.end());
-    // bst.printTree();
-   // bst.printTree();
-    //ft::map<int, int> b;
-    ft::map<int, char> ex;
+    ft::map<int, char> m1;
 
-    ex.insert(ft::make_pair(1, 'a'));
-    ex.insert(ft::make_pair(2, 'b'));
-    ex.insert(ft::make_pair(3, 'c'));
+	// m1.insert(ft::make_pair(4, 'a'));
+	// m1.insert(ft::make_pair(5, 'b'));
+	// m1.insert(ft::make_pair(6, 'c'));
 
-    ex.printTreemap();
-   
-    ft::map<int, char> trytry(ex);
-    trytry.printTreemap();
-    trytry.insert(ft::make_pair(4, 'a'));
-    trytry.insert(ft::make_pair(5, 'a'));
-    trytry.insert(ft::make_pair(6, 'a'));
-    trytry.insert(ft::make_pair(7, 'a'));
-    trytry.insert(ft::make_pair(8, 'a'));
-    trytry.insert(ft::make_pair(9, 'a'));
-    //trytry.printTreemap();
-    ft::map<int, char> ex1;
-    ex1=trytry;
-    ex1.printTreemap();
-    bool ans= (ex1==trytry);
-    bool ans2= (ex1==ex);
-    std::cout << "result:" << ans  << ans2 << std::endl;
-    std::cout << ex1[3] << "\n";
-    ex1[3] = 'z';
-    std::cout << ex1[3] << "\n";
-    // rb_tree<std::pair<int,char>, pair_compare<int, char>, std::allocator<std::pair<const int, char> > >  bst;
-    // bst.insert({1, '3'});
-    // bst.insert({3,'4'});
-    // bst.insert({5,'7'});
-    // bst.printTree();
-
+	//ft::map<int, char>::iterator		it = m1.begin();
+	// ft::map<int, char>::const_iterator	cit = m1.begin();
     
+    // EXPECT_EQ(it->second.m(), "non const called");
+	// EXPECT_EQ(cit->second.m(), "const called");
+    // m1[1] = 'a';
+	// m1[2] = 'b';
+	// m1[3] = 'c';
 
+	// ft::map<int, char>::iterator	ite = m1.end();
+	// std::cout << "heh:"<< (--ite)->first <<"\n";
+    
+	//EXPECT_EQ((--ite)->first, 3);
+
+	m1[1] = 'a';
+	m1[2] = 'b';
+	m1[3] = 'c';
+	m1[4] = 'd';
+	m1[5] = 'e';
+	m1[6] = 'f';
+
+	// ft::map<int, char>::iterator	it = m1.begin();
+	// ft::map<int, char>::iterator	ite = m1.end();
+
+    // std::cout <<it->second <<std::endl;
+    // std::cout << (++it)->second<<std::endl;
+    // std::cout << it++->second<<std::endl;
+    // std::cout << it->second<<std::endl;
+	// EXPECT_EQ(it->second, 'a');
+	// EXPECT_EQ((++it)->second, 'b');
+	// EXPECT_EQ(it++->second, 'b');
+	// EXPECT_EQ(it->second, 'c');
+	
+	// while (it != ite)
+	// 	it++;
+	
+    // std::cout << (it->second == '\0')<<std::endl;
+	//EXPECT_EQ(it->second, '\0');
+
+   // MAP	m1;
+
+	m1[1] = 'a';
+	m1[2] = 'b';
+	m1[3] = 'c';
+	m1[4] = 'd';
+	m1[5] = 'e';
+	m1[6] = 'f';
+
+	ft::map<int, char>::iterator	it = m1.begin();
+	ft::map<int, char>::iterator	ite = m1.end();
+	
+    std::cout << (ite->first) <<std::endl;
+    std::cout << (--ite)->second<<std::endl;
+    std::cout << ite--->second<<std::endl;
+    std::cout << ite->second<<std::endl;
+	// EXPECT_EQ(ite->second, '\0');
+	// EXPECT_EQ((--ite)->second, 'f');
+	// EXPECT_EQ(ite--->second, 'f');
+	// EXPECT_EQ(ite->second, 'e');
+
+	while (ite != it)
+		ite--;
+
+    std::cout << ite->second<<std::endl;
+	//EXPECT_EQ(ite->second, 'a');
 
 }
