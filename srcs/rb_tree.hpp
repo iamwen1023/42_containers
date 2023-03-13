@@ -27,14 +27,15 @@ class rb_tree{
         typedef ft::reverse_iterator<iterator>                     reverse_iterator;
         typedef ft::reverse_iterator<const_iterator>               const_reverse_iterator;
 
-    //protected:
+    protected:
         //node_ptr       root;
         node_ptr       header;
         node_ptr       tnull;
         size_type       node_count;
         key_compare     comp;
         node_allocator  node_alloc;
-        
+    
+    public:
         void init(){
             tnull = node_alloc.allocate(1);
             node_alloc.construct(tnull, value_type()); //printout 0
@@ -137,6 +138,9 @@ class rb_tree{
 			node_alloc.deallocate(tnull, 1);
 			
         }
+        size_type size()const {return node_count;}
+        node_allocator get_node_alloc() const{return node_alloc;}
+        Compare get_comp() const{return comp;}
         node_ptr& root() { return header->parent; }
         node_ptr& root() const { return header->parent; }
         node_ptr& leftmost() { return header->left; }

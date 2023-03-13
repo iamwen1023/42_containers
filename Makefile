@@ -2,7 +2,7 @@ NAME		= testhaha
 SRC			= test.cpp
 OBJ			= $(SRC:.cpp=.o)
 BUILD		= build
-FLAGS		= -Wall -Wextra -Werror -std=c++98 
+FLAGS		= -Wall -Wextra -Werror -std=c++98
 CC			= c++
 CD			= cd
 RM			= rm -rf

@@ -13,6 +13,7 @@ struct rb_tree_iterator {
     typedef value_type& reference;
     typedef typename rb_tree_node<Value>::base_ptr base_ptr;
     typedef rb_tree_iterator<Value> iterator;
+    typedef std::ptrdiff_t						difference_type;
 
     base_ptr node;
 
@@ -92,6 +93,7 @@ struct const_rb_tree_iterator {
     typedef const value_type* pointer;
     typedef typename rb_tree_node<Value>::base_ptr base_ptr;
     typedef const_rb_tree_iterator<Value> const_iterator;
+    typedef std::ptrdiff_t						difference_type;
 
     base_ptr node;
 

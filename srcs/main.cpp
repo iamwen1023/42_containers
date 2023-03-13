@@ -61,7 +61,7 @@ int main(){
 	ft::map<int, char>::iterator	it = m1.begin();
 	ft::map<int, char>::iterator	ite = m1.end();
 	
-    std::cout << (ite->first) <<std::endl;
+    std::cout << ((ite->first) == '\0') <<std::endl;
     std::cout << (--ite)->second<<std::endl;
     std::cout << ite--->second<<std::endl;
     std::cout << ite->second<<std::endl;
