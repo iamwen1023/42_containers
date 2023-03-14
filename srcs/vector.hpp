@@ -27,7 +27,7 @@ namespace ft {
             typedef ft::reverse_iterator<iterator> reverse_iterator;
             typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
-            explicit vector(const allocator_type& alloc = Allocator()): m_size(0), m_capacity(0), m_data(0), m_alloc(alloc){}
+            explicit vector(const allocator_type& alloc = Allocator()): m_size(0), m_capacity(0), m_alloc(alloc), m_data(0){}
             explicit vector(size_type n, const T& val = T(), const Allocator& alloc= Allocator()):m_size(n),m_capacity(n), m_alloc(alloc){
                 m_data = m_alloc.allocate(m_capacity);
                 for(size_t i =0; i < m_size; ++i){
@@ -245,7 +245,7 @@ namespace ft {
                     std::uninitialized_copy(begin(), position, new_data);
                     std::uninitialized_fill_n(new_data + (position - begin()), n ,x);
                     std::uninitialized_copy(position, end(), new_data + (position - begin()) + n);
-                    size_type new_size = reallocate();
+                    //size_type new_size = reallocate();
                     m_capacity = new_cap;
                     m_data = new_data;
                 }
@@ -322,10 +322,10 @@ namespace ft {
                 m_size = 0;
             }
         private:
-            value_type *m_data;
             size_type m_size;
             size_type m_capacity;
             allocator_type m_alloc;
+            value_type *m_data;
             void insert_middle(iterator position, const T& x){
                 if (m_size < m_capacity){
                     m_alloc.construct(end(), *(end() - 1));

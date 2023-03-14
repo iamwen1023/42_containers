@@ -3,7 +3,7 @@
 #include <vector>
 
 namespace ft {
-    template<class T, class Container = std::vector<T>> 
+    template<class T, class Container = std::vector<T> > 
     class stack{
         public:
             typedef T value_type;

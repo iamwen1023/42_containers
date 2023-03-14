@@ -1,30 +1,66 @@
+
 #ifndef PARAMETERS_HPP
-#define PARAMETERS_HPP
-# include <vector>
-# include <deque>
-# include <list>
-# include <utility>
+# define PARAMETERS_HPP
+
 # include <stack>
-#include "../../srcs/stack.hpp"
+# include "../../srcs/stack.hpp"
+# include "../complex_types.hpp"
 
-// Macros
-//# define STACK typename TestFixture::Types
-# define STACKSTD typename TestFixture::Types::first_type
-# define STACKFT typename TestFixture::Types::second_type
+// Macro for VECTOR
+# define STACK typename TestFixture::Types
 
-// Types to test
-// Generic test set
-using GenericTypes = testing::Types
+// Types to use for test
+using SimpleTypes = ::testing::Types
 <
-    std::pair<std::stack<int>, ft::stack<int>>
-    // std::pair<std::stack<int, std::deque<int>>, ft::stack<int, std::deque<int>>>,
-    // std::pair<std::stack<int, std::vector<int>>, ft::stack<int, std::vector<int>>>,
-    // std::pair<std::stack<int, std::list<int>>, ft::stack<int, std::list<int>>>
+	ft::stack<int>,
+	std::stack<int>,
+	ft::stack<char>,
+	std::stack<char>
 >;
 
-template<typename T>
-struct StackConstructors : public testing::Test { using Types = T; };
-TYPED_TEST_SUITE(StackConstructors, GenericTypes);
+using ComplexTypes = ::testing::Types
+<
+	ft::stack<int>,
+	std::stack<int>,
+	ft::stack<char>,
+	std::stack<char>,
+	ft::stack<std::string>,
+	std::stack<std::string>
+>;
 
+using ftPerfType = ::testing::Types
+<
+	ft::stack<int>
+>;
+
+using stdPerfType = ::testing::Types
+<
+	std::stack<int>
+>;
+
+// Test suites
+template<typename T>
+struct StackComplexConstruct : public testing::Test { using Types = T; };
+TYPED_TEST_SUITE(StackComplexConstruct, ComplexTypes);
+
+template<typename T>
+struct StackSimpleConstruct : public testing::Test { using Types = T; };
+TYPED_TEST_SUITE(StackSimpleConstruct, SimpleTypes);
+
+template<typename T>
+struct StackMemberFunctions : public testing::Test { using Types = T; };
+TYPED_TEST_SUITE(StackMemberFunctions, SimpleTypes);
+
+template<typename T>
+struct StackOperators : public testing::Test { using Types = T; };
+TYPED_TEST_SUITE(StackOperators, SimpleTypes);
+
+template<typename T>
+struct StackPerformance_ft : public testing::Test { using Types = T; };
+TYPED_TEST_SUITE(StackPerformance_ft, ftPerfType);
+
+template<typename T>
+struct StackPerformance_std : public testing::Test { using Types = T; };
+TYPED_TEST_SUITE(StackPerformance_std, stdPerfType);
 
 #endif

@@ -101,7 +101,7 @@ struct const_rb_tree_iterator {
     const_rb_tree_iterator(const base_ptr x):node(x){}
     //const_rb_tree_iterator(const const_iterator& it):node(it.node){}
     const_rb_tree_iterator(const rb_tree_iterator<Value>& it):node(it.node){}
-    bool operator==(const const_iterator& y) const { return node == y.node; }
+    //bool operator==(const const_iterator& y) const { return node == y.node; }
     base_ptr minimum(base_ptr x){
         while(x->left->if_tnull != true){
             x = x->left;
@@ -113,7 +113,7 @@ struct const_rb_tree_iterator {
             x =  x->right;
         return x;
     }
-    void successor()const{
+    void successor(){
         if(node->right->if_tnull != true){
             node =  minimum(node->right);
             return ;
@@ -127,7 +127,7 @@ struct const_rb_tree_iterator {
             node = y;  
         }
     }
-    void predecessor()const{
+    void predecessor(){
         if (node->color == RED && node->parent->parent == node){
             node = node->right;
         }else if(node->left->if_tnull != true){

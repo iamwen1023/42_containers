@@ -35,27 +35,29 @@ namespace ft {
                     value_compare(Compare c) : comp(c) {}
                 public:
                     bool operator()(const value_type& x, const value_type& y) const {
+                        //std::cout << "value_compare\n";
                         return comp(x.first, y.first);
                     }
             };
             typedef value_compare compare_type;
             typedef rb_tree<value_type, compare_type, Allocator> tree_type;
              // 23.3.1.1 construct/copy/destroy:
-            explicit map(const value_compare& comp=value_compare(key_compare()), const Allocator& = Allocator()): tree(comp){}
+            explicit map(const value_compare& comp=value_compare(key_compare()), const Allocator& = Allocator()): tree(comp), compare(key_compare()){}
             template <class InputIterator>
-            map(InputIterator first, InputIterator last, const value_compare& comp=value_compare(key_compare()), const Allocator& = Allocator()): tree(comp){
+            map(InputIterator first, InputIterator last, const value_compare& comp=value_compare(key_compare()), const Allocator& = Allocator()): tree(comp), compare(key_compare()){
                 this->insert(first, last);
             }
             // map(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Allocator& = Allocator()): tree(comp){
             //     tree.insert_range(first, last);
             // }
-            map(const map<Key,T,Compare,Allocator>& x): tree(x.tree){}
+            map(const map<Key,T,Compare,Allocator>& x): tree(x.tree),compare(x.compare){}
             ~map(){
                 // std::cout << "BYE\n";
                 //tree.printTree();
             }
             map<Key,T,Compare,Allocator>& operator=(const map<Key,T,Compare,Allocator>& x){
                 tree = x.tree;
+                compare = x.compare;
                 return *this;
             }
             
@@ -94,12 +96,12 @@ namespace ft {
             void swap(map<Key,T,Compare,Allocator>&x){tree.swap(x.tree);}
             void clear(){tree.clear();}
             // observers:
-            key_compare key_comp() const{return tree.get_comp();}
+            key_compare key_comp() const{return this->compare;}
             value_compare value_comp() const{return value_compare(tree.get_comp());}
             // 23.3.1.3 map operations:
             iterator find(const key_type& x){ return tree.find(ft::make_pair(x, mapped_type()));}
             const_iterator find(const key_type& x) const{return tree.find(ft::make_pair(x, mapped_type()));}
-            size_type count(const key_type& x) const{ return tree.size(); }
+            size_type count(const key_type& x) const{ return tree.count(ft::make_pair(x, mapped_type())); }
             iterator    lower_bound(const key_type& x){return tree.lower_bound(ft::make_pair(x, mapped_type()));}
             const_iterator lower_bound(const key_type& x) const{return tree.lower_bound(ft::make_pair(x, mapped_type()));}
             iterator upper_bound(const key_type& x){return tree.upper_bound(ft::make_pair(x, mapped_type()));}
@@ -109,6 +111,7 @@ namespace ft {
             void printTreemap(){tree.printTree();}
         private:
             tree_type tree;
+            key_compare     compare;
             //void printTreemap(){this->tree.printTree();}
         //template <class Key, class T, class Compare, class Allocator>
         friend bool operator==(const map<Key,T,Compare,Allocator>& x, \

@@ -169,6 +169,7 @@ class rb_tree{
         const_reverse_iterator rbegin() const { return const_reverse_iterator(end()); }
         reverse_iterator rend() { return reverse_iterator(begin()); }
         const_reverse_iterator rend() const { return const_reverse_iterator(begin()); }
+        size_type count(const value_type& x) const{return (header == find(x)? 0: 1); }
         iterator find(const value_type &k){
             node_ptr x = root();
 
@@ -227,7 +228,7 @@ class rb_tree{
             node_ptr x = root();
 	        node_ptr y = header;
 	        while ( x != NULL && x->if_tnull==false){
-	            if (comp(x->value_field, k) ==  true){
+	            if (comp(k, x->value_field) ==  true){
                     y = x;
 		            x =  x->left;
 	            }else{
@@ -240,7 +241,7 @@ class rb_tree{
             node_ptr x = root();
 	        node_ptr y = header;
 	        while ( x != NULL && x->if_tnull==false){
-	            if (comp(x->value_field, k) ==  true){
+	            if (comp(k, x->value_field) ==  true){
                     y = x;
 		            x =  x->left;
 	            }else{
@@ -425,7 +426,6 @@ class rb_tree{
                     x = y->right;
                 }
             } //  relink y in place of z , y is z's successor
-            std::cout << "here??0\n";
             if(y != z){  
                 z->left->parent = y;
                 y->left = z->left;

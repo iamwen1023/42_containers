@@ -20,13 +20,11 @@ namespace ft {
                 //std::cout << "hello!" << std::endl;
             }
             template< class U >
-            reverse_iterator( const reverse_iterator<U>& other ){
-                current(other.current);
-            }
+            reverse_iterator( const reverse_iterator<U>& other ):current(other.base()){}
             //operator=
             template< class U >
             reverse_iterator& operator=( const reverse_iterator<U>& other ){
-                this->current = other.current;
+                this->current = other.base();
                 return *this;
             }
             iterator_type base() const{

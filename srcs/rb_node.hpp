@@ -12,9 +12,9 @@ struct rb_tree_node{
     Value value_field;
     bool if_tnull;
 
-    rb_tree_node(void): parent(NULL), left(NULL), right(NULL),color(BLACK){
+    rb_tree_node(void):color(BLACK),parent(NULL), left(NULL), right(NULL){
     }
-    rb_tree_node(Value value): parent(NULL), left(NULL), right(NULL),color(RED), value_field(value){
+    rb_tree_node(Value value):color(RED), parent(NULL), left(NULL), right(NULL), value_field(value){
     }
 
     static base_ptr minimum(base_ptr x){

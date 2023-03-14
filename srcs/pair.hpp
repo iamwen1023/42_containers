@@ -1,5 +1,6 @@
 #ifndef PAIR_HPP
 #define PAIR_HPP
+#include <iostream>
 
 namespace ft {
     template <class T1, class T2> 
@@ -20,6 +21,7 @@ namespace ft {
             if (this != &pr){
                 // const first_type& tmp = this->first;
                 // const_cast<first_type&>(tmp) = pr.first;
+                first = pr.first;
                 this->second = pr.second;
             }
             return *this;
@@ -27,6 +29,7 @@ namespace ft {
     };
     template <class T1, class T2>
     bool operator== (const pair<T1,T2>& lhs, const pair<T1,T2>& rhs){
+        std::cout << "here??\n";
         return lhs.first==rhs.first && lhs.second==rhs.second;}
 
     template <class T1, class T2>

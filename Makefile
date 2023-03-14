@@ -1,38 +1,39 @@
-NAME		= testhaha
-SRC			= test.cpp
-OBJ			= $(SRC:.cpp=.o)
-BUILD		= build
-FLAGS		= -Wall -Wextra -Werror -std=c++98
-CC			= c++
-CD			= cd
-RM			= rm -rf
-MKDIR		= mkdir
-SHADOW		= -Wshadow=local
+NAME			=	ft_containers
+NAME_STD		=	std_containers
+OBJS			=	$(SRCS:.cpp=.o)
+OBJS_FT			=	$(SRCS_FT:.cpp=.o)
+OBJS_STD		=	$(SRCS_STD:.cpp=.o)
+SRCS_FT			=	sources/main_ft.cpp
+SRCS_STD		=	sources/main_std.cpp
+CC				=	c++
+RM				=	rm -rf
+CFLAGS			=	-Wall -Wextra -Werror -std=c++98 -g
+INCL			=	-Isrcs/
 
+all:			$(NAME) $(NAME_STD)
 
-all: $(NAME) 
+ft:				$(NAME)
 
-$(NAME): $(OBJ)
-		$(CC) -o $@ $(OBJ) $(FLAGS) $(SHADOW)
+std:			$(NAME_STD)
 
-%.o: %.cpp
-		$(CC) $(FLAGS) -c $< -o $(<:.cpp=.o) 
+$(NAME):		$(OBJS_FT)
+		$(CC) $(OBJS_FT) -o $@
+
+$(NAME_STD):	$(OBJS_STD)
+		$(CC) $(OBJS_STD) -o $@
+
+$(OBJS_FT):
+		$(CC) -c $(SRCS_FT) $(CFLAGS) -o $@ $(INCL)
+
+$(OBJS_STD):
+		$(CC) -c $(SRCS_STD) $(CFLAGS) -o $@ $(INCL)
 
 clean:
-		$(RM) $(OBJ)
-		$(RM) $(BUILD)
+			$(RM) $(OBJS_FT) $(OBJS_STD)
 
-fclean: clean
-		$(RM)  $(NAME)
+fclean:		clean
+			$(RM) $(NAME) $(NAME_STD)
 
-test:	clean
-		$(MKDIR) $(BUILD) && $(CD) $(BUILD) && \
-		cmake .. -DCMAKE_BUILD_TYPE=Debug -G "Unix Makefiles"
-		make all -C build
-		cd ./$(BUILD)/tests/
-		bash ./ft_containers_tst
+re:			fclean all
 
-re:    fclean 
-	   make all
-
-.PHONY:     all clean fclean re test
+.PHONY:		re, all, clean, fclean, std, ft
