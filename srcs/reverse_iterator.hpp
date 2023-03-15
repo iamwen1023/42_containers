@@ -16,9 +16,7 @@ namespace ft {
 
             //contruct
             reverse_iterator():current(){}
-            explicit reverse_iterator(iterator_type x ):current(x){
-                //std::cout << "hello!" << std::endl;
-            }
+            explicit reverse_iterator(iterator_type x ):current(x){}
             template< class U >
             reverse_iterator( const reverse_iterator<U>& other ):current(other.base()){}
             //operator=

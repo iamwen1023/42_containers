@@ -86,7 +86,6 @@ class rb_tree{
                 y->right = copy_tree(x->right, y);
                 // if (y->right->if_tnull == true)
                 //     y->right
-               // std::cout << "YYY:" << y->value_field.first << "|" << y->right->value_field.first <<"|" << y->right->if_tnull <<"\n";
                 p = y;
                 x = x->left;
             }
@@ -530,7 +529,6 @@ class rb_tree{
             iterator found = find(x);
             if (found == end())
                 return 0;
-            std::cout <<"ok\n";
             erase(found);
             return 1;
         }
@@ -589,7 +587,6 @@ class rb_tree{
                     std::cout << "L----";
                     indent += "   ";
                 }
-            //std::cout << "\njere??? : " << root->color<< "\n";
             std::string sColor;
                 if (root->color == RED)
                     sColor = "RED";

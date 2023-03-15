@@ -29,7 +29,6 @@ namespace ft {
     };
     template <class T1, class T2>
     bool operator== (const pair<T1,T2>& lhs, const pair<T1,T2>& rhs){
-        std::cout << "here??\n";
         return lhs.first==rhs.first && lhs.second==rhs.second;}
 
     template <class T1, class T2>

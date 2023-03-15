@@ -151,10 +151,8 @@ struct const_rb_tree_iterator {
         return tmp;
     }
     const_iterator& operator--(){
-        std::cout << "here?--\n";
         predecessor(); return *this;}
     const_iterator operator--(int){
-        std::cout << "here?@@\n";
         const_iterator tmp = *this;
         predecessor();
         return tmp;

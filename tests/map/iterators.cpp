@@ -24,12 +24,9 @@ TYPED_TEST(MapIterators, End){
 	m1[2] = 'b';
 	m1[3] = 'c';
 
-	std::cout << "heh\n";
 	MAP::iterator	ite = m1.end();
-	std::cout << "heh\n";
 	
 	EXPECT_EQ((--ite)->first, 3);
-	std::cout << "heh\n";
 }
 
 TYPED_TEST(MapIterators, Dereference){
