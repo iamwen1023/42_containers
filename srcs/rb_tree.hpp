@@ -128,8 +128,9 @@ class rb_tree{
             return *this;
         }
         ~rb_tree(){
-            if (node_count)
-				clear_tree(root());
+            //std::cout << "~rb_tree:" << root()->value_field.first <<"\n";
+
+			erase(begin(), end());
             //root = NULL;
 			node_alloc.destroy(header);
 			node_alloc.deallocate(header, 1);
@@ -287,13 +288,16 @@ class rb_tree{
             node_ptr x = root();
             // std::cout << "root" << root->value_field.first <<"\n";
             // std::cout << "root" << new_value.first <<"\n";
+            iterator j;
+            if ((j=find(new_value)) ==  header)
+                return (ft::make_pair(j, false));
             bool compare = true;
             while(x->if_tnull ==  false){
                 y = x;
                 compare = comp(new_value, x->value_field);
                 x = compare? x->left: x->right; 
             }
-            iterator j = iterator(y);
+            j = iterator(y);
             if(compare == true){ // x->left
                 if(j == (begin()))
                     return ft::make_pair(insert_1(x, y ,new_value), true);
@@ -539,6 +543,7 @@ class rb_tree{
                 node_ptr y = node->left;
                 put_node(node);
                 node = y;
+                //node_count--;
                 //std::cout << "node :" << node->value_field.first << "\n";
             }      
         }
@@ -564,8 +569,7 @@ class rb_tree{
             std::swap(node_alloc, x.node_alloc);
         }
         void clear(){
-            if (node_count)
-				clear_tree(root());
+			erase(begin(), end());
             leftmost() = header;
             root() = tnull;
             rightmost() = header;
@@ -598,9 +602,10 @@ class rb_tree{
             }
         }
         void clear_tree(node_ptr node){
-            if ( node != tnull || node == header || node == NULL )
+            if ( node == tnull || node == header || node == NULL )
                 return ;
             else{
+               // std::cout <<"node->value_field.first:" << node->value_field.first <<"\n";
                 clear_tree(node->left);
                 clear_tree(node->right);
                 node_alloc.destroy(node);
