@@ -30,11 +30,15 @@ namespace ft {
             }
             reference operator*() const{
                 Iter tmp = current; 
-                return *--tmp;
+                return (*--tmp);
             }
-            pointer operator->() const{
-                return std::addressof(operator*());
+            // pointer operator->() const{
+            //     return std::addressof(operator*());
+            // }
+            pointer	operator->() const {
+                return &(operator* ()); 
             }
+
             reference operator[]( difference_type n ) const{
                 // if (n < 0 || n >= container.size()) {
                 //     throw std::out_of_range("Index out of bounds");
@@ -100,7 +104,7 @@ namespace ft {
     }
     template< class Iterator1, class Iterator2 >
     typename reverse_iterator<Iterator1>::difference_type operator-( const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs){
-        return reverse_iterator<Iterator1>(lhs.base() - rhs.base());
+        return (rhs.base() - lhs.base());
     }
 
 }

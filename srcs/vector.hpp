@@ -20,8 +20,8 @@ namespace ft {
             typedef typename Allocator::const_pointer const_pointer;
             typedef T value_type;
             typedef Allocator allocator_type;
-            typedef T* iterator;
-            typedef const T* const_iterator;
+            typedef pointer iterator;
+            typedef const_pointer const_iterator;
             typedef std::ptrdiff_t difference_type;
             typedef std::size_t size_type;
             typedef ft::reverse_iterator<iterator> reverse_iterator;
@@ -55,7 +55,7 @@ namespace ft {
             }
             vector<T,Allocator>& operator=(const vector<T,Allocator>& x){
                 if(&x == this)
-                    return;
+                    return *this;
                 if (x.size() > m_capacity){
                     reallocate();
                     m_size = x.size();
@@ -66,7 +66,7 @@ namespace ft {
                     iterator i= std::copy(x.begin(), x.end(), m_data);
                     for(; i != end(); ++i)
                         m_alloc.destroy(i);
-                        m_size = x.size();
+                    m_size = x.size();
                 }else{
                     std::copy(x.begin(), x.begin() + m_size, m_data);
                     std::uninitialized_copy(x.begin() + m_size, x.end(), m_data + m_size);
@@ -155,7 +155,7 @@ namespace ft {
                         m_capacity = new_size *2;
                         T* new_data = m_alloc.allocate(m_capacity);
                         std::uninitialized_copy(begin(), end(), new_data);
-                        reallocate();
+                        new_size = reallocate();
                         m_data = new_data;
                         m_size = new_size;
                     }
@@ -194,8 +194,8 @@ namespace ft {
             const_reference front() const{return m_data[0];}
             reference back(){return m_data[m_size -1];}
             const_reference back() const{return m_data[m_size -1];}
-            T* data(){ std::addressof(front());}
-            const T* data() const{std::addressof(front());}
+            T* data(){return begin();}
+            const T* data() const{return begin();}
             // 23.2.4.3 modifiers:
             void push_back(const T& x){
                 if (m_size < m_capacity){
@@ -245,29 +245,47 @@ namespace ft {
                     std::uninitialized_copy(begin(), position, new_data);
                     std::uninitialized_fill_n(new_data + (position - begin()), n ,x);
                     std::uninitialized_copy(position, end(), new_data + (position - begin()) + n);
-                    size_type new_size = reallocate();
+                    new_size = reallocate();
                     m_capacity = new_cap;
                     m_data = new_data;
                 }
                 m_size = new_size + n;
             }
+            void printvector(value_type *m_data){
+                std::cout << "data :";
+                int i = 0;
+                while(m_data[i]){
+                    std::cout << m_data[i] << ",";
+                    i++;
+                }
+                std::cout << "\n";
+            }
             template <class InputIterator>
             void insert(iterator position, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last){
                 if (first == last)
                     return ;
-                //size_type len =  std::distance(first, last);
-                size_type len =  last - first;
+                size_type len =  std::distance(first, last);
+                //size_type len =  last - first;
                 if(m_capacity - m_size >= len){
-                    if(position + len < end()){
-                        std::uninitialized_copy(end() - len, end(), end());
-	                    std::copy_backward(position, end() - len, end());
-	                    std::copy(first, last, position);
-                    }else{
-                        std::uninitialized_copy(position, end(), position + len);
-	                    std::copy(first, first + (end() - position), position);
-                        std::uninitialized_copy(first + (end() - position), last, end());
-                    }
-                    m_size = m_size + len;
+                    // if(position + len < end()){
+                    //     std::uninitialized_copy(end() - len, end(), end());
+	                //     std::copy_backward(position, end() - len, end());
+	                //     std::copy(first, last, position);
+                    // }else{
+                    //     std::uninitialized_copy(position, end(), position + len);
+	                //     std::copy(first, first + (end() - position), position);
+                    //     std::uninitialized_copy(first + (end() - position), last, end());
+                    // }
+                    // m_size = m_size + len;
+                    T* new_data = m_alloc.allocate(m_capacity);
+                    std::uninitialized_copy(begin(), position, new_data);
+                    std::uninitialized_copy(first, last, new_data + (position - begin()));
+                    std::uninitialized_copy(position, end(), new_data + (position - begin() + len));
+                    size_type new_size = reallocate();
+                    m_size = new_size + len;
+                    m_data = new_data;
+                        //printvector();
+						
                 }else{
                     size_t new_cap = m_capacity == 0 ? 1: 2*m_capacity;
                     while(new_cap < m_size + len)

@@ -76,6 +76,7 @@ class rb_tree{
                 if (r == x)
                     r = y;  // save for return value
                 node_alloc.construct(y, x->value_field);
+                std::cout << "x->value_field.first" << x->value_field.first <<"\n";
                 y->if_tnull = x->if_tnull;
                 // if (y->if_tnull == true)
                 //     p->left = tnull;
@@ -103,6 +104,7 @@ class rb_tree{
         }
         rb_tree(const rb_tree<Value,Compare,allocator>& x):node_count(x.node_count), comp(x.comp), node_alloc(x.node_alloc){
             init();
+            std::cout << "x.node_count" << x.node_count << "\n";
             root() = copy_tree(x.root(), header);
             if (root()->if_tnull == true) {
                 leftmost() = header;
@@ -111,6 +113,7 @@ class rb_tree{
 	            leftmost() = minimum(root());
                 rightmost() = maximum(root());
             }
+            printTree();
         }
         rb_tree<Value,Compare,allocator>& operator=(const rb_tree<Value,Compare,allocator>& x){
             if(this != &x){
@@ -288,16 +291,18 @@ class rb_tree{
             node_ptr x = root();
             // std::cout << "root" << root->value_field.first <<"\n";
             // std::cout << "root" << new_value.first <<"\n";
-            iterator j;
-            if ((j=find(new_value)) ==  header)
-                return (ft::make_pair(j, false));
+            if ((find(new_value)) !=  header){
+                return (ft::make_pair(header, false));
+            }
+            std::cout << "new_value" << new_value.first <<"\n";
             bool compare = true;
             while(x->if_tnull ==  false){
                 y = x;
                 compare = comp(new_value, x->value_field);
+                std::cout << "x" << x->value_field.first <<"\n";
                 x = compare? x->left: x->right; 
             }
-            j = iterator(y);
+            iterator j = iterator(y);
             if(compare == true){ // x->left
                 if(j == (begin()))
                     return ft::make_pair(insert_1(x, y ,new_value), true);
@@ -339,6 +344,7 @@ class rb_tree{
                 return iterator(new_node);
             }
             insertFIX(x);
+            printTree();
             return iterator(new_node);
         }
         

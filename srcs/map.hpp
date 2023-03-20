@@ -46,11 +46,15 @@ namespace ft {
             template <class InputIterator>
             map(InputIterator first, InputIterator last, const value_compare& comp=value_compare(key_compare()), const Allocator& = Allocator()): tree(comp), compare(key_compare()){
                 this->insert(first, last);
+                printTreemap();
+                std::cout << "insert??\n";
             }
             // map(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Allocator& = Allocator()): tree(comp){
             //     tree.insert_range(first, last);
             // }
-            map(const map<Key,T,Compare,Allocator>& x): tree(x.tree),compare(x.compare){}
+            map(const map<Key,T,Compare,Allocator>& x): tree(x.tree),compare(x.compare){
+                std::cout << "copy??\n";
+            }
             ~map(){
                 // std::cout << "BYE\n";
                 //tree.printTree();
