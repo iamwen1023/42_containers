@@ -68,30 +68,6 @@ class rb_tree{
             node_alloc.deallocate(node, 1);
         }
 
-        node_ptr copy_tree(node_ptr x, node_ptr p){
-            //use if_tnull to check! not use tnull
-            node_ptr r = x;
-            while (x->if_tnull == false) {
-                node_ptr y = node_alloc.allocate(1);
-                if (r == x)
-                    r = y;  // save for return value
-                node_alloc.construct(y, x->value_field);
-                y->if_tnull = x->if_tnull;
-                // if (y->if_tnull == true)
-                //     p->left = tnull;
-                // else
-                p->left = y;
-                y->parent = p;
-                y->color = x->color;
-                y->right = copy_tree(x->right, y);
-                // if (y->right->if_tnull == true)
-                //     y->right
-                p = y;
-                x = x->left;
-            }
-            p->left = tnull;
-            return r;
-        }
         //construct
         rb_tree(const Compare& comp= Compare()):node_count(0),comp(comp), node_alloc(node_allocator()){
             init();
@@ -101,36 +77,30 @@ class rb_tree{
             init();
             insert(first, last);
         }
-        rb_tree(const rb_tree<Value,Compare,allocator>& x):node_count(x.node_count), comp(x.comp), node_alloc(x.node_alloc){
+        rb_tree(const rb_tree<Value,Compare,allocator>& x):comp(x.comp), node_alloc(x.node_alloc){
             init();
-            root() = copy_tree(x.root(), header);
-            if (root()->if_tnull == true) {
-                leftmost() = header;
-                rightmost() = header;
-            } else {
-	            leftmost() = minimum(root());
-                rightmost() = maximum(root());
-            }
+            const_iterator it = x.begin(), ite = x.end();
+				for (; it != ite; it++)
+					insert(*it);
+            // if (root()->if_tnull == true) {
+            //     leftmost() = header;
+            //     rightmost() = header;
+            // } else {
+	        //     leftmost() = minimum(root());
+            //     rightmost() = maximum(root());
+            // }
             //printTree();
         }
-        rb_tree<Value,Compare,allocator>& operator=(const rb_tree<Value,Compare,allocator>& x){
+        rb_tree<Value,Compare,allocator>& operator=(const rb_tree<Value,Compare,allocator>& x){        
             if(this != &x){
                 erase(begin(), end());
-                root() = copy_tree(x.root(), header);
-                if (root()->if_tnull == true) {
-                    leftmost() = header;
-                    rightmost() = header;
-                } else {
-	                leftmost() = minimum(root());
-                    rightmost() = maximum(root());
-                }
-                node_count = x.node_count;
+                const_iterator it = x.begin(), ite = x.end();
+				for (; it != ite; it++)
+					insert(*it);
             }
             return *this;
         }
         ~rb_tree(){
-            //std::cout << "~rb_tree:" << root()->value_field.first <<"\n";
-
 			erase(begin(), end());
             //root = NULL;
 			node_alloc.destroy(header);
@@ -149,16 +119,13 @@ class rb_tree{
         node_ptr& rightmost() { return header->right; }
         node_ptr& rightmost() const { return header->right; }
         node_ptr minimum(node_ptr x) {
-            //std::cout << x->value_field.first <<"\n";
             while (x->left->if_tnull == false)
                 x = x->left;
             return x;
         }
         node_ptr maximum(node_ptr x) {
             while (x->right->if_tnull == false){
-                //std::cout << "X:" << x->value_field.first << "\n";
                 x = x->right;
-                //std::cout << "X:" << x->value_field.first << "\n";
             }
             return x;
         }
@@ -532,6 +499,7 @@ class rb_tree{
             --node_count;
         }
         size_type erase(const value_type& x){
+            std::cout << x.first <<"\n";
             iterator found = find(x);
             if (found == end())
                 return 0;
@@ -558,6 +526,7 @@ class rb_tree{
                 node_count = 0;
             }else{
                 while(first != last){
+                    //std::cout << "id:" << first.first << "\n";
                     erase(first);
                     ++first;
                 }

@@ -95,7 +95,8 @@ namespace ft {
             size_type erase(const key_type& x){return tree.erase(ft::make_pair(x, mapped_type()));}
             void erase(iterator first, iterator last){tree.erase(first, last);}
             void swap(map<Key,T,Compare,Allocator>&x){tree.swap(x.tree);}
-            void clear(){tree.clear();}
+            void clear(){
+                tree.clear();}
             // observers:
             key_compare key_comp() const{return this->compare;}
             value_compare value_comp() const{return value_compare(tree.get_comp());}
