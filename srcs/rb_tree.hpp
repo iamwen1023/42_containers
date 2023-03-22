@@ -76,7 +76,6 @@ class rb_tree{
                 if (r == x)
                     r = y;  // save for return value
                 node_alloc.construct(y, x->value_field);
-                std::cout << "x->value_field.first" << x->value_field.first <<"\n";
                 y->if_tnull = x->if_tnull;
                 // if (y->if_tnull == true)
                 //     p->left = tnull;
@@ -104,7 +103,6 @@ class rb_tree{
         }
         rb_tree(const rb_tree<Value,Compare,allocator>& x):node_count(x.node_count), comp(x.comp), node_alloc(x.node_alloc){
             init();
-            std::cout << "x.node_count" << x.node_count << "\n";
             root() = copy_tree(x.root(), header);
             if (root()->if_tnull == true) {
                 leftmost() = header;
@@ -113,7 +111,7 @@ class rb_tree{
 	            leftmost() = minimum(root());
                 rightmost() = maximum(root());
             }
-            printTree();
+            //printTree();
         }
         rb_tree<Value,Compare,allocator>& operator=(const rb_tree<Value,Compare,allocator>& x){
             if(this != &x){
@@ -278,11 +276,11 @@ class rb_tree{
             y->parent = x->parent;
             //if(x->parent == header)
             if (x == root())
-                root() = x;
-            else if (x == x->parent->left)
-                x->parent->left = y;
-            else
+                root() = y;
+            else if (x == x->parent->right)
                 x->parent->right = y;
+            else
+                x->parent->left = y;
             y->right = x;
             x->parent = y;
         }
@@ -294,12 +292,10 @@ class rb_tree{
             if ((find(new_value)) !=  header){
                 return (ft::make_pair(header, false));
             }
-            std::cout << "new_value" << new_value.first <<"\n";
             bool compare = true;
             while(x->if_tnull ==  false){
                 y = x;
                 compare = comp(new_value, x->value_field);
-                std::cout << "x" << x->value_field.first <<"\n";
                 x = compare? x->left: x->right; 
             }
             iterator j = iterator(y);
@@ -344,7 +340,7 @@ class rb_tree{
                 return iterator(new_node);
             }
             insertFIX(x);
-            printTree();
+            //printTree();
             return iterator(new_node);
         }
         

@@ -163,7 +163,27 @@ struct const_rb_tree_iterator {
     friend bool operator!=(const const_iterator &x, const const_iterator &y){
         return x.node != y.node;
     }
+
 };
+
+    template <typename T, typename U>
+    bool operator==(const rb_tree_iterator<T> &x, const const_rb_tree_iterator<U> &y){
+        return x.node == y.node;
+    }
+    template <typename T, typename U>
+    bool operator!=(const rb_tree_iterator<T> &x, const const_rb_tree_iterator<U> &y){
+        return x.node != y.node ;
+    }
+    template <typename T, typename U>
+    bool operator==(const const_rb_tree_iterator<T> &x, const rb_tree_iterator<U>&y){
+        return x.node == y.node;
+    }
+    template <typename T, typename U>
+    bool operator!=(const const_rb_tree_iterator<T> &x, const rb_tree_iterator<U> &y){
+        return x.node != y.node;
+    }
+
+
 
 
 #endif
