@@ -152,7 +152,7 @@ namespace ft {
                         throw std::length_error("vector::resize");
                     if (n > m_capacity){
                         size_type new_size = size();
-                        m_capacity = new_size *2;
+                        m_capacity = re_capa(n-size());
                         T* new_data = m_alloc.allocate(m_capacity);
                         std::uninitialized_copy(begin(), end(), new_data);
                         new_size = reallocate();
@@ -167,7 +167,7 @@ namespace ft {
             bool empty() const{ return (m_size == 0);}
             void reserve(size_type n){
                 if (n > max_size())
-                    throw std::out_of_range("vector::reserve");
+                    throw std::length_error("vector::reserve");
                 if (n <= m_capacity)
                     return ;
                 T* new_data = m_alloc.allocate(n);
@@ -237,7 +237,8 @@ namespace ft {
 	                    std::uninitialized_fill_n(end(), n - (end() - position), x); 
                     }
                 } else {
-                    size_t new_cap = m_capacity == 0 ? 1: 2*m_capacity;
+                    //size+n, size*2
+                    size_t new_cap = re_capa(n);
                     while(new_cap < m_size + n){
                         new_cap *= 2;
                     }
@@ -287,7 +288,7 @@ namespace ft {
                         //printvector();
 						
                 }else{
-                    size_t new_cap = m_capacity == 0 ? 1: 2*m_capacity;
+                    size_t new_cap = re_capa(len);
                     while(new_cap < m_size + len)
                         new_cap *= 2;
                     T* new_data = m_alloc.allocate(new_cap);
@@ -351,17 +352,22 @@ namespace ft {
                     *position = x;
                     ++m_size;
                 } else{
-                    m_capacity = m_capacity == 0 ? 1: 2*m_capacity;
+                    m_capacity = re_capa(1);
                     T* new_data = m_alloc.allocate(m_capacity);
                     std::uninitialized_copy(begin(), position, new_data);
                     m_alloc.construct(new_data + (position - begin()), x);
-                    std::uninitialized_copy(position, end(), new_data + (position - begin()));
+                    std::uninitialized_copy(position, end(), new_data + (position - begin()) +1);
                     size_type new_size = reallocate();
                     m_data = new_data;
                     m_size = new_size + 1;
                 }
             }
-
+            size_type re_capa(size_type n){
+                if(m_size > n)
+                    return m_size*2;
+                else
+                    return m_size + n;
+            }
             size_type reallocate(){
                 size_type new_size = m_size;
                 clear();

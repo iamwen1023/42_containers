@@ -254,10 +254,9 @@ class rb_tree{
         ft::pair<iterator, bool> insert(const value_type& new_value){
             node_ptr y = header;
             node_ptr x = root();
-            // std::cout << "root" << root->value_field.first <<"\n";
-            // std::cout << "root" << new_value.first <<"\n";
-            if ((find(new_value)) !=  header){
-                return (ft::make_pair(header, false));
+            iterator j ;
+            if ((j = (find(new_value))) !=  header){
+                return (ft::make_pair(j, false));
             }
             bool compare = true;
             while(x->if_tnull ==  false){
@@ -265,7 +264,7 @@ class rb_tree{
                 compare = comp(new_value, x->value_field);
                 x = compare? x->left: x->right; 
             }
-            iterator j = iterator(y);
+            j = iterator(y);
             if(compare == true){ // x->left
                 if(j == (begin()))
                     return ft::make_pair(insert_1(x, y ,new_value), true);
@@ -499,9 +498,8 @@ class rb_tree{
             --node_count;
         }
         size_type erase(const value_type& x){
-            std::cout << x.first <<"\n";
             iterator found = find(x);
-            if (found == end())
+            if (found == header)
                 return 0;
             erase(found);
             return 1;
@@ -511,7 +509,8 @@ class rb_tree{
                 //std::cout << "node->right :" << node->right->value_field.first << "\n";
                 erase_without_balance(node->right);
                 node_ptr y = node->left;
-                put_node(node);
+                node_ptr tmp = node;
+                put_node(tmp);
                 node = y;
                 //node_count--;
                 //std::cout << "node :" << node->value_field.first << "\n";
@@ -525,10 +524,11 @@ class rb_tree{
                 rightmost() = header;
                 node_count = 0;
             }else{
+                iterator tmp;
                 while(first != last){
-                    //std::cout << "id:" << first.first << "\n";
-                    erase(first);
-                    ++first;
+                    tmp = first;
+                    first++;
+                    erase(tmp);
                 }
             }
         }
@@ -538,6 +538,7 @@ class rb_tree{
             std::swap(node_count, x.node_count);
             std::swap(comp, x.comp);
             std::swap(node_alloc, x.node_alloc);
+            std::swap(tnull, x.tnull);
         }
         void clear(){
 			erase(begin(), end());
