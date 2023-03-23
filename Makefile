@@ -3,31 +3,32 @@ FLAGS					=	-Wall -Wextra -Werror -std=c++98
 CC						=	c++
 FT_CONTAINERS_TARGET 	=	ft_container
 STD_CONTAINERS_TARGET 	=	std_container
-TEST_FILE 				=	main.cpp
-FT_CONTAINERS_HEADERS 	=	srcs/map.hpp \
-							srcs/vector.hpp \
-							srcs/stack.hpp \
-							srcs/iterator_traits.hpp \
-							srcs/pair.hpp \
-							srcs/rb_node.hpp \
-							srcs/rb_tree.hpp \
-							srcs/rbtree_iterator.hpp \
-							srcs/reverse_iterator.hpp \
-							srcs/utils.hpp 
+TEST_FILE_std 			=	ft_main.cpp
+TEST_FILE_ft 			=	std_main.cpp
+OBJS_FT					=	$(TEST_FILE_ft:.cpp=.o)
+OBJS_STD				=	$(TEST_FILE_std:.cpp=.o)
+INCL					=	-Iincludes/
 
 
-all: $(FT_CONTAINERS_TARGET) 
+all: $(FT_CONTAINERS_TARGET) $(STD_CONTAINERS_TARGET) 
 
-$(FT_CONTAINERS_TARGET): $(TEST_FILE) 
-	$(CC) $(CFLAGS) -I $(FT_CONTAINERS_HEADERS) $(TEST_FILE) -o
+$(FT_CONTAINERS_TARGET): $(OBJS_FT) 
+						$(CC) $(OBJS_FT) -o $@
 
-# $(STL_CONTAINERS_TARGET): $(TEST_FILE) 
-# 	$(CC) $(CFLAGS) -D'star=($(STAR),0)' $@ $(TEST_FILE)
+$(STD_CONTAINERS_TARGET): $(OBJS_STD) 
+						$(CC) $(OBJS_STD) -o $@
 
-# clean :	clean
-# 		rm -f $(FT_CONTAINERS_TARGET) $(STL_CONTAINERS_TARGET)
+$(OBJS_FT):
+		$(CC) -c $(TEST_FILE_ft) $(CFLAGS) -o $@ $(INCL)
 
-fclean:	clean
+$(OBJS_STD):
+		$(CC) -c $(TEST_FILE_std) $(CFLAGS) -o $@ $(INCL)
+
+clean:
+			$(RM) $(OBJS_FT) $(OBJS_STD)
+
+fclean:		clean
+			$(RM) $(FT_CONTAINERS_TARGET) $(STD_CONTAINERS_TARGET)
 
 
 re: fclean all

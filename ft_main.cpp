@@ -1,14 +1,18 @@
 #include <iostream>
 #include <ctime>
-#include <map>
-#include <stack>
-#include <vector>
+
+
+#include "includes/map.hpp"
+#include "includes/stack.hpp"
+#include "includes/vector.hpp"
 #include <deque>
-
 #include <stdlib.h>
-
 #define MAX_RAM 4294967296
 #define BUFFER_SIZE 4096
+
+using namespace ft;
+
+
 struct Buffer
 {
 	int idx;
@@ -23,12 +27,12 @@ int main()
 
     // Some code to be timed
 	{
-		std::vector<std::string> vector_str;
-		std::vector<int> vector_int;
-		std::stack<int> stack_int;
-		std::vector<Buffer> vector_buffer;
-		std::stack<Buffer, std::deque<Buffer> > stack_deq_buffer;
-		std::map<int, int> map_int;
+		ft::vector<std::string> vector_str;
+		ft::vector<int> vector_int;
+		ft::stack<int> stack_int;
+		ft::vector<Buffer> vector_buffer;
+		ft::stack<Buffer, std::deque<Buffer> > stack_deq_buffer;
+		ft::map<int, int> map_int;
 
 		for (int i = 0; i < COUNT; i++)
 		{
@@ -40,7 +44,7 @@ int main()
 			const int idx = rand() % COUNT;
 			vector_buffer[idx].idx = 5;
 		}
-		std::vector<Buffer>().swap(vector_buffer);
+		ft::vector<Buffer>().swap(vector_buffer);
 
 		try
 		{
@@ -58,7 +62,7 @@ int main()
 		
 		for (int i = 0; i < COUNT; ++i)
 		{
-			map_int.insert(std::make_pair(rand(), rand()));
+			map_int.insert(ft::make_pair(rand(), rand()));
 		}
 
 		int sum = 0;
@@ -70,7 +74,7 @@ int main()
 		std::cout << "should be constant with the same seed: " << sum << std::endl;
 
 		{
-			std::map<int, int> copy = map_int;
+			ft::map<int, int> copy = map_int;
 		}
 
 	}
