@@ -16,7 +16,7 @@ namespace ft {
         base_ptr node;
 
         rb_tree_iterator(){}
-        rb_tree_iterator(base_ptr x): node(x){}
+        explicit rb_tree_iterator(base_ptr x): node(x){}
         rb_tree_iterator(const iterator& it):node(it.node){}
 
         base_ptr successor(base_ptr x){
@@ -90,7 +90,8 @@ namespace ft {
         base_ptr node;
 
         const_rb_tree_iterator():node(NULL){}
-        const_rb_tree_iterator(const base_ptr x):node(x){}
+        explicit const_rb_tree_iterator(base_ptr x):node(x){}
+        //const_rb_tree_iterator(const base_ptr x):node(x){}
         const_rb_tree_iterator(const rb_tree_iterator<Value>& it):node(it.node){}
     
         base_ptr successor(base_ptr x){

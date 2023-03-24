@@ -1,6 +1,7 @@
 #ifndef SET_HPP
 # define SET_HPP
 #include <functional>
+#include <memory>
 #include "./rb_tree.hpp"
 #include "./rbtree_iterator.hpp"
 #include "./pair.hpp"
@@ -8,8 +9,8 @@
 #include "./utils.hpp"
 
 namespace ft {
-    template <class Key, class Compare = less<Key>,
-    class Allocator = allocator<Key> >
+    template <class Key, class Compare = std::less<Key>,
+    class Allocator = std::allocator<Key> >
     class set {
         public:
         // types:
@@ -37,13 +38,12 @@ namespace ft {
             insert(first,last);
         }
         set(const set<Key,Compare,Allocator>& x):tree(x.tree),comp(x.comp),allo(x.allo){
-            return *this;
         }
         ~set(){}
         set<Key,Compare,Allocator>& operator=
         (const set<Key,Compare,Allocator>& x){
             tree = x.tree;
-            compare = x.compare;
+            comp= x.comp;
             allo = x.allo;
             return *this;
         }
@@ -76,21 +76,25 @@ namespace ft {
         size_type erase(const key_type& x){return tree.erase(x);}
         void erase(iterator first, iterator last){tree.erase(first, last);}
         void swap(set<Key,Compare,Allocator>&x){tree.swap(x.tree);}
-        void clear(tree.clear(););
+        void clear(){tree.clear();};
         // observers:
         key_compare key_comp() const{return comp;}
         value_compare value_comp() const{return comp;}
         // set operations:
-        iterator find(const key_type& x) const{return tree.find(x);}
+        iterator find(const key_type& x) {return tree.find(x);}
+        const_iterator find( const key_type& x ) const{return tree.find(x);}
         size_type count(const key_type& x) const{return tree.count(x);}
-        iterator lower_bound(const key_type& x) const{return tree.lower_bound(x);}
-        iterator upper_bound(const key_type& x) const{return tree.upper_bound(x);}
-        pair<iterator,iterator> equal_range(const key_type& x) const{return ft::make_pair(lower_bound(x), upper_bound(x));}
+        iterator lower_bound(const key_type& x) {return tree.lower_bound(x);}
+        iterator upper_bound(const key_type& x) {return tree.upper_bound(x);}
+        const_iterator lower_bound(const key_type& x) const{return tree.lower_bound(x);}
+        const_iterator upper_bound(const key_type& x) const{return tree.upper_bound(x);}
+        pair<iterator,iterator> equal_range(const key_type& x){return ft::make_pair(lower_bound(x), upper_bound(x));}
+        pair<const_iterator,const_iterator> equal_range(const key_type& x) const{return ft::make_pair(lower_bound(x), upper_bound(x));}
         private:
-            rb_tree<value_type, compare_type, Allocator>	tree;
+            rb_tree<value_type, key_compare, Allocator>	tree;
             key_compare comp; 
             allocator_type allo;       
-        };
+        
 
         friend bool operator==(const set<Key,Compare,Allocator>& x, const set<Key,Compare,Allocator>& y){
             return x.size() == y.size() && ft::equal(x.begin(), x.end(), y.begin());

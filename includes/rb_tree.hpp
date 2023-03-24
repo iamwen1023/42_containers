@@ -137,7 +137,7 @@ namespace ft {
             const_reverse_iterator rbegin() const { return const_reverse_iterator(end()); }
             reverse_iterator rend() { return reverse_iterator(begin()); }
             const_reverse_iterator rend() const { return const_reverse_iterator(begin()); }
-            size_type count(const value_type& x) const{return (header == find(x)? 0: 1); }
+            size_type count(const value_type& x) const{return (end() == find(x)? 0: 1); }
             iterator find(const value_type &k){
                 node_ptr x = root();
 
@@ -254,7 +254,7 @@ namespace ft {
                 node_ptr y = header;
                 node_ptr x = root();
                 iterator j ;
-                if ((j = (find(new_value))) !=  header){
+                if ((j = (find(new_value))) !=  end()){
                     return (ft::make_pair(j, false));
                 }
                 bool compare = true;
@@ -498,7 +498,7 @@ namespace ft {
             }
             size_type erase(const value_type& x){
                 iterator found = find(x);
-                if (found == header)
+                if (found == end())
                     return 0;
                 erase(found);
                 return 1;
