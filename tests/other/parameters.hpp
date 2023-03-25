@@ -3,7 +3,7 @@
 #ifndef PARAMETERS_HPP
 # define PARAMETERS_HPP
 
-# include "../../srcs/pair.hpp"
+# include "../../includes/pair.hpp"
 # include <gtest/gtest.h>
 
 // Macro for PAIR

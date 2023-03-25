@@ -3,7 +3,7 @@
 # define PARAMETERS_HPP
 
 # include <stack>
-# include "../../srcs/stack.hpp"
+# include "../../includes/stack.hpp"
 # include "../complex_types.hpp"
 
 // Macro for VECTOR

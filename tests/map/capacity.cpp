@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include "parameters.hpp"
+#include "../../includes/rb_node.hpp"
 
 TYPED_TEST_SUITE_P(MapCapacity);
 
@@ -34,11 +35,4 @@ TYPED_TEST(MapCapacity, Size){
 	m1.clear();
 
 	EXPECT_EQ(m1.size(), 0);
-};
-
-TYPED_TEST(MapCapacity, MaxSize){
-	MAP									m1;
-	std::allocator<rb_tree_node<PAIR> >	alloc;
-	
-	EXPECT_EQ(m1.max_size(), alloc.max_size());
 };

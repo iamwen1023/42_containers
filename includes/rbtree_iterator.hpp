@@ -17,7 +17,6 @@ namespace ft {
 
         rb_tree_iterator(){}
         explicit rb_tree_iterator(base_ptr x): node(x){}
-        rb_tree_iterator(const iterator& it):node(it.node){}
 
         base_ptr successor(base_ptr x){
             if(x->right->if_tnull != true){
@@ -85,14 +84,18 @@ namespace ft {
         typedef const value_type* pointer;
         typedef typename rb_tree_node<Value>::base_ptr base_ptr;
         typedef const_rb_tree_iterator<Value> const_iterator;
+        typedef rb_tree_iterator<Value> iterator;
         typedef std::ptrdiff_t						difference_type;
 
         base_ptr node;
 
-        const_rb_tree_iterator():node(NULL){}
-        explicit const_rb_tree_iterator(base_ptr x):node(x){}
+        const_rb_tree_iterator():node(){}
+        explicit const_rb_tree_iterator(base_ptr x):node(x){
+        }
         //const_rb_tree_iterator(const base_ptr x):node(x){}
-        const_rb_tree_iterator(const rb_tree_iterator<Value>& it):node(it.node){}
+        const_rb_tree_iterator(const rb_tree_iterator<Value>& it):node(it.node){
+        }
+        //iterator m_const_cast() cast{return iterator(const_cast)<typename iterator::base_ptr>(node); }
     
         base_ptr successor(base_ptr x){
             if(x->right->if_tnull != true){

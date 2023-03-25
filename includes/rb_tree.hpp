@@ -79,6 +79,7 @@ namespace ft {
             }
             rb_tree(const rb_tree<Value,Compare,allocator>& x):comp(x.comp), node_alloc(x.node_alloc){
                 init();
+                node_count = 0;
                 const_iterator it = x.begin(), ite = x.end();
                     for (; it != ite; it++)
                         insert(*it);

@@ -1,5 +1,5 @@
 
-#include "../../srcs/pair.hpp"
+#include "../../includes/pair.hpp"
 #include <gtest/gtest.h>
 #include <iostream>
 #include <utility>
