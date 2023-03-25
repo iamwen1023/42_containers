@@ -7,6 +7,7 @@
 #include "includes/vector.hpp"
 #include <deque>
 #include <stdlib.h>
+#include <fstream>
 #define MAX_RAM 4294967296
 #define BUFFER_SIZE 4096
 
@@ -71,6 +72,13 @@ int main()
 			int access = rand();
 			sum += map_int[access];
 		}
+		std::ofstream myfile;
+  		myfile.open ("f1.txt");
+  		myfile << "Writing this to a file.\n";
+		for(ft::map<int, int>::iterator it=map_int.begin(); it != map_int.end(); it++){
+			myfile << it->first << ",";
+		}
+
 		std::cout << "should be constant with the same seed: " << sum << std::endl;
 
 		{
